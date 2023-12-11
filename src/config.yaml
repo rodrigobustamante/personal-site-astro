@@ -1,6 +1,6 @@
 site:
-  name: Rod Bustamante
-  site: 'https://astrowind.vercel.app'
+  name: Rodrigo Bustamante
+  site: 'https://rodrigobustamante.cl'
   base: '/'
   trailingSlash: false
 
@@ -9,14 +9,14 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: Rod Bustamante
-    template: '%s — Rod Bustamante'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    default: Rodrigo Bustamante
+    template: '%s — Rodrigo Bustamante'
+  description: "Web UI Developer"
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: Rod Bustamante
+    site_name: Rodrigo Bustamante
     images:
       - url: '~/assets/images/default.png'
         width: 1200
