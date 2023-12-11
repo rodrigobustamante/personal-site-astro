@@ -1,5 +1,5 @@
 site:
-  name: AstroWind
+  name: Rod Bustamante
   site: 'https://astrowind.vercel.app'
   base: '/'
   trailingSlash: false
@@ -9,14 +9,14 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
+    default: Rod Bustamante
+    template: '%s — Rod Bustamante'
   description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
+    site_name: Rod Bustamante
     images:
       - url: '~/assets/images/default.png'
         width: 1200
