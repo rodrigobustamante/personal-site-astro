@@ -2,7 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 
 import Hero from '~/components/widgets/Hero.astro';
-import Features2 from '~/components/widgets/Features2.astro';
+import Experience from '~/components/widgets/Experience.astro';
 
 const metadata = {
   title: 'Rod Bustamante — Web UI Developer',
@@ -28,45 +28,5 @@ const metadata = {
       </div>
     </Fragment>
   </Hero>
-  <Features2
-    title="Experience"
-    items={[
-      {
-        title: 'LATAM Airlines',
-        description: `<p>Web UI Developer Senior</p>`,
-        callToAction: {
-          text: 'Website',
-          href: 'https://latamairlines.com',
-        },
-      },
-      {
-        title: 'Globant',
-        description: `<p>Web UI Developer Senior</p>`,
-        callToAction: {
-          text: 'Website',
-          href: 'https://globant.com',
-        },
-      },
-      {
-        title: 'Acid Labs',
-        description: `<p>Software Engineer</p>`,
-        callToAction: {
-          text: 'Website',
-          href: 'https://acidlabs.com',
-        },
-      },
-      {
-        title: 'INNSPIRAL',
-        description: `<p>Technology Analyst</p>`,
-        callToAction: {
-          text: 'Website',
-          href: 'https://innspiral.com',
-        },
-      },
-    ]}
-  >
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Features2>
+  <Experience id="experience" />
 </Layout>

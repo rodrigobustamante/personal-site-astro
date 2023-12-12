@@ -1,0 +1,125 @@
+---
+import type { Features } from '~/types';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Button from '~/components/ui/Button.astro';
+const { id, isDark = false, classes = {}, bg = await Astro.slots.render('bg') } = Astro.props as Features;
+---
+
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-7xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+  <div class="flex flex-col gap-6">
+    <h2 class="font-bold leading-tighter tracking-tighter font-heading text-heading text-3xl">Experience</h2>
+    <ol class="relative border-s border-gray-200 dark:border-gray-700">
+      <li class="mb-10 ms-6">
+        <span
+          class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
+        >
+        </span>
+        <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">
+          LATAM Airlines
+          <span
+            class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3 animate-pulse"
+          >
+            Latest
+          </span>
+        </h3>
+        <span>
+          <span> Web UI Developer - Senior</span>
+          <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+            July 2023 - Present
+          </time>
+        </span>
+        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
+          I have worked developing new functionalities for the home page of the largest airline in Latin America. In
+          addition to implementing new functionalities for the backoffice where the promotions shown on the home page
+          and in the different offer landings are loaded.
+        </p>
+        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
+          I have had the challenge of leading the development team on several occasions, in addition to designing
+          solutions, supporting cross-cutting issues within the program, as well as promoting various initiatives to
+          improve the experience of working at LATAM Airlines.
+        </p>
+        <Button text="Website" href="https://latamairlines.com" target="_blank" />
+      </li>
+      <li class="mb-10 ms-6">
+        <span
+          class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
+        >
+        </span>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Globant</h3>
+        <span>
+          <span> Web UI Developer - Senior</span>
+          <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+            December 2021 - July 2023
+          </time>
+        </span>
+        <span>
+          <span> Web UI Developer - Semi Senior Advance</span>
+          <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+            August 2020 - December 2023
+          </time>
+        </span>
+        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
+          I have worked developing new functionalities for the home page of the largest airline in Latin America. In
+          addition to implementing new functionalities for the backoffice where the promotions shown on the home page
+          and in the different offer landings are loaded.
+        </p>
+        <Button text="Website" href="https://globant.com" target="_blank" />
+      </li>
+      <li class="mb-10 ms-6">
+        <span
+          class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
+        >
+        </span>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Acid Labs</h3>
+        <span>
+          <span> Software Engineer</span>
+          <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+            May 2019 - August 2020
+          </time>
+        </span>
+        <div class="flex flex-col gap-2 mb-4">
+          <span class="text-base font-normal text-gray-500 dark:text-gray-400">
+            <h4 class="text-white">Project: Ripley.com</h4>
+             I took a role as FullStack Developer, developing the main page of the site, the product catalogs, the
+            products tab, the administration panel (for analysts to create campaigns), among other modules. I worked
+            side by side with the marketing and technology department, helping them to make decisions, integrating
+            technology from different vendors, as well as doing requirements analysis.
+          </span>
+          <span class="text-base font-normal text-gray-500 dark:text-gray-400">
+            <h4 class="text-white">Project: Coca Cola / Embonor</h4>
+             I took the role of Backend developer, developing a payment gateway for CocaCola Embonor, for Chile and
+            Peru. As technological stack, NodeJS with Express was used for the development of the gateway, in addition
+            to MySQL as database engine, to persist the records of the different transactions made in the payment
+            gateway.
+          </span>
+          <span class="text-base font-normal text-gray-500 dark:text-gray-400">
+            <h4 class="text-white">Project: Ripley.com</h4>
+             In my second period in Ripley, I took a role of subject matter expert (SME) for Ripley.com, helping the new
+            development team members in designing, developing, implementing and deploying the new functionalities
+            requested by the business and the context in which we were going through as a society (COVID-19).
+          </span>
+        </div>
+        <Button text="Website" href="https://acidlabs.com" target="_blank" />
+      </li>
+      <li class="mb-10 ms-6">
+        <span
+          class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
+        >
+        </span>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">INNSPIRAL</h3>
+        <span>
+          <span> Technology Analyst</span>
+          <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+            June 2018 - May 2019
+          </time>
+        </span>
+        <p class="text-base font-normal text-gray-500 dark:text-gray-400 mb-4">
+          I took the role of a fullstack developer, where I had to take requirements, model the database, develop the
+          different APIs and integrations with vendors, deploy the different services in the cloud and perform different
+          demonstrations with stakeholders (INNSPIRAL internal and INNSPIRAL customers).
+        </p>
+        <Button text="Website" href="https://innspiral.com" target="_blank" />
+      </li>
+    </ol>
+  </div>
+</WidgetWrapper>
