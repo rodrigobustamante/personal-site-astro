@@ -217,7 +217,7 @@ const getMetadata = () => {
     },
     description: '',
     robots: {
-      index: false,
+      index: true,
       follow: false,
     },
     openGraph: {
