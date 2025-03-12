@@ -79,7 +79,7 @@ export default defineConfig({
     },
   },
   adapter: cloudflare({
-    imageService: 'compile',
+    imageService: 'passthrough',
     platformProxy: {
       enabled: true,
     },
