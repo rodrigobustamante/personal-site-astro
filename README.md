@@ -35,7 +35,7 @@ personal-site-astro/
 │   └── utils/            # Helpers methods for formatting, parsing, etc.
 ├── public/               # Static assets (images, fonts, etc.)
 ├── astro.config.mjs      # Astro configuration
-├── tailwind.config.cjs    # Tailwind CSS configuration
+├── tailwind.config.cjs   # Tailwind CSS configuration
 ├── wrangler.toml         # Cloudflare page configs
 └── README.md             # This file
 ```
@@ -90,7 +90,8 @@ personal-site-astro/
 
 To add a new blog post:
 
-1. Create a new Markdown file in the `src/content/post` directory.
+1. Create a new Markdown file in the `src/content/post` directory.  
+   **Note**: The content/post folder has two subfolders, en and es, for future posts in English and Spanish.
 2. Use the following frontmatter template:
 
    ```markdown
