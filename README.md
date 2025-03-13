@@ -27,14 +27,15 @@ This project is a static website built with Astro, a modern static site generato
 ```bash
 personal-site-astro/
 ├── src/
+│   ├── assets/           # Static assets (images, fonts, etc.)
 │   ├── components/       # Reusable components
+│   ├── content/          # Blog posts in Markdown
 │   ├── layouts/          # Layout templates
 │   ├── pages/            # Site pages
-│   ├── posts/            # Blog posts in Markdown
-│   └── styles/           # Global styles and Tailwind config
+│   └── utils/            # Helpers methods for formatting, parsing, etc.
 ├── public/               # Static assets (images, fonts, etc.)
 ├── astro.config.mjs      # Astro configuration
-├── tailwind.config.js    # Tailwind CSS configuration
+├── tailwind.config.cjs    # Tailwind CSS configuration
 ├── wrangler.toml         # Cloudflare page configs
 └── README.md             # This file
 ```
