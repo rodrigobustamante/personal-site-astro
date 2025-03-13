@@ -110,7 +110,7 @@ const config = {
       postsPerPage: 6,
       post: {
         isEnabled: true,
-        permalink: '/%slug%',
+        permalink: 'blog/%slug%',
         robots: {
           index: true,
         },
@@ -124,14 +124,14 @@ const config = {
       },
       category: {
         isEnabled: true,
-        pathname: 'category',
+        pathname: 'blog/category',
         robots: {
           index: true,
         },
       },
       tag: {
         isEnabled: true,
-        pathname: 'tag',
+        pathname: 'blog/tag',
         robots: {
           index: false,
         },
