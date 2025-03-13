@@ -1,2 +1,3 @@
 name = "personal-site-astro"
 pages_build_output_dir = "./dist"
+compatibility_date = "2025-03-12"
