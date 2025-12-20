@@ -1,3 +1,9 @@
 name = "personal-site-astro"
 pages_build_output_dir = "./dist"
 compatibility_date = "2025-03-12"
+
+# Node.js compatibility
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+NODE_VERSION = "20"
