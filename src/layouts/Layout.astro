@@ -35,6 +35,10 @@ const { language, textDirection } = I18N;
     <SiteVerification />
     <Analytics />
 
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin />
+    <link rel="dns-prefetch" href="https://static.cloudflareinsights.com" />
+
     <ViewTransitions fallback="swap" />
   </head>
 

@@ -33,7 +33,25 @@ export default defineConfig({
     mdx(),
     icon({
       include: {
-        tabler: ['*'],
+        tabler: [
+          // Navigation & UI
+          'chevron-down',
+          'chevron-left',
+          'chevron-right',
+          'check',
+          'info-square',
+          'sun',
+          'clock',
+          'mail',
+          'rss',
+          // Social brands
+          'brand-x',
+          'brand-instagram',
+          'brand-linkedin',
+          'brand-github',
+          'brand-facebook',
+          'brand-whatsapp',
+        ],
         'flat-color-icons': [
           'template',
           'gallery',

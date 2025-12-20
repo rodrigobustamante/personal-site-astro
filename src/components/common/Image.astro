@@ -2,7 +2,7 @@
 import { findImage } from '~/utils/images';
 import {
   getImagesOptimized,
-  astroAsseetsOptimizer,
+  astroAssetsOptimizer,
   unpicOptimizer,
   type ImageProps,
   type AttributesProps
@@ -36,12 +36,17 @@ if (!props.decoding) {
   props.decoding = 'async';
 }
 
+// Set fetchpriority high for eager-loaded images (likely LCP)
+if (props.loading === 'eager' && !props.fetchpriority) {
+  props.fetchpriority = 'high';
+}
+
 const _image = await findImage(props.src);
 
 let image: ImageType | undefined = undefined;
 
 if (_image !== null && typeof _image === 'object') {
-  image = await getImagesOptimized(_image, props, astroAsseetsOptimizer);
+  image = await getImagesOptimized(_image, props, astroAssetsOptimizer);
 } else if (typeof _image === 'string' && (_image.startsWith('http://') || _image.startsWith('https://'))) {
   image = await getImagesOptimized(_image, props, unpicOptimizer);
 } else if (_image) {
