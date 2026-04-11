@@ -16,30 +16,35 @@ const { id, isDark = false, classes = {}, bg = await Astro.slots.render('bg') } 
         </span>
         <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">
           LATAM Airlines
-          <span
-            class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3"
-          >
-            Current
-          </span>
         </h3>
         <span>
           <span> Software Architect</span>
-          <time class="block mb-2 text-sm font-normal leading-none text-gray-500"> September 2024 - Present</time>
+          <time class="block mb-2 text-sm font-normal leading-none text-gray-500"> October 2024 - March 2026 · Madrid, Remote</time>
         </span>
-        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
-          As Software Architect, I design the technical strategy and evolution of the design system used by the largest
-          airline in Latin America, ensuring consistency, accessibility, and performance across all digital products. I
-          also manage the infrastructure maintenance using GCP, GitLab, and GitLab CI for continuous integration and
-          deployment.
+        <ul class="mb-4 list-disc list-inside text-base font-normal text-gray-500 dark:text-gray-400 space-y-1">
+          <li>Led the architecture and evolution of LATAM Airlines' Design System, establishing shared UI foundations adopted by 50+ teams across all digital platforms of Latin America's largest airline</li>
+          <li>Designed and implemented a cross-platform design token system and theming strategy for React and React Native</li>
+          <li>Built and maintained CI/CD pipelines (GitLab CI), cloud infrastructure on GCP (Cloud Run, Cloud SQL, Cloud Armor) and IaC with Terraform. Developed supporting tooling and automation scripts in Python</li>
+          <li>Created MCP servers and AI-powered tooling using Python to improve team and agent productivity</li>
+          <li>Optimized component performance and accessibility, enforcing WCAG compliance across critical user flows</li>
+          <li>Mentored engineers across multiple squads on design system adoption and frontend best practices</li>
+        </ul>
+        <p class="mb-4 text-sm font-normal text-gray-400 dark:text-gray-500">
+          React · React Native · Next.js · TypeScript · TailwindCSS · Storybook · GCP · Terraform · Docker · GitLab CI · Python · Redis
         </p>
         <span>
-          <span> Frontend Developer - Senior</span>
-          <time class="block mb-2 text-sm font-normal leading-none text-gray-500"> July 2023 - September 2024</time>
+          <span> Senior Software Engineer</span>
+          <time class="block mb-2 text-sm font-normal leading-none text-gray-500"> July 2023 - October 2024 · Santiago, Remote</time>
         </span>
-        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
-          Previously as Frontend Developer, I developed new functionalities for the home page and backoffice systems. I
-          led the development team on several occasions, designed solutions for cross-cutting issues, and promoted
-          initiatives to improve the developer experience at LATAM Airlines.
+        <ul class="mb-4 list-disc list-inside text-base font-normal text-gray-500 dark:text-gray-400 space-y-1">
+          <li>Owned frontend performance, SEO and accessibility for LATAM Airlines' home page — one of the highest-traffic pages in Latin American aviation</li>
+          <li>Integrated personalization tools to deliver tailored content experiences to millions of passengers</li>
+          <li>Developed features for the promotions backoffice, enabling marketing analysts to manage campaigns autonomously</li>
+          <li>Contributed to micro-frontend architecture decisions and established frontend best practices</li>
+          <li>Promoted to Software Architect in October 2024</li>
+        </ul>
+        <p class="mb-4 text-sm font-normal text-gray-400 dark:text-gray-500">
+          React · Next.js · Node.js · TypeScript · Jest · Testing Library · Storybook · Vite
         </p>
         <Button text="Website" href="https://latamairlines.com" target="_blank" />
       </li>
@@ -48,19 +53,32 @@ const { id, isDark = false, classes = {}, bg = await Astro.slots.render('bg') } 
           class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
         >
         </span>
-        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Globant</h3>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Globant <span class="text-sm font-normal text-gray-400 dark:text-gray-500">(client: LATAM Airlines)</span></h3>
         <span>
-          <span> Web UI Developer - Senior</span>
+          <span> Web UI Developer Senior</span>
           <time class="block mb-2 text-sm font-normal leading-none text-gray-500"> December 2021 - July 2023</time>
         </span>
+        <ul class="mb-4 list-disc list-inside text-base font-normal text-gray-500 dark:text-gray-400 space-y-1">
+          <li>Led frontend development for the home page of Latin America's largest airline, serving millions of monthly users across 10+ countries</li>
+          <li>Architected and maintained multiple micro-frontends using React and Next.js (SSR), improving Core Web Vitals</li>
+          <li>Built BFF APIs with Node.js and Express integrating personalization and promotions services</li>
+          <li>Mentored mid-level engineers and contributed to code review culture</li>
+        </ul>
+        <p class="mb-4 text-sm font-normal text-gray-400 dark:text-gray-500">
+          React · Next.js · Node.js · TypeScript · Redux · Styled Components · Zustand
+        </p>
         <span>
-          <span> Web UI Developer - Semi Senior Advance</span>
-          <time class="block mb-2 text-sm font-normal leading-none text-gray-500"> August 2020 - December 2023</time>
+          <span> Web UI Developer SSr Adv</span>
+          <time class="block mb-2 text-sm font-normal leading-none text-gray-500"> August 2020 - December 2021</time>
         </span>
-        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
-          I have worked developing new functionalities for the home page of the largest airline in Latin America. In
-          addition to implementing new functionalities for the backoffice where the promotions shown on the home page
-          and in the different offer landings are loaded.
+        <ul class="mb-4 list-disc list-inside text-base font-normal text-gray-500 dark:text-gray-400 space-y-1">
+          <li>Developed new features for LATAM Airlines' home page and promotional backoffice</li>
+          <li>Built micro-frontend modules with React and Next.js via federated architecture</li>
+          <li>Implemented Redis caching strategies to optimize API response times</li>
+          <li>Set up and maintained Jenkins pipelines for CI/CD</li>
+        </ul>
+        <p class="mb-4 text-sm font-normal text-gray-400 dark:text-gray-500">
+          React · Next.js · Node.js · Redux · Styled Components · Zustand
         </p>
         <Button text="Website" href="https://globant.com" target="_blank" />
       </li>
@@ -69,32 +87,19 @@ const { id, isDark = false, classes = {}, bg = await Astro.slots.render('bg') } 
           class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
         >
         </span>
-        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Acid Labs</h3>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Acid Labs Chile</h3>
         <span>
           <span> Software Engineer</span>
           <time class="block mb-2 text-sm font-normal leading-none text-gray-500"> May 2019 - August 2020</time>
         </span>
-        <div class="flex flex-col gap-2 mb-4">
-          <span class="text-base font-normal text-gray-500 dark:text-gray-400">
-            <h4 class="text-white">Project: Ripley.com</h4>
-            I took a role as FullStack Developer, developing the main page of the site, the product catalogs, the products
-            tab, the administration panel (for analysts to create campaigns), among other modules. I worked side by side
-            with the marketing and technology department, helping them to make decisions, integrating technology from different
-            vendors, as well as doing requirements analysis.
-          </span>
-          <span class="text-base font-normal text-gray-500 dark:text-gray-400">
-            <h4 class="text-white">Project: Coca Cola / Embonor</h4>
-            I took the role of Backend developer, developing a payment gateway for CocaCola Embonor, for Chile and Peru.
-            As technological stack, NodeJS with Express was used for the development of the gateway, in addition to MySQL
-            as database engine, to persist the records of the different transactions made in the payment gateway.
-          </span>
-          <span class="text-base font-normal text-gray-500 dark:text-gray-400">
-            <h4 class="text-white">Project: Ripley.com</h4>
-            In my second period in Ripley, I took a role of subject matter expert (SME) for Ripley.com, helping the new development
-            team members in designing, developing, implementing and deploying the new functionalities requested by the business
-            and the context in which we were going through as a society (COVID-19).
-          </span>
-        </div>
+        <ul class="mb-4 list-disc list-inside text-base font-normal text-gray-500 dark:text-gray-400 space-y-1">
+          <li>Developed core modules of Ripley.com's e-commerce platform including home page, product catalog and campaign admin panel</li>
+          <li>Built a payment gateway for Coca-Cola Embonor (Chile &amp; Peru) with Node.js, deployed on AWS EKS with Kubernetes</li>
+          <li>Acted as subject matter expert during COVID-19, onboarding new engineers under accelerated timelines</li>
+        </ul>
+        <p class="mb-4 text-sm font-normal text-gray-400 dark:text-gray-500">
+          React · Node.js · Express · Redis · MySQL · GitLab CI · AWS EKS · Kubernetes
+        </p>
         <Button text="Website" href="https://acidlabs.com" target="_blank" />
       </li>
       <li class="mb-10 ms-6">
@@ -107,10 +112,13 @@ const { id, isDark = false, classes = {}, bg = await Astro.slots.render('bg') } 
           <span> Technology Analyst</span>
           <time class="block mb-2 text-sm font-normal leading-none text-gray-500"> June 2018 - May 2019</time>
         </span>
-        <p class="text-base font-normal text-gray-500 dark:text-gray-400 mb-4">
-          I took the role of a fullstack developer, where I had to take requirements, model the database, develop the
-          different APIs and integrations with vendors, deploy the different services in the cloud and perform different
-          demonstrations with stakeholders (INNSPIRAL internal and INNSPIRAL customers).
+        <ul class="mb-4 list-disc list-inside text-base font-normal text-gray-500 dark:text-gray-400 space-y-1">
+          <li>Built full-stack web applications for enterprise clients: innovation portfolio platform (GPI) and employee sentiment tool (Thermometer)</li>
+          <li>Developed UI mockup for Chilena Consolidada Seguros Vida to validate personalized insurance hypothesis</li>
+          <li>Owned full delivery lifecycle: requirements, database modeling, API development, GCP deployment and stakeholder demos</li>
+        </ul>
+        <p class="mb-4 text-sm font-normal text-gray-400 dark:text-gray-500">
+          React · Node.js · Express · MySQL · GCP · Cloudflare · GitLab CI
         </p>
         <Button text="Website" href="https://innspiral.com" target="_blank" />
       </li>
