@@ -19,17 +19,13 @@ const older = lang ? (lang === 'es' ? 'Más antiguos' : 'Older posts') : null;
       class={`page-btn${!prevUrl ? ' invisible' : ''}`}
     >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-      {newer ? newer : (
-        <><span class="lng-en">Newer posts</span><span class="lng-es">Más recientes</span></>
-      )}
+      {newer ?? 'Newer posts'}
     </a>
     <a
       href={nextUrl ? getPermalink(nextUrl) : '#'}
       class={`page-btn${!nextUrl ? ' invisible' : ''}`}
     >
-      {older ? older : (
-        <><span class="lng-en">Older posts</span><span class="lng-es">Más antiguos</span></>
-      )}
+      {older ?? 'Older posts'}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
   </nav>

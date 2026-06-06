@@ -74,9 +74,9 @@ const t = {
             </>
           ) : (
             <>
-              <a href="/"><span class="lng-en">Home</span><span class="lng-es">Inicio</span></a>
+              <a href="/">Home</a>
               <a href="/blog">Blog</a>
-              <a href="/#contact"><span class="lng-en">Contact</span><span class="lng-es">Contacto</span></a>
+              <a href="/#contact">Contact</a>
             </>
           )}
         </nav>
@@ -94,9 +94,9 @@ const t = {
               </>
             ) : (
               <>
-                <span class="on lng-en">EN</span><span class="on lng-es">ES</span>
+                <span class="on" id="lang-label-on">EN</span>
                 <span class="slash">/</span>
-                <span class="off lng-en">ES</span><span class="off lng-es">EN</span>
+                <span class="off" id="lang-label-off">ES</span>
               </>
             )}
           </button>
@@ -163,6 +163,14 @@ const t = {
         el.style.setProperty('--accent-soft', `color-mix(in oklab, ${dk ? p.d : p.l} ${dk ? 16 : 12}%, transparent)`);
       });
 
+      const labelOn = document.getElementById('lang-label-on') as HTMLElement | null;
+      const labelOff = document.getElementById('lang-label-off') as HTMLElement | null;
+      function syncLangBtn(lang: string) {
+        if (labelOn) labelOn.textContent = lang.toUpperCase();
+        if (labelOff) labelOff.textContent = lang === 'en' ? 'ES' : 'EN';
+      }
+      if (labelOn || labelOff) syncLangBtn(document.documentElement.dataset.lang || 'en');
+
       const langBtn = document.querySelector('.lang-btn');
       langBtn?.addEventListener('click', () => {
         const cur = document.documentElement.dataset.lang || 'en';
@@ -174,6 +182,7 @@ const t = {
         } else {
           document.documentElement.dataset.lang = next;
           document.documentElement.lang = next;
+          syncLangBtn(next);
         }
       });
 
@@ -233,9 +242,6 @@ const t = {
   button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
   img { display: block; max-width: 100%; }
   ::selection { background: var(--accent-soft); color: var(--accent-ink); }
-
-  html[data-lang='en'] .lng-es { display: none !important; }
-  html[data-lang='es'] .lng-en { display: none !important; }
 
   .wrap { max-width: var(--maxw); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
 

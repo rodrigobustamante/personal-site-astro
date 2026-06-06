@@ -3,7 +3,6 @@ import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
 import BlogLayout from '~/layouts/BlogLayout.astro';
 import BlogList from '~/components/blog/List.astro';
-import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
 
 import { blogListRobots, getStaticPathsBlogList } from '~/utils/blog';
@@ -34,14 +33,8 @@ const metadata = {
 <BlogLayout title={metadata.title as string}>
   <div class="blog-wrap">
     <div class="blog-headline reveal">
-      <h1>
-        <span class="lng-en">The Blog</span>
-        <span class="lng-es">El Blog</span>
-      </h1>
-      <p>
-        <span class="lng-en">Practical guides, tips, and tools for building modern websites.</span>
-        <span class="lng-es">Guías prácticas, tips y herramientas para sitios web modernos.</span>
-      </p>
+      <h1>The Blog</h1>
+      <p>Practical guides, tips, and tools for building modern websites.</p>
     </div>
     <BlogList posts={page.data} />
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />

@@ -2,15 +2,17 @@
 interface Props {
   title?: string;
   description?: string;
+  lang?: 'en' | 'es';
 }
 const {
   title = 'Rodrigo Bustamante — Solutions Architect',
   description = 'Rodrigo Bustamante — Solutions Architect & Senior Software Engineer. Nine years building scalable frontend systems and design systems for global brands.',
+  lang,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light" data-lang="en">
+<html lang={lang ?? 'en'} data-theme="light" data-lang={lang ?? 'en'} {...(lang ? { 'data-fixed-lang': lang } : {})}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,7 +36,7 @@ const {
           Plum: { l: 'oklch(0.52 0.13 350)', d: 'oklch(0.72 0.12 352)', li: 'oklch(0.45 0.13 350)', di: 'oklch(0.78 0.12 354)' },
         };
         var theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        var lang = localStorage.getItem('lang') || ((navigator.language || '').startsWith('es') ? 'es' : 'en');
+        var lang = el.dataset.fixedLang || localStorage.getItem('lang') || ((navigator.language || '').startsWith('es') ? 'es' : 'en');
         var palette = localStorage.getItem('palette') || 'Terracotta';
         var el = document.documentElement;
         el.dataset.theme = theme;
@@ -133,14 +135,6 @@ const {
   ::selection {
     background: var(--accent-soft);
     color: var(--accent-ink);
-  }
-
-  /* ——— Language switching ——— */
-  html[data-lang='en'] .lng-es {
-    display: none !important;
-  }
-  html[data-lang='es'] .lng-en {
-    display: none !important;
   }
 
   /* ——— Layout ——— */

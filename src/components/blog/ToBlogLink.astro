@@ -10,8 +10,6 @@ const label = lang === 'es' ? 'Volver al Blog' : lang === 'en' ? 'Back to Blog' 
 <div class="blog-wrap" style="padding-top: 0; padding-bottom: 0;">
   <a href={href} class="back-link">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-    {label ? label : (
-      <><span class="lng-en">Back to Blog</span><span class="lng-es">Volver al Blog</span></>
-    )}
+    {label ?? 'Back to Blog'}
   </a>
 </div>
