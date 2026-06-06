@@ -1,8 +1,11 @@
 export const ui = {
   en: {
     // nav
+    'nav.home': 'Home',
     'nav.experience': 'Experience',
+    'nav.skills': 'Skills',
     'nav.writing': 'Writing',
+    'nav.blog': 'Blog',
     'nav.contact': 'Contact',
 
     // hero
@@ -132,8 +135,11 @@ export const ui = {
 
   es: {
     // nav
+    'nav.home': 'Inicio',
     'nav.experience': 'Experiencia',
+    'nav.skills': 'Skills',
     'nav.writing': 'Blog',
+    'nav.blog': 'Blog',
     'nav.contact': 'Contacto',
 
     // hero

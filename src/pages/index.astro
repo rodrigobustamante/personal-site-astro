@@ -1,5 +1,6 @@
 ---
 import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
+import SiteHeader from '~/components/portfolio/SiteHeader.astro';
 import { useTranslations } from '~/i18n/ui';
 
 const langCookie = Astro.cookies.get('lang');
@@ -12,61 +13,7 @@ const { t, tl } = useTranslations(lang);
   description="Rodrigo Bustamante — Solutions Architect & Senior Software Engineer. Nine years building scalable frontend systems and design systems for global brands."
   lang={lang}
 >
-  <!-- ——— Header ——— -->
-  <header class="header" id="site-header">
-    <div class="header-inner">
-      <a class="wordmark" href="#top">
-        <span class="wordmark-name">Rodrigo Bustamante</span>
-        <span class="wordmark-dot">●</span>
-      </a>
-      <nav class="header-nav">
-        <a href="#work">{t('nav.experience')}</a>
-        <a href="#skills">Skills</a>
-        <a href="#writing">{t('nav.writing')}</a>
-        <a href="#contact">{t('nav.contact')}</a>
-      </nav>
-      <div class="header-tools">
-        <button class="tool-btn lang-btn" id="lang-toggle" aria-label="Toggle language">
-          <span class="on">{lang === 'es' ? 'ES' : 'EN'}</span>
-          <span class="slash">/</span>
-          <span class="off">{lang === 'es' ? 'EN' : 'ES'}</span>
-        </button>
-        <button class="tool-btn" id="theme-toggle" aria-label="Toggle theme">
-          <svg
-            id="icon-sun"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            style="display:none"
-            aria-hidden="true"
-          >
-            <path
-              d="M12 4.5v-2M12 21.5v-2M4.5 12h-2M21.5 12h-2M6.3 6.3L4.9 4.9M19.1 19.1l-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"
-            ></path>
-          </svg>
-          <svg
-            id="icon-moon"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M21 12.8A8.5 8.5 0 1111.2 3a6.8 6.8 0 009.8 9.8z"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </header>
+  <SiteHeader lang={lang} variant="portfolio" homeHref="/" />
 
   <main>
     <!-- ——— Hero ——— -->
@@ -719,57 +666,6 @@ const { t, tl } = useTranslations(lang);
 </PortfolioLayout>
 
 <script>
-  // Theme toggle
-  const themeBtn = document.getElementById('theme-toggle');
-  const iconSun = document.getElementById('icon-sun') as HTMLElement | null;
-  const iconMoon = document.getElementById('icon-moon') as HTMLElement | null;
-
-  const PALETTES: Record<string, { l: string; d: string; li: string; di: string }> = {
-    Terracotta: { l: 'oklch(0.585 0.125 42)', d: 'oklch(0.72 0.12 48)', li: 'oklch(0.46 0.12 42)', di: 'oklch(0.78 0.12 50)' },
-    Ochre:      { l: 'oklch(0.62 0.12 75)',   d: 'oklch(0.78 0.11 82)', li: 'oklch(0.5 0.11 72)',  di: 'oklch(0.82 0.11 84)' },
-    Olive:      { l: 'oklch(0.55 0.09 130)',  d: 'oklch(0.72 0.1 135)', li: 'oklch(0.45 0.09 128)',di: 'oklch(0.78 0.1 138)' },
-    Indigo:     { l: 'oklch(0.5 0.11 270)',   d: 'oklch(0.7 0.12 275)', li: 'oklch(0.45 0.12 270)',di: 'oklch(0.76 0.12 278)' },
-    Plum:       { l: 'oklch(0.52 0.13 350)',  d: 'oklch(0.72 0.12 352)',li: 'oklch(0.45 0.13 350)',di: 'oklch(0.78 0.12 354)' },
-  };
-
-  function applyThemeIcons(theme: string) {
-    if (iconSun)  iconSun.style.display  = theme === 'dark' ? 'block' : 'none';
-    if (iconMoon) iconMoon.style.display = theme === 'dark' ? 'none'  : 'block';
-  }
-  applyThemeIcons(document.documentElement.dataset.theme || 'light');
-
-  themeBtn?.addEventListener('click', () => {
-    const cur  = document.documentElement.dataset.theme || 'light';
-    const next = cur === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem('theme', next);
-    applyThemeIcons(next);
-    const palette = localStorage.getItem('palette') || 'Terracotta';
-    const p  = PALETTES[palette] || PALETTES['Terracotta'];
-    const el = document.documentElement;
-    const dk = next === 'dark';
-    el.style.setProperty('--accent',      dk ? p.d  : p.l);
-    el.style.setProperty('--accent-ink',  dk ? p.di : p.li);
-    el.style.setProperty('--accent-soft', `color-mix(in oklab, ${dk ? p.d : p.l} ${dk ? 16 : 12}%, transparent)`);
-  });
-
-  // Lang toggle — set cookie + reload so SSR re-renders in the new language
-  const langBtn = document.getElementById('lang-toggle');
-  langBtn?.addEventListener('click', () => {
-    const cur  = document.documentElement.dataset.lang || 'en';
-    const next = cur === 'en' ? 'es' : 'en';
-    document.cookie = `lang=${next};path=/;max-age=31536000`;
-    localStorage.setItem('lang', next);
-    window.location.reload();
-  });
-
-  // Sticky header
-  const header = document.getElementById('site-header');
-  window.addEventListener('scroll', () => {
-    header?.classList.toggle('scrolled', window.scrollY > 10);
-  }, { passive: true });
-
-  // Scroll reveal
   document.querySelectorAll('.reveal').forEach((el) => {
     new IntersectionObserver(([e]) => {
       if (e.isIntersecting) el.classList.add('in');
