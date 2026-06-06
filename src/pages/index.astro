@@ -1,34 +1,1016 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
-
-import Hero from '~/components/widgets/Hero.astro';
-import Experience from '~/components/widgets/Experience.astro';
-
-const metadata = {
-  title: 'Rod Bustamante — Software Architect',
-  ignoreTitleTemplate: true,
-};
+import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
 ---
 
-<Layout metadata={metadata}>
-  <Hero image={{ src: '~/assets/images/hero.png', alt: 'Psychedelic Astronaut' }}>
-    <Fragment slot="title">
-      <p class="text-accent dark:text-white highlight">Rodrigo Bustamante</p>
-    </Fragment>
-
-    <Fragment slot="subtitle">
-      <div class="flex flex-col">
-        <span>
-          <span class="font-semibold">Software Architect</span> from Chile 🇨🇱, currently based in Madrid, Spain 🇪🇸.</span
-        >
-        <span>
-          I develop <span class="font-semibold">web and mobile applications</span>, ensuring <span class="font-semibold"
-            >performance</span
-          > and <span class="font-semibold">accessibility</span>.</span
-        >
-        <span>Lego builder 🧱, cat lover 🐈 and enthusiastic traveler 🛩️.</span>
+<PortfolioLayout
+  title="Rodrigo Bustamante — Solutions Architect"
+  description="Rodrigo Bustamante — Solutions Architect & Senior Software Engineer. Nine years building scalable frontend systems and design systems for global brands."
+>
+  <!-- ——— Header ——— -->
+  <header class="header" id="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="#top">
+        <span class="wordmark-name">Rodrigo Bustamante</span>
+        <span class="wordmark-dot">●</span>
+      </a>
+      <nav class="header-nav">
+        <a href="#work">
+          <span class="lng-en">Experience</span>
+          <span class="lng-es">Experiencia</span>
+        </a>
+        <a href="#skills">Skills</a>
+        <a href="#writing">
+          <span class="lng-en">Writing</span>
+          <span class="lng-es">Blog</span>
+        </a>
+        <a href="#contact">
+          <span class="lng-en">Contact</span>
+          <span class="lng-es">Contacto</span>
+        </a>
+      </nav>
+      <div class="header-tools">
+        <button class="tool-btn lang-btn" id="lang-toggle" aria-label="Toggle language">
+          <span class="on lng-en" id="en-label">EN</span>
+          <span class="off lng-es" id="en-label-off" style="display:none">EN</span>
+          <span class="slash">/</span>
+          <span class="off lng-en" id="es-label-off" style="display:none">ES</span>
+          <span class="on lng-es" id="es-label">ES</span>
+        </button>
+        <button class="tool-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg
+            id="icon-sun"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style="display:none"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 4.5v-2M12 21.5v-2M4.5 12h-2M21.5 12h-2M6.3 6.3L4.9 4.9M19.1 19.1l-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"
+            ></path>
+          </svg>
+          <svg
+            id="icon-moon"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 12.8A8.5 8.5 0 1111.2 3a6.8 6.8 0 009.8 9.8z"></path>
+          </svg>
+        </button>
       </div>
-    </Fragment>
-  </Hero>
-  <Experience id="experience" />
-</Layout>
+    </div>
+  </header>
+
+  <main>
+    <!-- ——— Hero ——— -->
+    <section id="top" class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-left">
+          <div class="hero-role">Solutions Architect &amp; Senior Software Engineer</div>
+          <h1 class="hero-name">Rodrigo<br />Bustamante</h1>
+          <p class="hero-pitch lng-en">
+            I architect scalable frontend systems and <em>design systems</em> for global brands — with <em
+              >nine years</em
+            > of engineering behind me, building platforms used by millions.
+          </p>
+          <p class="hero-pitch lng-es">
+            Arquitecto sistemas frontend y <em>design systems</em> escalables para marcas globales — con <em
+              >nueve años</em
+            > de ingeniería a mi espalda, construyendo plataformas usadas por millones.
+          </p>
+          <div class="hero-stats">
+            <span class="hero-stat"
+              ><b>9</b>
+              <span class="lng-en">years engineering</span><span class="lng-es">años de ingeniería</span></span
+            >
+            <span class="hero-stat"
+              ><b>50+</b>
+              <span class="lng-en">teams on the design system</span><span class="lng-es"
+                >equipos en el design system</span
+              ></span
+            >
+            <span class="hero-stat"
+              ><b>Millions</b>
+              <span class="lng-en">of passengers reached</span><span class="lng-es">de pasajeros</span></span
+            >
+            <span class="hero-stat"
+              ><b>10+</b> <span class="lng-en">countries</span><span class="lng-es">países</span></span
+            >
+          </div>
+          <div class="hero-meta">
+            <span class="lng-en">Madrid, Spain</span>
+            <span class="lng-es">Madrid, España</span>
+            <span class="dot"></span>
+            <span class="lng-en">Remote-friendly</span>
+            <span class="lng-es">Disponible en remoto</span>
+          </div>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#contact">
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"><path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path></svg
+              >
+              <span class="lng-en">Get in touch</span>
+              <span class="lng-es">Hablemos</span>
+            </a>
+            <a class="btn btn-ghost" href="/uploads/cv-rodrigo-bustamante-general.pdf" target="_blank" rel="noopener">
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4.5 20.5h15"></path></svg
+              >
+              <span class="lng-en">Download CV</span>
+              <span class="lng-es">Descargar CV</span>
+            </a>
+          </div>
+        </div>
+        <div class="hero-right">
+          <img
+            src="/images/portrait-crop.png"
+            alt="Rodrigo Bustamante"
+            class="hero-portrait"
+            width="608"
+            height="760"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— Experience ——— -->
+    <section id="work" class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-num">01</span>
+          <h2 class="section-title">
+            <span class="lng-en">Experience</span>
+            <span class="lng-es">Experiencia</span>
+          </h2>
+          <p class="section-sub lng-en">
+            A decade of building for scale — from payment rails to global platforms used by millions.
+          </p>
+          <p class="section-sub lng-es">
+            Una década construyendo a escala — desde pasarelas de pago hasta plataformas globales usadas por millones.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <!-- LATAM Airlines -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">2023 — 2026</div>
+              <div class="entry-sector lng-en">Digital Platforms</div>
+              <div class="entry-sector lng-es">Plataformas digitales</div>
+              <div class="entry-loc lng-en">Madrid &amp; Santiago · Remote</div>
+              <div class="entry-loc lng-es">Madrid y Santiago · Remoto</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">LATAM Airlines</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                <span class="lng-en">Led the Design System for 50+ teams</span>
+                <span class="lng-es">Lideré el Design System para 50+ equipos</span>
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Software Architect</span>
+                  <span class="role-period">Sep 2024 — Mar 2026</span>
+                </div>
+                <ul class="role-bullets lng-en">
+                  <li>
+                    Led the technical strategy and global evolution of the Design System, ensuring performance and
+                    accessibility across all digital platforms.
+                  </li>
+                  <li>
+                    Architected infrastructure on GCP and GitLab CI, establishing engineering standards and robust CI/CD
+                    pipelines for 50+ teams.
+                  </li>
+                  <li>
+                    Optimized component performance and managed design tokens and themes, mentoring teams on
+                    implementation.
+                  </li>
+                </ul>
+                <ul class="role-bullets lng-es">
+                  <li>
+                    Lideré la estrategia técnica y la evolución global del Design System, asegurando performance y
+                    accesibilidad en todas las plataformas digitales.
+                  </li>
+                  <li>
+                    Arquitecté infraestructura en GCP y GitLab CI, estableciendo estándares de ingeniería y pipelines
+                    CI/CD robustos para 50+ equipos.
+                  </li>
+                  <li>
+                    Optimicé el performance de componentes y gestioné design tokens y temas, mentoreando a los equipos
+                    en su implementación.
+                  </li>
+                </ul>
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Senior Software Engineer</span>
+                  <span class="role-period">Jul 2023 — Aug 2024</span>
+                </div>
+                <ul class="role-bullets lng-en">
+                  <li>
+                    Built core functionality for the global home page and promotions backoffice, with a strong focus on
+                    SEO and performance.
+                  </li>
+                  <li>
+                    Designed cross-cutting personalization tools, improving the journey for millions of passengers.
+                  </li>
+                  <li>
+                    Championed Developer Experience (DX) initiatives, streamlining internal workflows and architectural
+                    abstractions.
+                  </li>
+                </ul>
+                <ul class="role-bullets lng-es">
+                  <li>
+                    Construí funcionalidad core de la home global y el backoffice de promociones, con foco en SEO y
+                    performance.
+                  </li>
+                  <li>
+                    Diseñé herramientas transversales de personalización, mejorando el journey de millones de pasajeros.
+                  </li>
+                  <li>
+                    Impulsé iniciativas de Developer Experience (DX), agilizando flujos internos y abstracciones
+                    arquitectónicas.
+                  </li>
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">React</span>
+                <span class="chip">Next.js</span>
+                <span class="chip">TypeScript</span>
+                <span class="chip">GCP</span>
+                <span class="chip">Design Systems</span>
+                <span class="chip">Micro-frontends</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Globant -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">2020 — 2023</div>
+              <div class="entry-sector lng-en">Consulting · Digital Platforms</div>
+              <div class="entry-sector lng-es">Consultoría · Plataformas</div>
+              <div class="entry-loc lng-en">Santiago, Chile · Remote</div>
+              <div class="entry-loc lng-es">Santiago, Chile · Remoto</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">Globant</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                <span class="lng-en">Scaled test coverage to 85%</span>
+                <span class="lng-es">Escalé la cobertura de tests a 85%</span>
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Web UI Developer — Senior / SSr Adv</span>
+                  <span class="role-period">Aug 2020 — Jul 2023</span>
+                </div>
+                <ul class="role-bullets lng-en">
+                  <li>
+                    Implemented high-traffic features for booking engines and promotion landings, managing real-time
+                    data for global operations.
+                  </li>
+                  <li>
+                    Developed complex backoffice systems for promotional management with high availability and seamless
+                    data integration.
+                  </li>
+                  <li>
+                    Scaled automated test coverage to 85% using Jest and Cypress, significantly reducing production
+                    regressions.
+                  </li>
+                </ul>
+                <ul class="role-bullets lng-es">
+                  <li>
+                    Implementé features de alto tráfico para motores de reservas y landings de promociones, gestionando
+                    datos en tiempo real para operaciones globales.
+                  </li>
+                  <li>
+                    Desarrollé backoffices complejos para gestión de promociones con alta disponibilidad e integración
+                    de datos fluida.
+                  </li>
+                  <li>
+                    Escalé la cobertura automatizada de tests a 85% con Jest y Cypress, reduciendo regresiones en
+                    producción.
+                  </li>
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">React</span>
+                <span class="chip">TypeScript</span>
+                <span class="chip">Jest</span>
+                <span class="chip">Cypress</span>
+                <span class="chip">Node.js</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Acid Labs -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">2019 — 2020</div>
+              <div class="entry-sector lng-en">Retail &amp; Payments</div>
+              <div class="entry-sector lng-es">Retail y Pagos</div>
+              <div class="entry-loc lng-en">Santiago, Chile · Remote</div>
+              <div class="entry-loc lng-es">Santiago, Chile · Remoto</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">Acid Labs</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                <span class="lng-en">Cut middleware latency by 200ms</span>
+                <span class="lng-es">Reduje 200ms de latencia en middleware</span>
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Software Engineer / SME</span>
+                  <span class="role-period">May 2019 — Aug 2020</span>
+                </div>
+                <ul class="role-bullets lng-en">
+                  <li>
+                    Engineered a Node.js payment gateway for Coca-Cola (Chile &amp; Peru) using Express and MySQL,
+                    ensuring secure, scalable transactions.
+                  </li>
+                  <li>
+                    Developed the Ripley.com home page and campaign administration panels, aligning technical and
+                    business goals with marketing.
+                  </li>
+                  <li>
+                    Led as Subject Matter Expert during high-traffic surges (CyberDay), refactoring Node.js middleware
+                    to cut latency by 200ms.
+                  </li>
+                </ul>
+                <ul class="role-bullets lng-es">
+                  <li>
+                    Construí una pasarela de pagos en Node.js para Coca-Cola (Chile y Perú) con Express y MySQL,
+                    asegurando transacciones seguras y escalables.
+                  </li>
+                  <li>
+                    Desarrollé la home de Ripley.com y paneles de administración de campañas, alineando objetivos
+                    técnicos y de negocio con marketing.
+                  </li>
+                  <li>
+                    Lideré como Subject Matter Expert durante picos de tráfico (CyberDay), refactorizando middleware
+                    Node.js para reducir 200ms de latencia.
+                  </li>
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">Node.js</span>
+                <span class="chip">Express</span>
+                <span class="chip">MySQL</span>
+                <span class="chip">React</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- INNSPIRAL -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">2018 — 2019</div>
+              <div class="entry-sector lng-en">Corporate Innovation</div>
+              <div class="entry-sector lng-es">Innovación Corporativa</div>
+              <div class="entry-loc">Santiago, Chile</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">INNSPIRAL</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                <span class="lng-en">30% faster time-to-market</span>
+                <span class="lng-es">30% menos time-to-market</span>
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Technology Analyst</span>
+                  <span class="role-period">Jun 2018 — May 2019</span>
+                </div>
+                <ul class="role-bullets lng-en">
+                  <li>
+                    Developed and deployed end-to-end innovation platforms for corporate clients, owning the full
+                    lifecycle from database modeling to cloud deployment.
+                  </li>
+                  <li>Reduced time-to-market for internal pilot projects by 30%.</li>
+                </ul>
+                <ul class="role-bullets lng-es">
+                  <li>
+                    Desarrollé y desplegué plataformas de innovación end-to-end para clientes corporativos, gestionando
+                    el ciclo completo desde modelado de BD hasta deploy en cloud.
+                  </li>
+                  <li>Reduje en 30% el time-to-market de los pilotos internos.</li>
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">Node.js</span>
+                <span class="chip">React</span>
+                <span class="chip">SQL</span>
+                <span class="chip">Cloud</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Earlier roles -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">2015 — 2018</div>
+              <div class="entry-sector lng-en">Healthcare · Finance · Teaching</div>
+              <div class="entry-sector lng-es">Salud · Finanzas · Docencia</div>
+              <div class="entry-loc">Santiago, Chile</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company lng-en">Earlier roles</h3>
+              <h3 class="entry-company lng-es">Roles anteriores</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                <span class="lng-en">Where the foundations were laid</span>
+                <span class="lng-es">Donde se sentaron las bases</span>
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Software Engineer — Ormasoft</span>
+                  <span class="role-period">Feb 2018 — May 2018</span>
+                </div>
+                <ul class="role-bullets lng-en">
+                  <li>
+                    Architected a unified medical-records system for the Chilean healthcare sector using Aurelia, D3.js
+                    for clinical visualization and HTML5 Canvas for high-performance rendering.
+                  </li>
+                </ul>
+                <ul class="role-bullets lng-es">
+                  <li>
+                    Arquitecté un sistema unificado de fichas médicas para el sector salud chileno con Aurelia, D3.js
+                    para visualización clínica y HTML5 Canvas para renderizado de alto rendimiento.
+                  </li>
+                </ul>
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Software Engineer Intern — Análisis Ltda.</span>
+                  <span class="role-period">Sep 2017 — Dec 2017</span>
+                </div>
+                <ul class="role-bullets lng-en">
+                  <li>
+                    Built specialized accounting software for CasaIdeas with Angular and Node.js/Express, implementing
+                    complex PL/SQL queries for accurate financial reporting.
+                  </li>
+                </ul>
+                <ul class="role-bullets lng-es">
+                  <li>
+                    Construí software contable especializado para CasaIdeas con Angular y Node.js/Express, implementando
+                    consultas PL/SQL complejas para reportería financiera precisa.
+                  </li>
+                </ul>
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title lng-en">Teaching Assistant — Duoc UC</span>
+                  <span class="role-title lng-es">Ayudante — Duoc UC</span>
+                  <span class="role-period">Mar 2015 — Dec 2017</span>
+                </div>
+                <ul class="role-bullets lng-en">
+                  <li>
+                    Mentored undergraduates in Programming Fundamentals and Database Design through workshops and
+                    hands-on guidance.
+                  </li>
+                </ul>
+                <ul class="role-bullets lng-es">
+                  <li>
+                    Mentoreé a estudiantes en Fundamentos de Programación y Diseño de Bases de Datos mediante talleres y
+                    guía práctica.
+                  </li>
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">Angular</span>
+                <span class="chip">Aurelia</span>
+                <span class="chip">D3.js</span>
+                <span class="chip">Node.js</span>
+                <span class="chip">SQL</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— Skills ——— -->
+    <section id="skills" class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-num">02</span>
+          <h2 class="section-title">Skills</h2>
+          <p class="section-sub lng-en">The tools and disciplines I reach for.</p>
+          <p class="section-sub lng-es">Las herramientas y disciplinas a las que recurro.</p>
+        </div>
+        <div class="skills-grid reveal">
+          <div class="skill-col">
+            <div class="skill-label">Frontend</div>
+            <div class="skill-items">
+              <span>React</span>
+              <span>Next.js</span>
+              <span>TypeScript</span>
+              <span>JavaScript (ES6+)</span>
+              <span>Async JS</span>
+              <span>Web Workers</span>
+              <span>Webpack</span>
+            </div>
+          </div>
+          <div class="skill-col">
+            <div class="skill-label">
+              <span class="lng-en">Architecture</span>
+              <span class="lng-es">Arquitectura</span>
+            </div>
+            <div class="skill-items">
+              <span>Design Systems</span>
+              <span>Micro-frontends</span>
+              <span>System Design</span>
+              <span>SOLID</span>
+              <span>TDD</span>
+              <span>CI/CD</span>
+            </div>
+          </div>
+          <div class="skill-col">
+            <div class="skill-label">
+              <span class="lng-en">Cloud &amp; Infrastructure</span>
+              <span class="lng-es">Cloud e Infraestructura</span>
+            </div>
+            <div class="skill-items">
+              <span>Google Cloud (GCP)</span>
+              <span>GitLab CI</span>
+              <span>Docker</span>
+              <span>Redis</span>
+              <span>MySQL</span>
+              <span>Node.js</span>
+            </div>
+          </div>
+          <div class="skill-col">
+            <div class="skill-label">
+              <span class="lng-en">Visualization &amp; Tools</span>
+              <span class="lng-es">Visualización y Tools</span>
+            </div>
+            <div class="skill-items">
+              <span>D3.js</span>
+              <span>HTML Canvas</span>
+              <span>Google Maps API</span>
+              <span>Lottie</span>
+              <span>Python</span>
+              <span>React Native</span>
+            </div>
+          </div>
+          <div class="skill-col">
+            <div class="skill-label">Testing</div>
+            <div class="skill-items">
+              <span>Jest</span>
+              <span>Cypress</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— Education & beyond ——— -->
+    <section id="education" class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-num">03</span>
+          <h2 class="section-title">
+            <span class="lng-en">Education &amp; beyond</span>
+            <span class="lng-es">Formación y más</span>
+          </h2>
+          <p class="section-sub lng-en">Foundations and the details recruiters ask about.</p>
+          <p class="section-sub lng-es">Las bases y los detalles que preguntan los reclutadores.</p>
+        </div>
+        <div class="edu-layout reveal">
+          <div>
+            <div class="sub-h">
+              <span class="lng-en">Education</span>
+              <span class="lng-es">Formación</span>
+            </div>
+            <div class="edu-card">
+              <div class="edu-school">Duoc UC</div>
+              <div class="edu-degree">
+                <span class="lng-en">IT Engineering</span>
+                <span class="lng-es">Ingeniería en Informática</span>
+              </div>
+              <div class="edu-line">
+                <span>Santiago, Chile</span>
+                <span>·</span>
+                <span>2014 — 2017</span>
+              </div>
+              <div class="edu-notes lng-en">
+                Graduated with Distinction. Winner of the CITT Annual Competition 2017.
+              </div>
+              <div class="edu-notes lng-es">Graduado con Distinción. Ganador del Concurso Anual CITT 2017.</div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-h">
+              <span class="lng-en">Details</span>
+              <span class="lng-es">Detalles</span>
+            </div>
+            <div class="facts-list">
+              <div class="row">
+                <div class="k">
+                  <span class="lng-en">Industries</span>
+                  <span class="lng-es">Industrias</span>
+                </div>
+                <div class="v">
+                  <span class="lng-en">Retail, payments, healthcare, corporate innovation and aviation.</span>
+                  <span class="lng-es">Retail, pagos, salud, innovación corporativa y aviación.</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="k">
+                  <span class="lng-en">Languages</span>
+                  <span class="lng-es">Idiomas</span>
+                </div>
+                <div class="v">
+                  <span class="lng-en">English (B2, professional working). Spanish (native).</span>
+                  <span class="lng-es">Inglés (B2, profesional). Español (nativo).</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="k">
+                  <span class="lng-en">Work authorization</span>
+                  <span class="lng-es">Autorización de trabajo</span>
+                </div>
+                <div class="v">
+                  <span class="lng-en"
+                    >Chilean citizen. Exempt from Spain's Labour Market Test by bilateral treaty.</span
+                  >
+                  <span class="lng-es"
+                    >Ciudadano chileno. Exento del Test de Mercado Laboral de España por tratado bilateral.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— Writing ——— -->
+    <section id="writing" class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-num">04</span>
+          <h2 class="section-title">
+            <span class="lng-en">Writing</span>
+            <span class="lng-es">Blog</span>
+          </h2>
+          <p class="section-sub lng-en">Notes on web performance, accessibility and building for scale.</p>
+          <p class="section-sub lng-es">Apuntes sobre performance web, accesibilidad y construir a escala.</p>
+        </div>
+        <div class="posts reveal">
+          <a class="post lng-en" href="/blog/en/speculative-rendering-web-performance-guide">
+            <div class="post-meta">
+              <span class="post-cat">Performance</span>
+              <span class="dot"></span>
+              <span>Mar 12, 2025</span>
+              <span class="dot"></span>
+              <span>8 min read</span>
+            </div>
+            <h3 class="post-title">Speculative Rendering — Enhancing Web Performance</h3>
+            <p class="post-excerpt">
+              What speculative rendering is, how it improves performance, and best practices for implementing it on your
+              site.
+            </p>
+            <div class="post-foot">
+              <div class="post-tags"><span>#performance</span><span>#seo</span></div>
+              <span class="post-arrow"
+                ><svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg
+                ></span
+              >
+            </div>
+          </a>
+          <a class="post lng-es" href="/blog/es/rendimiento-web-rendimiento-especulativo-guia">
+            <div class="post-meta">
+              <span class="post-cat">Performance</span>
+              <span class="dot"></span>
+              <span>12 Mar 2025</span>
+              <span class="dot"></span>
+              <span>8 min de lectura</span>
+            </div>
+            <h3 class="post-title">Speculative Rendering — Mejorando el performance web</h3>
+            <p class="post-excerpt">
+              Qué es el speculative rendering, cómo mejora el performance y buenas prácticas para implementarlo en tu
+              sitio.
+            </p>
+            <div class="post-foot">
+              <div class="post-tags"><span>#performance</span><span>#seo</span></div>
+              <span class="post-arrow"
+                ><svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg
+                ></span
+              >
+            </div>
+          </a>
+          <a class="post lng-en" href="/blog/en/core-web-vitals-complete-guide-for-beginners">
+            <div class="post-meta">
+              <span class="post-cat">Tutorials</span>
+              <span class="dot"></span>
+              <span>Mar 6, 2025</span>
+              <span class="dot"></span>
+              <span>12 min read</span>
+            </div>
+            <h3 class="post-title">Core Web Vitals — A Complete Guide for Beginners</h3>
+            <p class="post-excerpt">
+              Everything about Core Web Vitals — what they are, why they matter, and how to improve performance,
+              accessibility and SEO.
+            </p>
+            <div class="post-foot">
+              <div class="post-tags"><span>#performance</span><span>#a11y</span><span>#seo</span></div>
+              <span class="post-arrow"
+                ><svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg
+                ></span
+              >
+            </div>
+          </a>
+          <a class="post lng-es" href="/blog/es/core-web-vitals-guia-completa-para-principiantes">
+            <div class="post-meta">
+              <span class="post-cat">Tutoriales</span>
+              <span class="dot"></span>
+              <span>6 Mar 2025</span>
+              <span class="dot"></span>
+              <span>12 min de lectura</span>
+            </div>
+            <h3 class="post-title">Core Web Vitals — Guía completa para principiantes</h3>
+            <p class="post-excerpt">
+              Todo sobre Core Web Vitals — qué son, por qué importan y cómo mejorar performance, accesibilidad y SEO.
+            </p>
+            <div class="post-foot">
+              <div class="post-tags"><span>#performance</span><span>#a11y</span><span>#seo</span></div>
+              <span class="post-arrow"
+                ><svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg
+                ></span
+              >
+            </div>
+          </a>
+        </div>
+        <div class="writing-more reveal">
+          <a class="more-link" href="/blog">
+            <span class="lng-en">Read all posts</span>
+            <span class="lng-es">Ver todos los posts</span>
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg
+            >
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— Contact ——— -->
+    <section id="contact" class="section">
+      <div class="wrap">
+        <div class="contact-card reveal">
+          <h2 class="contact-title">
+            <span class="lng-en">Let&#8217;s talk.</span>
+            <span class="lng-es">Hablemos.</span>
+          </h2>
+          <p class="contact-sub lng-en">
+            Open to Solutions Architect and Staff Engineering roles. The fastest way to reach me is email.
+          </p>
+          <p class="contact-sub lng-es">
+            Abierto a roles de Solutions Architect y Staff Engineering. La forma más rápida de contactarme es por email.
+          </p>
+          <div class="contact-links">
+            <a class="btn btn-primary" href="mailto:rbustamantejelvez@gmail.com">
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"><path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path></svg
+              >
+              rbustamantejelvez@gmail.com
+            </a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/rod-bustamante/" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
+                ><path
+                  d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zm1.78 13.02H3.56V9h3.56v11.45z"
+                ></path></svg
+              >
+              LinkedIn
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/rodrigobustamante" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
+                ><path
+                  d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0012 2z"
+                ></path></svg
+              >
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <span class="lng-en">Designed &amp; built by Rodrigo Bustamante · Madrid · 2026</span>
+          <span class="lng-es">Diseñado y construido por Rodrigo Bustamante · Madrid · 2026</span>
+          <div class="footer-socials">
+            <a href="https://www.linkedin.com/in/rod-bustamante/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
+                ><path
+                  d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zm1.78 13.02H3.56V9h3.56v11.45z"
+                ></path></svg
+              >
+            </a>
+            <a href="https://github.com/rodrigobustamante" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
+                ><path
+                  d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0012 2z"
+                ></path></svg
+              >
+            </a>
+            <a href="mailto:rbustamantejelvez@gmail.com" aria-label="Email">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"><path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path></svg
+              >
+            </a>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+</PortfolioLayout>
+
+<script>
+  const PALETTES = {
+    Terracotta: {
+      l: 'oklch(0.585 0.125 42)',
+      d: 'oklch(0.72 0.12 48)',
+      li: 'oklch(0.46 0.12 42)',
+      di: 'oklch(0.78 0.12 50)',
+    },
+    Ochre: { l: 'oklch(0.62 0.12 75)', d: 'oklch(0.78 0.11 82)', li: 'oklch(0.5 0.11 72)', di: 'oklch(0.82 0.11 84)' },
+    Olive: {
+      l: 'oklch(0.55 0.09 130)',
+      d: 'oklch(0.72 0.1 135)',
+      li: 'oklch(0.45 0.09 128)',
+      di: 'oklch(0.78 0.1 138)',
+    },
+    Indigo: {
+      l: 'oklch(0.5 0.11 270)',
+      d: 'oklch(0.7 0.12 275)',
+      li: 'oklch(0.45 0.12 270)',
+      di: 'oklch(0.76 0.12 278)',
+    },
+    Plum: {
+      l: 'oklch(0.52 0.13 350)',
+      d: 'oklch(0.72 0.12 352)',
+      li: 'oklch(0.45 0.13 350)',
+      di: 'oklch(0.78 0.12 354)',
+    },
+  };
+
+  function applyPalette(name, theme) {
+    const p = PALETTES[name] ?? PALETTES.Terracotta;
+    const root = document.documentElement;
+    const isDark = theme === 'dark';
+    root.style.setProperty('--accent', isDark ? p.d : p.l);
+    root.style.setProperty('--accent-ink', isDark ? p.di : p.li);
+    root.style.setProperty(
+      '--accent-soft',
+      `color-mix(in oklab, ${isDark ? p.d : p.l} ${isDark ? 16 : 12}%, transparent)`
+    );
+  }
+
+  // ——— Theme toggle ———
+  const themeToggle = document.getElementById('theme-toggle');
+  const iconSun = document.getElementById('icon-sun');
+  const iconMoon = document.getElementById('icon-moon');
+
+  function syncThemeIcon(theme) {
+    if (!iconSun || !iconMoon) return;
+    iconSun.style.display = theme === 'dark' ? 'block' : 'none';
+    iconMoon.style.display = theme === 'dark' ? 'none' : 'block';
+  }
+
+  syncThemeIcon(document.documentElement.dataset.theme || 'light');
+
+  themeToggle?.addEventListener('click', () => {
+    const current = document.documentElement.dataset.theme || 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('theme', next);
+    applyPalette(localStorage.getItem('palette') || 'Terracotta', next);
+    syncThemeIcon(next);
+  });
+
+  // ——— Lang toggle ———
+  const langToggle = document.getElementById('lang-toggle');
+
+  langToggle?.addEventListener('click', () => {
+    const current = document.documentElement.dataset.lang || 'en';
+    const next = current === 'en' ? 'es' : 'en';
+    document.documentElement.dataset.lang = next;
+    document.documentElement.lang = next;
+    localStorage.setItem('lang', next);
+  });
+
+  // ——— Sticky header ———
+  const header = document.getElementById('site-header');
+  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 16);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ——— Scroll reveal ———
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            obs.unobserve(e.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+    );
+    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+  }
+</script>

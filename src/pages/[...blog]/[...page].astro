@@ -1,7 +1,7 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
-import Layout from '~/layouts/PageLayout.astro';
+import BlogLayout from '~/layouts/BlogLayout.astro';
 import BlogList from '~/components/blog/List.astro';
 import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
@@ -31,14 +31,19 @@ const metadata = {
 };
 ---
 
-<Layout metadata={metadata}>
-  <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
-    <Headline
-      subtitle="Join me on my web dev journey! Sharing practical guides, personal tips, and tools to build modern websites. Let’s learn and grow together! 🚀"
-    >
-      The Blog
-    </Headline>
+<BlogLayout title={metadata.title as string}>
+  <div class="blog-wrap">
+    <div class="blog-headline reveal">
+      <h1>
+        <span class="lng-en">The Blog</span>
+        <span class="lng-es">El Blog</span>
+      </h1>
+      <p>
+        <span class="lng-en">Practical guides, tips, and tools for building modern websites.</span>
+        <span class="lng-es">Guías prácticas, tips y herramientas para sitios web modernos.</span>
+      </p>
+    </div>
     <BlogList posts={page.data} />
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
-  </section>
-</Layout>
+  </div>
+</BlogLayout>

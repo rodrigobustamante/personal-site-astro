@@ -60,6 +60,8 @@ const postCollection = defineCollection({
     author: z.string().optional(),
 
     metadata: metadataDefinition(),
+
+    translation: z.string().optional(),
   }),
 });
 

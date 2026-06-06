@@ -1,0 +1,35 @@
+---
+import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
+
+import BlogLayout from '~/layouts/BlogLayout.astro';
+import BlogList from '~/components/blog/List.astro';
+import Pagination from '~/components/blog/Pagination.astro';
+
+import { getStaticPathsBlogListLang } from '~/utils/blog';
+
+export const prerender = true;
+
+export const getStaticPaths = (async ({ paginate }) => {
+  return await getStaticPathsBlogListLang({ paginate, lang: 'es' });
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page } = Astro.props as Props;
+const currentPage = page.currentPage ?? 1;
+const lang = 'es';
+---
+
+<BlogLayout
+  title={`Blog${currentPage > 1 ? ` — Página ${currentPage}` : ''}`}
+  lang={lang}
+>
+  <div class="blog-wrap">
+    <div class="blog-headline reveal">
+      <h1>El Blog</h1>
+      <p>Guías prácticas, tips y herramientas para sitios web modernos.</p>
+    </div>
+    <BlogList posts={page.data} />
+    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} lang={lang} />
+  </div>
+</BlogLayout>
