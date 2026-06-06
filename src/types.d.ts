@@ -42,6 +42,9 @@ export interface Post {
 
   /**  */
   readingTime?: number;
+
+  /** Permalink of the translated version of this post */
+  translation?: string;
 }
 
 export interface MetaData {

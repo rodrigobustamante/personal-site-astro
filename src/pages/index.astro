@@ -1,34 +1,674 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
+import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
+import SiteHeader from '~/components/portfolio/SiteHeader.astro';
+import { useTranslations } from '~/i18n/ui';
 
-import Hero from '~/components/widgets/Hero.astro';
-import Experience from '~/components/widgets/Experience.astro';
-
-const metadata = {
-  title: 'Rod Bustamante — Software Architect',
-  ignoreTitleTemplate: true,
-};
+const langCookie = Astro.cookies.get('lang');
+const lang = (langCookie?.value === 'es' ? 'es' : 'en') as 'en' | 'es';
+const { t, tl } = useTranslations(lang);
 ---
 
-<Layout metadata={metadata}>
-  <Hero image={{ src: '~/assets/images/hero.png', alt: 'Psychedelic Astronaut' }}>
-    <Fragment slot="title">
-      <p class="text-accent dark:text-white highlight">Rodrigo Bustamante</p>
-    </Fragment>
+<PortfolioLayout
+  title="Rodrigo Bustamante — Solutions Architect"
+  description="Rodrigo Bustamante — Solutions Architect & Senior Software Engineer. Nine years building scalable frontend systems and design systems for global brands."
+  lang={lang}
+>
+  <SiteHeader lang={lang} variant="portfolio" homeHref="/" />
 
-    <Fragment slot="subtitle">
-      <div class="flex flex-col">
-        <span>
-          <span class="font-semibold">Software Architect</span> from Chile 🇨🇱, currently based in Madrid, Spain 🇪🇸.</span
-        >
-        <span>
-          I develop <span class="font-semibold">web and mobile applications</span>, ensuring <span class="font-semibold"
-            >performance</span
-          > and <span class="font-semibold">accessibility</span>.</span
-        >
-        <span>Lego builder 🧱, cat lover 🐈 and enthusiastic traveler 🛩️.</span>
+  <main>
+    <!-- ——— Hero ——— -->
+    <section id="top" class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-left">
+          <div class="hero-role">Solutions Architect &amp; Senior Software Engineer</div>
+          <h1 class="hero-name">Rodrigo<br />Bustamante</h1>
+          <p class="hero-pitch" set:html={t('hero.pitch')} />
+          <div class="hero-stats">
+            <span class="hero-stat"><b>9</b> {t('hero.stat.years')}</span>
+            <span class="hero-stat"><b>50+</b> {t('hero.stat.teams')}</span>
+            <span class="hero-stat"><b>{t('hero.stat.millions')}</b> {t('hero.stat.millions.sub')}</span>
+            <span class="hero-stat"><b>10+</b> {t('hero.stat.countries')}</span>
+          </div>
+          <div class="hero-meta">
+            {t('hero.location')}
+            <span class="dot"></span>
+            {t('hero.remote')}
+          </div>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#contact">
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"><path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path></svg
+              >
+              {t('hero.cta.contact')}
+            </a>
+            <a class="btn btn-ghost" href="/uploads/cv-rodrigo-bustamante-general.pdf" target="_blank" rel="noopener">
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4.5 20.5h15"></path></svg
+              >
+              {t('hero.cta.cv')}
+            </a>
+          </div>
+        </div>
+        <div class="hero-right">
+          <img
+            src="/images/portrait-crop.png"
+            alt="Rodrigo Bustamante"
+            class="hero-portrait"
+            width="608"
+            height="760"
+          />
+        </div>
       </div>
-    </Fragment>
-  </Hero>
-  <Experience id="experience" />
-</Layout>
+    </section>
+
+    <!-- ——— Experience ——— -->
+    <section id="work" class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-num">01</span>
+          <h2 class="section-title">{t('exp.title')}</h2>
+          <p class="section-sub">{t('exp.sub')}</p>
+        </div>
+
+        <div class="timeline">
+          <!-- Hangar Design System — LATAM Airlines -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">Sep 2024 — Mar 2026</div>
+              <div class="entry-sector">{t('exp.hangar.sector')}</div>
+              <div class="entry-loc">{t('exp.hangar.loc')}</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">Hangar Design System — LATAM Airlines</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                {t('exp.hangar.highlight')}
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Software Architect</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.hangar.bullets').map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">React</span>
+                <span class="chip">React Native</span>
+                <span class="chip">Next.js</span>
+                <span class="chip">TypeScript</span>
+                <span class="chip">GCP</span>
+                <span class="chip">Terraform Cloud</span>
+                <span class="chip">GitLab CI</span>
+                <span class="chip">Docker</span>
+                <span class="chip">Redis</span>
+                <span class="chip">Storybook</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Digital Marketing Engage — LATAM Airlines -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">Jul 2023 — Sep 2024</div>
+              <div class="entry-sector">{t('exp.dme-latam.sector')}</div>
+              <div class="entry-loc">{t('exp.dme-latam.loc')}</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">Digital Marketing Engage — LATAM Airlines</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                {t('exp.dme-latam.highlight')}
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Senior Software Engineer</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.dme-latam.bullets').map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">React</span>
+                <span class="chip">Next.js</span>
+                <span class="chip">TypeScript</span>
+                <span class="chip">Node.js</span>
+                <span class="chip">Express</span>
+                <span class="chip">Redis</span>
+                <span class="chip">Jenkins</span>
+                <span class="chip">Micro-frontends</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Digital Marketing Engage — Globant / LATAM Airlines -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">Aug 2020 — Jul 2023</div>
+              <div class="entry-sector">{t('exp.dme-globant.sector')}</div>
+              <div class="entry-loc">{t('exp.dme-globant.loc')}</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">Digital Marketing Engage — LATAM Airlines</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                {t('exp.dme-globant.highlight')}
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Web UI Developer — Senior / SSr Adv</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.dme-globant.bullets').map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">React</span>
+                <span class="chip">Next.js</span>
+                <span class="chip">TypeScript</span>
+                <span class="chip">Node.js</span>
+                <span class="chip">Express</span>
+                <span class="chip">Redis</span>
+                <span class="chip">Jenkins</span>
+                <span class="chip">Micro-frontends</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Simple — Ripley.com (SME) -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">Apr 2020 — Aug 2020</div>
+              <div class="entry-sector">{t('exp.simple-sme.sector')}</div>
+              <div class="entry-loc">Santiago, Chile</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">Simple — Ripley.com</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                {t('exp.simple-sme.highlight')}
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Subject Matter Expert</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.simple-sme.bullets').map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">React</span>
+                <span class="chip">Node.js</span>
+                <span class="chip">Express</span>
+                <span class="chip">Redis</span>
+                <span class="chip">imgix</span>
+                <span class="chip">Heroku</span>
+                <span class="chip">GitLab CI</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- eCommerce Gateway — Coca-Cola / Embonor -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">Feb 2020 — Apr 2020</div>
+              <div class="entry-sector">{t('exp.gateway.sector')}</div>
+              <div class="entry-loc">Santiago, Chile</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">eCommerce Gateway — Coca-Cola / Embonor</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                {t('exp.gateway.highlight')}
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Backend Developer</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.gateway.bullets').map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">Node.js</span>
+                <span class="chip">Express</span>
+                <span class="chip">MySQL</span>
+                <span class="chip">AWS EKS</span>
+                <span class="chip">Kubernetes</span>
+                <span class="chip">GitLab CI</span>
+                <span class="chip">Kiphu</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Simple — Ripley.com (FullStack) -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">May 2019 — Feb 2020</div>
+              <div class="entry-sector">{t('exp.simple-fs.sector')}</div>
+              <div class="entry-loc">Santiago, Chile</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">Simple — Ripley.com</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                {t('exp.simple-fs.highlight')}
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">FullStack Developer</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.simple-fs.bullets').map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">React</span>
+                <span class="chip">Node.js</span>
+                <span class="chip">Express</span>
+                <span class="chip">Redis</span>
+                <span class="chip">imgix</span>
+                <span class="chip">Heroku</span>
+                <span class="chip">GitLab CI</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- INNSPIRAL -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">2018 — 2019</div>
+              <div class="entry-sector">{t('exp.innspiral.sector')}</div>
+              <div class="entry-loc">Santiago, Chile</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">INNSPIRAL</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                {t('exp.innspiral.highlight')}
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Technology Analyst</span>
+                  <span class="role-period">Jun 2018 — May 2019</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.innspiral.bullets').map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">Node.js</span>
+                <span class="chip">React</span>
+                <span class="chip">SQL</span>
+                <span class="chip">Cloud</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Earlier roles -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">2015 — 2018</div>
+              <div class="entry-sector">{t('exp.earlier.sector')}</div>
+              <div class="entry-loc">Santiago, Chile</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">{t('exp.earlier.title')}</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                {t('exp.earlier.highlight')}
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Software Engineer — Ormasoft</span>
+                  <span class="role-period">Feb 2018 — May 2018</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.earlier.ormasoft.bullets').map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Software Engineer Intern — Análisis Ltda.</span>
+                  <span class="role-period">Sep 2017 — Dec 2017</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.earlier.analisis.bullets').map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">{t('exp.earlier.ta-title')}</span>
+                  <span class="role-period">Mar 2015 — Dec 2017</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.earlier.duoc.bullets').map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">Angular</span>
+                <span class="chip">Aurelia</span>
+                <span class="chip">D3.js</span>
+                <span class="chip">Node.js</span>
+                <span class="chip">SQL</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— Skills ——— -->
+    <section id="skills" class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-num">02</span>
+          <h2 class="section-title">Skills</h2>
+          <p class="section-sub">{t('skills.sub')}</p>
+        </div>
+        <div class="skills-grid reveal">
+          <div class="skill-col">
+            <div class="skill-label">Frontend</div>
+            <div class="skill-items">
+              <span>React</span>
+              <span>Next.js</span>
+              <span>TypeScript</span>
+              <span>JavaScript (ES6+)</span>
+              <span>Async JS</span>
+              <span>Web Workers</span>
+              <span>Webpack</span>
+            </div>
+          </div>
+          <div class="skill-col">
+            <div class="skill-label">{t('skills.architecture')}</div>
+            <div class="skill-items">
+              <span>Design Systems</span>
+              <span>Micro-frontends</span>
+              <span>System Design</span>
+              <span>SOLID</span>
+              <span>TDD</span>
+              <span>CI/CD</span>
+            </div>
+          </div>
+          <div class="skill-col">
+            <div class="skill-label">{t('skills.cloud')}</div>
+            <div class="skill-items">
+              <span>Google Cloud (GCP)</span>
+              <span>GitLab CI</span>
+              <span>Docker</span>
+              <span>Redis</span>
+              <span>MySQL</span>
+              <span>Node.js</span>
+            </div>
+          </div>
+          <div class="skill-col">
+            <div class="skill-label">{t('skills.viz')}</div>
+            <div class="skill-items">
+              <span>D3.js</span>
+              <span>HTML Canvas</span>
+              <span>Google Maps API</span>
+              <span>Lottie</span>
+              <span>Python</span>
+              <span>React Native</span>
+            </div>
+          </div>
+          <div class="skill-col">
+            <div class="skill-label">Testing</div>
+            <div class="skill-items">
+              <span>Jest</span>
+              <span>Cypress</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— Education & beyond ——— -->
+    <section id="education" class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-num">03</span>
+          <h2 class="section-title">{t('edu.title')}</h2>
+          <p class="section-sub">{t('edu.sub')}</p>
+        </div>
+        <div class="edu-layout reveal">
+          <div>
+            <div class="sub-h">{t('edu.section')}</div>
+            <div class="edu-card">
+              <div class="edu-school">Duoc UC</div>
+              <div class="edu-degree">{t('edu.degree')}</div>
+              <div class="edu-line">
+                <span>Santiago, Chile</span>
+                <span>·</span>
+                <span>2014 — 2017</span>
+              </div>
+              <div class="edu-notes">{t('edu.notes')}</div>
+            </div>
+          </div>
+          <div>
+            <div class="sub-h">{t('edu.details')}</div>
+            <div class="facts-list">
+              <div class="row">
+                <div class="k">{t('edu.industries.k')}</div>
+                <div class="v">{t('edu.industries.v')}</div>
+              </div>
+              <div class="row">
+                <div class="k">{t('edu.languages.k')}</div>
+                <div class="v">{t('edu.languages.v')}</div>
+              </div>
+              <div class="row">
+                <div class="k">{t('edu.work-auth.k')}</div>
+                <div class="v">{t('edu.work-auth.v')}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— Writing ——— -->
+    <section id="writing" class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-num">04</span>
+          <h2 class="section-title">{t('writing.title')}</h2>
+          <p class="section-sub">{t('writing.sub')}</p>
+        </div>
+        <div class="posts reveal">
+          {lang === 'es' ? (
+            <>
+              <a class="post" href="/blog/es/rendimiento-web-rendimiento-especulativo-guia">
+                <div class="post-meta">
+                  <span class="post-cat">Performance</span>
+                  <span class="dot"></span>
+                  <span>12 Mar 2025</span>
+                  <span class="dot"></span>
+                  <span>8 min de lectura</span>
+                </div>
+                <h3 class="post-title">Speculative Rendering — Mejorando el performance web</h3>
+                <p class="post-excerpt">
+                  Qué es el speculative rendering, cómo mejora el performance y buenas prácticas para implementarlo en tu sitio.
+                </p>
+                <div class="post-foot">
+                  <div class="post-tags"><span>#performance</span><span>#seo</span></div>
+                  <span class="post-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg></span>
+                </div>
+              </a>
+              <a class="post" href="/blog/es/core-web-vitals-guia-completa-para-principiantes">
+                <div class="post-meta">
+                  <span class="post-cat">Tutoriales</span>
+                  <span class="dot"></span>
+                  <span>6 Mar 2025</span>
+                  <span class="dot"></span>
+                  <span>12 min de lectura</span>
+                </div>
+                <h3 class="post-title">Core Web Vitals — Guía completa para principiantes</h3>
+                <p class="post-excerpt">
+                  Todo sobre Core Web Vitals — qué son, por qué importan y cómo mejorar performance, accesibilidad y SEO.
+                </p>
+                <div class="post-foot">
+                  <div class="post-tags"><span>#performance</span><span>#a11y</span><span>#seo</span></div>
+                  <span class="post-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg></span>
+                </div>
+              </a>
+            </>
+          ) : (
+            <>
+              <a class="post" href="/blog/en/speculative-rendering-web-performance-guide">
+                <div class="post-meta">
+                  <span class="post-cat">Performance</span>
+                  <span class="dot"></span>
+                  <span>Mar 12, 2025</span>
+                  <span class="dot"></span>
+                  <span>8 min read</span>
+                </div>
+                <h3 class="post-title">Speculative Rendering — Enhancing Web Performance</h3>
+                <p class="post-excerpt">
+                  What speculative rendering is, how it improves performance, and best practices for implementing it on your site.
+                </p>
+                <div class="post-foot">
+                  <div class="post-tags"><span>#performance</span><span>#seo</span></div>
+                  <span class="post-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg></span>
+                </div>
+              </a>
+              <a class="post" href="/blog/en/core-web-vitals-complete-guide-for-beginners">
+                <div class="post-meta">
+                  <span class="post-cat">Tutorials</span>
+                  <span class="dot"></span>
+                  <span>Mar 6, 2025</span>
+                  <span class="dot"></span>
+                  <span>12 min read</span>
+                </div>
+                <h3 class="post-title">Core Web Vitals — A Complete Guide for Beginners</h3>
+                <p class="post-excerpt">
+                  Everything about Core Web Vitals — what they are, why they matter, and how to improve performance, accessibility and SEO.
+                </p>
+                <div class="post-foot">
+                  <div class="post-tags"><span>#performance</span><span>#a11y</span><span>#seo</span></div>
+                  <span class="post-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg></span>
+                </div>
+              </a>
+            </>
+          )}
+        </div>
+        <div class="writing-more reveal">
+          <a class="more-link" href={`/blog/${lang}`}>
+            {t('writing.more')}
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg
+            >
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ——— Contact ——— -->
+    <section id="contact" class="section">
+      <div class="wrap">
+        <div class="contact-card reveal">
+          <h2 class="contact-title">{t('contact.title')}</h2>
+          <p class="contact-sub">{t('contact.sub')}</p>
+          <div class="contact-links">
+            <a class="btn btn-primary" href="mailto:rbustamantejelvez@gmail.com">
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"><path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path></svg
+              >
+              rbustamantejelvez@gmail.com
+            </a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/rod-bustamante/" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
+                ><path
+                  d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zm1.78 13.02H3.56V9h3.56v11.45z"
+                ></path></svg
+              >
+              LinkedIn
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/rodrigobustamante" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
+                ><path
+                  d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0012 2z"
+                ></path></svg
+              >
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <span>{t('footer.credit')}</span>
+          <div class="footer-socials">
+            <a href="https://www.linkedin.com/in/rod-bustamante/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
+                ><path
+                  d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zm1.78 13.02H3.56V9h3.56v11.45z"
+                ></path></svg
+              >
+            </a>
+            <a href="https://github.com/rodrigobustamante" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
+                ><path
+                  d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0012 2z"
+                ></path></svg
+              >
+            </a>
+            <a href="mailto:rbustamantejelvez@gmail.com" aria-label="Email">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"><path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path></svg
+              >
+            </a>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+</PortfolioLayout>
+
+<script>
+  document.querySelectorAll('.reveal').forEach((el) => {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) el.classList.add('in');
+    }, { threshold: 0 }).observe(el);
+  });
+</script>

@@ -1,0 +1,165 @@
+---
+import { useTranslations, type Lang } from '~/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  variant?: 'portfolio' | 'blog';
+  homeHref?: string;
+  translationUrl?: string;
+}
+
+const { lang, variant = 'portfolio', homeHref = '/', translationUrl } = Astro.props;
+const { t } = useTranslations(lang);
+
+const blogHref = `/blog/${lang}`;
+
+const nav =
+  variant === 'portfolio'
+    ? [
+        { href: '#work', label: t('nav.experience') },
+        { href: '#skills', label: t('nav.skills') },
+        { href: '#writing', label: t('nav.writing') },
+        { href: '#contact', label: t('nav.contact') },
+      ]
+    : [
+        { href: '/', label: t('nav.home') },
+        { href: blogHref, label: t('nav.blog') },
+        { href: '/#contact', label: t('nav.contact') },
+      ];
+---
+
+<header
+  class="header"
+  id="site-header"
+  data-variant={variant}
+  {...(translationUrl ? { 'data-translation-url': translationUrl } : {})}
+>
+  <div class="header-inner">
+    <a class="wordmark" href={homeHref}>
+      <span class="wordmark-name">Rodrigo Bustamante</span>
+      <span class="wordmark-dot" aria-hidden="true">●</span>
+    </a>
+    <nav class="header-nav" aria-label="Primary">
+      {nav.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+    <div class="header-tools">
+      <button class="tool-btn lang-btn" id="lang-toggle" type="button" aria-label="Toggle language">
+        <span class="on">{lang === 'es' ? 'ES' : 'EN'}</span>
+        <span class="slash">/</span>
+        <span class="off">{lang === 'es' ? 'EN' : 'ES'}</span>
+      </button>
+      <button class="tool-btn" id="theme-toggle" type="button" aria-label="Toggle theme">
+        <svg
+          id="icon-sun"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          style="display:none"
+          aria-hidden="true"
+        >
+          <path
+            d="M12 4.5v-2M12 21.5v-2M4.5 12h-2M21.5 12h-2M6.3 6.3L4.9 4.9M19.1 19.1l-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"
+          ></path>
+        </svg>
+        <svg
+          id="icon-moon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M21 12.8A8.5 8.5 0 1111.2 3a6.8 6.8 0 009.8 9.8z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const PALETTES: Record<string, { l: string; d: string; li: string; di: string }> = {
+    Terracotta: { l: 'oklch(0.585 0.125 42)', d: 'oklch(0.72 0.12 48)', li: 'oklch(0.46 0.12 42)', di: 'oklch(0.78 0.12 50)' },
+    Ochre: { l: 'oklch(0.62 0.12 75)', d: 'oklch(0.78 0.11 82)', li: 'oklch(0.5 0.11 72)', di: 'oklch(0.82 0.11 84)' },
+    Olive: { l: 'oklch(0.55 0.09 130)', d: 'oklch(0.72 0.1 135)', li: 'oklch(0.45 0.09 128)', di: 'oklch(0.78 0.1 138)' },
+    Indigo: { l: 'oklch(0.5 0.11 270)', d: 'oklch(0.7 0.12 275)', li: 'oklch(0.45 0.12 270)', di: 'oklch(0.76 0.12 278)' },
+    Plum: { l: 'oklch(0.52 0.13 350)', d: 'oklch(0.72 0.12 352)', li: 'oklch(0.45 0.13 350)', di: 'oklch(0.78 0.12 354)' },
+  };
+
+  function applyPalette(theme: string) {
+    const palette = localStorage.getItem('palette') || 'Terracotta';
+    const p = PALETTES[palette] ?? PALETTES.Terracotta;
+    const el = document.documentElement;
+    const isDark = theme === 'dark';
+    el.style.setProperty('--accent', isDark ? p.d : p.l);
+    el.style.setProperty('--accent-ink', isDark ? p.di : p.li);
+    el.style.setProperty(
+      '--accent-soft',
+      `color-mix(in oklab, ${isDark ? p.d : p.l} ${isDark ? 16 : 12}%, transparent)`
+    );
+  }
+
+  const header = document.getElementById('site-header');
+  const variant = header?.dataset.variant ?? 'portfolio';
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      header?.classList.toggle('scrolled', window.scrollY > 10);
+    },
+    { passive: true }
+  );
+  header?.classList.toggle('scrolled', window.scrollY > 10);
+
+  const themeBtn = document.getElementById('theme-toggle');
+  const iconSun = document.getElementById('icon-sun') as HTMLElement | null;
+  const iconMoon = document.getElementById('icon-moon') as HTMLElement | null;
+
+  function applyThemeIcons(theme: string) {
+    if (iconSun) iconSun.style.display = theme === 'dark' ? 'block' : 'none';
+    if (iconMoon) iconMoon.style.display = theme === 'dark' ? 'none' : 'block';
+  }
+
+  const initialTheme = document.documentElement.dataset.theme || 'light';
+  applyThemeIcons(initialTheme);
+
+  themeBtn?.addEventListener('click', () => {
+    const current = document.documentElement.dataset.theme || 'light';
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('theme', next);
+    applyThemeIcons(next);
+    applyPalette(next);
+  });
+
+  const langBtn = document.getElementById('lang-toggle');
+  langBtn?.addEventListener('click', () => {
+    const current = document.documentElement.dataset.lang || 'en';
+    const next = current === 'en' ? 'es' : 'en';
+    document.cookie = `lang=${next};path=/;max-age=31536000`;
+    localStorage.setItem('lang', next);
+
+    const translationUrl = header?.dataset.translationUrl;
+    if (translationUrl) {
+      window.location.href = translationUrl;
+      return;
+    }
+
+    if (variant === 'blog') {
+      window.location.href = `/blog/${next}`;
+      return;
+    }
+
+    window.location.reload();
+  });
+</script>

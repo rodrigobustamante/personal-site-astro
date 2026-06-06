@@ -55,6 +55,7 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
     author,
     draft = false,
     metadata = {},
+    translation,
   } = data;
 
   const slug = cleanSlug(rawSlug); // cleanSlug(rawSlug.split('/').pop());
@@ -87,6 +88,7 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
     // or 'content' in case you consume from API
 
     readingTime: remarkPluginFrontmatter?.readingTime,
+    translation: translation,
   };
 };
 
@@ -166,6 +168,21 @@ export const findLatestPosts = async ({ count }: { count?: number }): Promise<Ar
 export const getStaticPathsBlogList = async ({ paginate }: { paginate: PaginateFunction }) => {
   if (!isBlogEnabled || !isBlogListRouteEnabled) return [];
   return paginate(await fetchPosts(), {
+    params: { blog: BLOG_BASE || undefined },
+    pageSize: blogPostsPerPage,
+  });
+};
+
+export const getStaticPathsBlogListLang = async ({
+  paginate,
+  lang,
+}: {
+  paginate: PaginateFunction;
+  lang: 'en' | 'es';
+}) => {
+  if (!isBlogEnabled || !isBlogListRouteEnabled) return [];
+  const posts = (await fetchPosts()).filter((p) => p.slug.startsWith(`${lang}/`));
+  return paginate(posts, {
     params: { blog: BLOG_BASE || undefined },
     pageSize: blogPostsPerPage,
   });
