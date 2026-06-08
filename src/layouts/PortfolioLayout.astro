@@ -52,7 +52,7 @@ const {
   </body>
 </html>
 
-<style is:global>
+<style is:inline>
   /* ——— Self-hosted fonts ——— */
   @font-face {
     font-family: 'Newsreader';
@@ -112,8 +112,8 @@ const {
     --card: oklch(0.99 0.006 85);
     --ink: oklch(0.27 0.018 55);
     --ink-soft: oklch(0.42 0.02 52);
-    --muted: oklch(0.56 0.018 55);
-    --faint: oklch(0.7 0.015 60);
+    --muted: oklch(0.46 0.018 55);
+    --faint: oklch(0.60 0.015 60);
     --line: oklch(0.88 0.014 72);
     --line-soft: oklch(0.92 0.012 75);
     --accent: oklch(0.585 0.125 42);
@@ -132,7 +132,7 @@ const {
     --ink: oklch(0.94 0.012 80);
     --ink-soft: oklch(0.82 0.014 78);
     --muted: oklch(0.68 0.016 70);
-    --faint: oklch(0.55 0.016 65);
+    --faint: oklch(0.62 0.016 65);
     --line: oklch(0.36 0.016 58);
     --line-soft: oklch(0.31 0.014 58);
     --accent: oklch(0.72 0.12 48);
@@ -293,7 +293,7 @@ const {
     font-weight: 600;
   }
   .lang-btn .off {
-    color: var(--faint);
+    color: var(--muted);
   }
   .lang-btn .slash {
     color: var(--line);
@@ -517,7 +517,7 @@ const {
     font-size: 12px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--faint);
+    color: var(--muted);
     margin-top: 6px;
   }
   .entry-loc {
@@ -703,7 +703,7 @@ const {
     font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--faint);
+    color: var(--muted);
     margin-bottom: 20px;
   }
   .facts-list {

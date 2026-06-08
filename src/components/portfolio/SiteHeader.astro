@@ -119,7 +119,9 @@ const nav =
     },
     { passive: true }
   );
-  header?.classList.toggle('scrolled', window.scrollY > 10);
+  requestAnimationFrame(() => {
+    header?.classList.toggle('scrolled', window.scrollY > 10);
+  });
 
   const themeBtn = document.getElementById('theme-toggle');
   const iconSun = document.getElementById('icon-sun') as HTMLElement | null;
