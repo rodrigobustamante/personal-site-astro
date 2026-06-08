@@ -20,39 +20,10 @@ const {
     <meta name="description" content={description} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="preload" as="font" href="/fonts/newsreader-normal-latin.woff2" type="font/woff2" crossorigin />
+    <link rel="preload" as="font" href="/fonts/newsreader-italic-latin.woff2" type="font/woff2" crossorigin />
     <link rel="preload" as="font" href="/fonts/hanken-normal-latin.woff2" type="font/woff2" crossorigin />
     <slot name="head" />
-    <!-- Anti-FOUC: set theme + lang before first paint -->
-    <script is:inline>
-      (function () {
-        var PALETTES = {
-          Terracotta: { l: 'oklch(0.585 0.125 42)', d: 'oklch(0.72 0.12 48)', li: 'oklch(0.46 0.12 42)', di: 'oklch(0.78 0.12 50)' },
-          Ochre: { l: 'oklch(0.62 0.12 75)', d: 'oklch(0.78 0.11 82)', li: 'oklch(0.5 0.11 72)', di: 'oklch(0.82 0.11 84)' },
-          Olive: { l: 'oklch(0.55 0.09 130)', d: 'oklch(0.72 0.1 135)', li: 'oklch(0.45 0.09 128)', di: 'oklch(0.78 0.1 138)' },
-          Indigo: { l: 'oklch(0.5 0.11 270)', d: 'oklch(0.7 0.12 275)', li: 'oklch(0.45 0.12 270)', di: 'oklch(0.76 0.12 278)' },
-          Plum: { l: 'oklch(0.52 0.13 350)', d: 'oklch(0.72 0.12 352)', li: 'oklch(0.45 0.13 350)', di: 'oklch(0.78 0.12 354)' },
-        };
-        var el = document.documentElement;
-        var theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        var lang = el.dataset.fixedLang || localStorage.getItem('lang') || ((navigator.language || '').startsWith('es') ? 'es' : 'en');
-        var palette = localStorage.getItem('palette') || 'Terracotta';
-        el.dataset.theme = theme;
-        el.dataset.lang = lang;
-        el.lang = lang;
-        var p = PALETTES[palette] || PALETTES.Terracotta;
-        var d = theme === 'dark';
-        el.style.setProperty('--accent', d ? p.d : p.l);
-        el.style.setProperty('--accent-ink', d ? p.di : p.li);
-        el.style.setProperty('--accent-soft', 'color-mix(in oklab, ' + (d ? p.d : p.l) + ' ' + (d ? 16 : 12) + '%, transparent)');
-      })();
-    </script>
-  </head>
-  <body>
-    <slot />
-  </body>
-</html>
-
-<style is:inline>
+    <style is:inline>
   /* ——— Self-hosted fonts ——— */
   @font-face {
     font-family: 'Newsreader';
@@ -905,3 +876,32 @@ const {
     }
   }
 </style>
+    <!-- Anti-FOUC: set theme + lang before first paint -->
+    <script is:inline>
+      (function () {
+        var PALETTES = {
+          Terracotta: { l: 'oklch(0.585 0.125 42)', d: 'oklch(0.72 0.12 48)', li: 'oklch(0.46 0.12 42)', di: 'oklch(0.78 0.12 50)' },
+          Ochre: { l: 'oklch(0.62 0.12 75)', d: 'oklch(0.78 0.11 82)', li: 'oklch(0.5 0.11 72)', di: 'oklch(0.82 0.11 84)' },
+          Olive: { l: 'oklch(0.55 0.09 130)', d: 'oklch(0.72 0.1 135)', li: 'oklch(0.45 0.09 128)', di: 'oklch(0.78 0.1 138)' },
+          Indigo: { l: 'oklch(0.5 0.11 270)', d: 'oklch(0.7 0.12 275)', li: 'oklch(0.45 0.12 270)', di: 'oklch(0.76 0.12 278)' },
+          Plum: { l: 'oklch(0.52 0.13 350)', d: 'oklch(0.72 0.12 352)', li: 'oklch(0.45 0.13 350)', di: 'oklch(0.78 0.12 354)' },
+        };
+        var el = document.documentElement;
+        var theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        var lang = el.dataset.fixedLang || localStorage.getItem('lang') || ((navigator.language || '').startsWith('es') ? 'es' : 'en');
+        var palette = localStorage.getItem('palette') || 'Terracotta';
+        el.dataset.theme = theme;
+        el.dataset.lang = lang;
+        el.lang = lang;
+        var p = PALETTES[palette] || PALETTES.Terracotta;
+        var d = theme === 'dark';
+        el.style.setProperty('--accent', d ? p.d : p.l);
+        el.style.setProperty('--accent-ink', d ? p.di : p.li);
+        el.style.setProperty('--accent-soft', 'color-mix(in oklab, ' + (d ? p.d : p.l) + ' ' + (d ? 16 : 12) + '%, transparent)');
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
