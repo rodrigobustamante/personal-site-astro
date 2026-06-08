@@ -13,6 +13,14 @@ const { t, tl } = useTranslations(lang);
   description="Rodrigo Bustamante — Solutions Architect & Senior Software Engineer. Nine years building scalable frontend systems and design systems for global brands."
   lang={lang}
 >
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/images/portrait-crop.avif"
+    type="image/avif"
+    fetchpriority="high"
+  />
   <SiteHeader lang={lang} variant="portfolio" homeHref="/" />
 
   <main>
@@ -66,13 +74,19 @@ const { t, tl } = useTranslations(lang);
           </div>
         </div>
         <div class="hero-right">
-          <img
-            src="/images/portrait-crop.png"
-            alt="Rodrigo Bustamante"
-            class="hero-portrait"
-            width="608"
-            height="760"
-          />
+          <picture>
+            <source srcset="/images/portrait-crop.avif" type="image/avif" />
+            <source srcset="/images/portrait-crop.webp" type="image/webp" />
+            <img
+              src="/images/portrait-crop.png"
+              alt="Rodrigo Bustamante"
+              class="hero-portrait"
+              width="608"
+              height="760"
+              fetchpriority="high"
+              loading="eager"
+            />
+          </picture>
         </div>
       </div>
     </section>
