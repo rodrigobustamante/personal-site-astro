@@ -9,8 +9,8 @@ const { t, tl } = useTranslations(lang);
 ---
 
 <PortfolioLayout
-  title="Rodrigo Bustamante — Solutions Architect"
-  description="Rodrigo Bustamante — Solutions Architect & Senior Software Engineer. Nine years building scalable frontend systems and design systems for global brands."
+  title="Rodrigo Bustamante — Staff Frontend Engineer · Design Systems Architect"
+  description="Rodrigo Bustamante — Staff Frontend Engineer & Design Systems Architect. 9 years building scalable frontend systems and design systems for global brands."
   lang={lang}
 >
   <link
@@ -28,7 +28,7 @@ const { t, tl } = useTranslations(lang);
     <section id="top" class="hero">
       <div class="wrap hero-grid">
         <div class="hero-left">
-          <div class="hero-role">Solutions Architect &amp; Senior Software Engineer</div>
+          <div class="hero-role">Staff Frontend Engineer &amp; Design Systems Architect</div>
           <h1 class="hero-name">Rodrigo<br />Bustamante</h1>
           <p class="hero-pitch" set:html={t('hero.pitch')} />
           <div class="hero-stats">
@@ -104,7 +104,7 @@ const { t, tl } = useTranslations(lang);
           <!-- Hangar Design System — LATAM Airlines -->
           <article class="entry reveal">
             <aside class="entry-aside">
-              <div class="entry-years">Sep 2024 — Mar 2026</div>
+              <div class="entry-years">Oct 2024 — Mar 2026</div>
               <div class="entry-sector">{t('exp.hangar.sector')}</div>
               <div class="entry-loc">{t('exp.hangar.loc')}</div>
             </aside>
@@ -134,6 +134,7 @@ const { t, tl } = useTranslations(lang);
                 <span class="chip">Redis</span>
                 <span class="chip">Storybook</span>
               </div>
+              <a class="cs-link" href="/work/hangar-design-system">{t('exp.hangar.cs')}</a>
             </div>
           </article>
 
@@ -453,11 +454,64 @@ const { t, tl } = useTranslations(lang);
       </div>
     </section>
 
+    <!-- ——— Projects ——— -->
+    <section id="projects" class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-num">03</span>
+          <h2 class="section-title">{t('projects.title')}</h2>
+          <p class="section-sub">{t('projects.sub')}</p>
+        </div>
+        <div class="projects-grid reveal">
+          <article class="project-card">
+            <div class="project-head">
+              <h3 class="project-name">{t('projects.pace.title')}</h3>
+              <span class="project-status">{t('projects.pace.status')}</span>
+            </div>
+            <p class="project-desc">{t('projects.pace.desc')}</p>
+            <div class="project-stack">
+              <span class="chip">Next.js 14</span>
+              <span class="chip">Expo</span>
+              <span class="chip">TypeScript</span>
+              <span class="chip">Gemini 2.5 Flash</span>
+              <span class="chip">Strava API</span>
+            </div>
+            <div class="project-links">
+              <!-- LINK_REPO: reemplaza # con la URL real del repositorio -->
+              <a class="project-link" href="#" aria-label="PACE repo">{t('projects.repo')}</a>
+              <!-- LINK_DEMO: reemplaza # con la URL real del demo -->
+              <a class="project-link" href="#" aria-label="PACE demo">{t('projects.demo')}</a>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-head">
+              <h3 class="project-name">{t('projects.intervalo.title')}</h3>
+              <span class="project-status">{t('projects.intervalo.status')}</span>
+            </div>
+            <p class="project-desc">{t('projects.intervalo.desc')}</p>
+            <div class="project-stack">
+              <span class="chip">Next.js</span>
+              <span class="chip">MapLibre GL JS</span>
+              <span class="chip">Web Audio API</span>
+              <span class="chip">GTFS</span>
+              <span class="chip">TypeScript</span>
+            </div>
+            <div class="project-links">
+              <!-- LINK_REPO: reemplaza # con la URL real del repositorio -->
+              <a class="project-link" href="#" aria-label="Intervalo repo">{t('projects.repo')}</a>
+              <!-- LINK_DEMO: reemplaza # con la URL real del demo -->
+              <a class="project-link" href="#" aria-label="Intervalo demo">{t('projects.demo')}</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- ——— Education & beyond ——— -->
     <section id="education" class="section">
       <div class="wrap">
         <div class="section-head reveal">
-          <span class="section-num">03</span>
+          <span class="section-num">04</span>
           <h2 class="section-title">{t('edu.title')}</h2>
           <p class="section-sub">{t('edu.sub')}</p>
         </div>
@@ -500,7 +554,7 @@ const { t, tl } = useTranslations(lang);
     <section id="writing" class="section">
       <div class="wrap">
         <div class="section-head reveal">
-          <span class="section-num">04</span>
+          <span class="section-num">05</span>
           <h2 class="section-title">{t('writing.title')}</h2>
           <p class="section-sub">{t('writing.sub')}</p>
         </div>

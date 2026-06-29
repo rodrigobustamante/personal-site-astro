@@ -3,12 +3,36 @@ interface Props {
   title?: string;
   description?: string;
   lang?: 'en' | 'es';
+  ogImage?: string;
+  canonicalURL?: string;
 }
 const {
-  title = 'Rodrigo Bustamante — Solutions Architect',
-  description = 'Rodrigo Bustamante — Solutions Architect & Senior Software Engineer. Nine years building scalable frontend systems and design systems for global brands.',
+  title = 'Rodrigo Bustamante — Staff Frontend Engineer · Design Systems Architect',
+  description = 'Rodrigo Bustamante — Staff Frontend Engineer & Design Systems Architect. 9 years building scalable frontend systems and design systems for global brands.',
   lang,
+  ogImage = '/images/portrait-crop.png',
+  canonicalURL = Astro.url.href,
 } = Astro.props;
+
+const ogImageAbs = new URL(ogImage, Astro.site ?? Astro.url).href;
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Rodrigo Bustamante',
+  jobTitle: 'Staff Frontend Engineer · Design Systems Architect',
+  url: 'https://rodrigobustamante.cl',
+  image: ogImageAbs,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Madrid',
+    addressCountry: 'ES',
+  },
+  sameAs: [
+    'https://www.linkedin.com/in/rod-bustamante/',
+    'https://github.com/rodrigobustamante',
+  ],
+});
 ---
 
 <!doctype html>
@@ -18,6 +42,27 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <!-- hreflang: cookie-based i18n — both langs resolve to the same URL -->
+    <link rel="alternate" hreflang="en" href={canonicalURL} />
+    <link rel="alternate" hreflang="es" href={canonicalURL} />
+    <link rel="alternate" hreflang="x-default" href={canonicalURL} />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:image:width" content="608" />
+    <meta property="og:image:height" content="760" />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbs} />
+    <!-- JSON-LD Person schema -->
+    <script type="application/ld+json" set:html={jsonLd} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="preload" as="font" href="/fonts/newsreader-normal-latin.woff2" type="font/woff2" crossorigin />
     <link rel="preload" as="font" href="/fonts/hanken-normal-latin.woff2" type="font/woff2" crossorigin />
@@ -858,6 +903,88 @@ const {
   }
   .footer-socials a:hover {
     color: var(--accent-ink);
+  }
+
+  /* ——— Case study link ——— */
+  .cs-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent-ink);
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+    transition: gap 0.2s;
+  }
+  .cs-link:hover {
+    gap: 10px;
+  }
+
+  /* ——— Projects grid ——— */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  @media (max-width: 680px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .project-card {
+    background: var(--paper);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .project-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .project-name {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .project-status {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .project-desc {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    text-wrap: pretty;
+    flex: 1;
+  }
+  .project-links {
+    display: flex;
+    gap: 14px;
+    margin-top: 4px;
+  }
+  .project-link {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--accent-ink);
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+    transition: opacity 0.2s;
+  }
+  .project-link:hover {
+    opacity: 0.75;
   }
 
   /* ——— Scroll reveal ——— */

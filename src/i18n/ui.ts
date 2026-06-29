@@ -10,7 +10,7 @@ export const ui = {
 
     // hero
     'hero.pitch':
-      'I architect scalable frontend systems and <em>design systems</em> for global brands — with <em>nine years</em> of engineering behind me, building platforms used by millions.',
+      'I architect scalable frontend systems and <em>design systems</em> for global brands — with <em>9 years</em> of engineering behind me, building platforms used by millions.',
     'hero.stat.years': 'years engineering',
     'hero.stat.teams': 'teams on the design system',
     'hero.stat.millions': 'Millions',
@@ -34,6 +34,7 @@ export const ui = {
       'Designed and built CI/CD pipelines, application deployment workflows, and created MCPs and Skills for use by teams and agents.',
       'Automated processes and built data collection and metrics tools to support decision-making.',
     ],
+    'exp.hangar.cs': 'Read case study →',
 
     'exp.dme-latam.sector': 'Digital Marketing · Platforms',
     'exp.dme-latam.loc': 'Madrid & Santiago · Remote',
@@ -120,6 +121,20 @@ export const ui = {
     'edu.work-auth.k': 'Work authorization',
     'edu.work-auth.v': "Chilean citizen. Exempt from Spain's Labour Market Test by bilateral treaty.",
 
+    // projects
+    'projects.title': 'Projects',
+    'projects.sub': 'Side projects built to explore ideas I care about.',
+    'projects.pace.title': 'PACE',
+    'projects.pace.desc':
+      'Running analytics app integrated with Strava. AI coaching powered by Gemini 2.5 Flash surfaces insights from your training history and helps you plan smarter weeks.',
+    'projects.pace.status': 'In development',
+    'projects.intervalo.title': 'Intervalo',
+    'projects.intervalo.desc':
+      'Sonic visualization of metro networks (Santiago & Madrid) using GTFS open data, MapLibre GL JS, and the Web Audio API. Each station, line, and transfer becomes sound.',
+    'projects.intervalo.status': 'In development',
+    'projects.repo': 'Repo',
+    'projects.demo': 'Demo',
+
     // writing
     'writing.title': 'Writing',
     'writing.sub': 'Notes on web performance, accessibility and building for scale.',
@@ -127,10 +142,58 @@ export const ui = {
 
     // contact
     'contact.title': "Let's talk.",
-    'contact.sub': 'Open to Solutions Architect and Staff Engineering roles. The fastest way to reach me is email.',
+    'contact.sub':
+      'Open to Staff Frontend Engineer and Design System Lead roles. The fastest way to reach me is email.',
 
     // footer
     'footer.credit': 'Designed & built by Rodrigo Bustamante · Madrid · 2026',
+
+    // case study — Hangar Design System
+    'hangar.cs.back': '← Back',
+    'hangar.cs.tag': 'Case Study',
+    'hangar.cs.title': 'Hangar Design System',
+    'hangar.cs.subtitle': 'Building the design system backbone for the largest airline in Latin America',
+    'hangar.cs.meta.role': 'Role',
+    'hangar.cs.meta.role.v': 'Software Architect',
+    'hangar.cs.meta.period': 'Period',
+    'hangar.cs.meta.period.v': 'Sep 2024 — Mar 2026',
+    'hangar.cs.meta.scope': 'Scope',
+    'hangar.cs.meta.scope.v': '50+ teams · React & React Native · Millions of passengers',
+    'hangar.cs.meta.stack': 'Stack',
+    'hangar.cs.meta.stack.v': 'React, React Native, Next.js, TypeScript, Storybook, GCP, Terraform, GitLab CI, Docker',
+    'hangar.cs.s1.label': '01 — Problem & Context',
+    'hangar.cs.s1.title': 'Scaling UI consistency across 50+ teams',
+    'hangar.cs.s1.p1':
+      'LATAM Airlines operates at a scale few frontend organizations face: dozens of independent product teams, two primary platforms (web and mobile), and a passenger base in the millions across Latin America and Europe. Before Hangar, each team maintained its own component library, leading to inconsistent UX, duplicated engineering effort, and slow iteration cycles.',
+    'hangar.cs.s1.p2':
+      'The mandate was clear but technically complex: design and build a unified design system that 50+ teams could adopt without sacrificing their autonomy, while ensuring accessibility, performance, and brand consistency at every touchpoint.',
+    'hangar.cs.s2.label': '02 — Architecture',
+    'hangar.cs.s2.title': 'Tokens, components, and pipelines',
+    'hangar.cs.s2.tokens.h': 'Design tokens',
+    'hangar.cs.s2.tokens.p':
+      'A structured token layer — covering color, typography, spacing, motion, and elevation — served as the single source of truth shared between design (Figma) and engineering. Tokens were versioned and distributed as NPM packages, enabling teams to upgrade incrementally.',
+    'hangar.cs.s2.components.h': 'Component library',
+    'hangar.cs.s2.components.p':
+      'Cross-platform components built for React (web) and React Native (mobile) covered the full UI spectrum: forms, navigation, data display, feedback, and layout primitives. Each component was documented in Storybook with accessibility annotations and usage guidelines.',
+    'hangar.cs.s2.cicd.h': 'CI/CD and distribution',
+    'hangar.cs.s2.cicd.p':
+      'GitLab CI pipelines handled automated testing, visual regression checks, semantic versioning, and NPM publishing on every merge to main. Terraform Cloud managed the GCP infrastructure backing internal tooling and the Storybook instance.',
+    'hangar.cs.s3.label': '03 — Differentiator',
+    'hangar.cs.s3.title': 'MCPs and Skills: making the DS agent-native',
+    'hangar.cs.s3.p1':
+      'Beyond the component library itself, I designed and built Model Context Protocol (MCP) servers and Claude Skills that allowed product teams — and AI coding agents — to consume Hangar directly from their development environment. Engineers could query component APIs, get usage examples, and scaffold compliant UIs without leaving their editor.',
+    'hangar.cs.s3.p2':
+      'This made Hangar one of the first design systems in the region explicitly architected for AI-assisted development workflows, reducing onboarding friction for new teams and accelerating adoption.',
+    'hangar.cs.s4.label': '04 — Impact',
+    'hangar.cs.s4.title': 'Metrics and outcomes',
+    'hangar.cs.s4.adoption.h': 'Adoption',
+    'hangar.cs.s4.adoption.v': '[METRIC: number of active teams using Hangar at close]',
+    'hangar.cs.s4.velocity.h': 'Delivery velocity',
+    'hangar.cs.s4.velocity.v': '[METRIC: reduction in UI feature development time]',
+    'hangar.cs.s4.a11y.h': 'Accessibility',
+    'hangar.cs.s4.a11y.v': '[METRIC: percentage of components with WCAG AA coverage]',
+    'hangar.cs.s4.reach.h': 'Reach',
+    'hangar.cs.s4.reach.v': 'Components shipped to products touching millions of passengers across 10+ countries.',
   },
 
   es: {
@@ -144,7 +207,7 @@ export const ui = {
 
     // hero
     'hero.pitch':
-      'Arquitecto sistemas frontend y <em>design systems</em> escalables para marcas globales — con <em>nueve años</em> de ingeniería a mi espalda, construyendo plataformas usadas por millones.',
+      'Arquitecto sistemas frontend y <em>design systems</em> escalables para marcas globales — con <em>9 años</em> de ingeniería a mis espaldas, construyendo plataformas usadas por millones.',
     'hero.stat.years': 'años de ingeniería',
     'hero.stat.teams': 'equipos en el design system',
     'hero.stat.millions': 'Millones',
@@ -169,6 +232,7 @@ export const ui = {
       'Diseñé y construí los distintos pipelines de CI/CD, el despliegue de aplicaciones y la creación de MCPs y Skills para uso de equipos y agentes.',
       'Automaticé procesos y construí herramientas de recopilación de datos y métricas para la toma de decisiones.',
     ],
+    'exp.hangar.cs': 'Ver caso de estudio →',
 
     'exp.dme-latam.sector': 'Marketing Digital · Plataformas',
     'exp.dme-latam.loc': 'Madrid y Santiago · Remoto',
@@ -255,6 +319,20 @@ export const ui = {
     'edu.work-auth.k': 'Autorización de trabajo',
     'edu.work-auth.v': 'Ciudadano chileno. Exento del Test de Mercado Laboral de España por tratado bilateral.',
 
+    // projects
+    'projects.title': 'Proyectos',
+    'projects.sub': 'Proyectos personales para explorar ideas que me importan.',
+    'projects.pace.title': 'PACE',
+    'projects.pace.desc':
+      'App de analítica de running integrada con Strava. Coaching con IA via Gemini 2.5 Flash que extrae insights de tu historial de entrenamiento y te ayuda a planificar semanas más inteligentes.',
+    'projects.pace.status': 'En desarrollo',
+    'projects.intervalo.title': 'Intervalo',
+    'projects.intervalo.desc':
+      'Visualización sonora de redes de metro (Santiago y Madrid) usando datos abiertos GTFS, MapLibre GL JS y la Web Audio API. Cada estación, línea y trasbordo se convierte en sonido.',
+    'projects.intervalo.status': 'En desarrollo',
+    'projects.repo': 'Repo',
+    'projects.demo': 'Demo',
+
     // writing
     'writing.title': 'Blog',
     'writing.sub': 'Apuntes sobre performance web, accesibilidad y construir a escala.',
@@ -263,10 +341,58 @@ export const ui = {
     // contact
     'contact.title': 'Hablemos.',
     'contact.sub':
-      'Abierto a roles de Solutions Architect y Staff Engineering. La forma más rápida de contactarme es por email.',
+      'Abierto a roles de Staff Frontend Engineer y Design System Lead. La forma más rápida de contactarme es por email.',
 
     // footer
     'footer.credit': 'Diseñado y construido por Rodrigo Bustamante · Madrid · 2026',
+
+    // case study — Hangar Design System
+    'hangar.cs.back': '← Volver',
+    'hangar.cs.tag': 'Caso de estudio',
+    'hangar.cs.title': 'Hangar Design System',
+    'hangar.cs.subtitle': 'El backbone de design system para la aerolínea más grande de América Latina',
+    'hangar.cs.meta.role': 'Rol',
+    'hangar.cs.meta.role.v': 'Software Architect',
+    'hangar.cs.meta.period': 'Período',
+    'hangar.cs.meta.period.v': 'Sep 2024 — Mar 2026',
+    'hangar.cs.meta.scope': 'Alcance',
+    'hangar.cs.meta.scope.v': '50+ equipos · React & React Native · Millones de pasajeros',
+    'hangar.cs.meta.stack': 'Stack',
+    'hangar.cs.meta.stack.v': 'React, React Native, Next.js, TypeScript, Storybook, GCP, Terraform, GitLab CI, Docker',
+    'hangar.cs.s1.label': '01 — Problema y contexto',
+    'hangar.cs.s1.title': 'Escalar consistencia de UI en 50+ equipos',
+    'hangar.cs.s1.p1':
+      'LATAM Airlines opera a una escala que pocas organizaciones frontend enfrentan: decenas de equipos de producto independientes, dos plataformas principales (web y mobile), y una base de pasajeros de millones en América Latina y Europa. Antes de Hangar, cada equipo mantenía su propia librería de componentes, generando UX inconsistente, esfuerzo de ingeniería duplicado y ciclos de iteración lentos.',
+    'hangar.cs.s1.p2':
+      'El mandato era claro pero técnicamente complejo: diseñar y construir un design system unificado que más de 50 equipos pudieran adoptar sin sacrificar su autonomía, garantizando accesibilidad, performance y consistencia de marca en cada touchpoint.',
+    'hangar.cs.s2.label': '02 — Arquitectura',
+    'hangar.cs.s2.title': 'Tokens, componentes y pipelines',
+    'hangar.cs.s2.tokens.h': 'Design tokens',
+    'hangar.cs.s2.tokens.p':
+      'Una capa de tokens estructurada — color, tipografía, espaciado, movimiento y elevación — funcionó como fuente única de verdad compartida entre diseño (Figma) e ingeniería. Los tokens se versionaban y distribuían como paquetes NPM, permitiendo que los equipos actualizaran de forma incremental.',
+    'hangar.cs.s2.components.h': 'Librería de componentes',
+    'hangar.cs.s2.components.p':
+      'Componentes cross-platform para React (web) y React Native (mobile) cubrieron el espectro completo de UI: formularios, navegación, visualización de datos, feedback y primitivas de layout. Cada componente se documentó en Storybook con anotaciones de accesibilidad y guías de uso.',
+    'hangar.cs.s2.cicd.h': 'CI/CD y distribución',
+    'hangar.cs.s2.cicd.p':
+      'Los pipelines de GitLab CI gestionaron testing automatizado, revisiones de regresión visual, versionado semántico y publicación en NPM en cada merge a main. Terraform Cloud administró la infraestructura GCP que soporta el tooling interno y la instancia de Storybook.',
+    'hangar.cs.s3.label': '03 — Diferenciador',
+    'hangar.cs.s3.title': 'MCPs y Skills: hacer el DS agent-native',
+    'hangar.cs.s3.p1':
+      'Más allá de la librería de componentes en sí, diseñé y construí servidores MCP (Model Context Protocol) y Claude Skills que permitieron que los equipos de producto — y los agentes de IA — consumieran Hangar directamente desde su entorno de desarrollo. Los ingenieros podían consultar APIs de componentes, obtener ejemplos de uso y generar UIs conformes sin salir de su editor.',
+    'hangar.cs.s3.p2':
+      'Esto convirtió a Hangar en uno de los primeros design systems de la región explícitamente arquitectado para flujos de desarrollo asistidos por IA, reduciendo la fricción de onboarding para nuevos equipos y acelerando la adopción.',
+    'hangar.cs.s4.label': '04 — Impacto',
+    'hangar.cs.s4.title': 'Métricas y resultados',
+    'hangar.cs.s4.adoption.h': 'Adopción',
+    'hangar.cs.s4.adoption.v': '[MÉTRICA: número de equipos activos usando Hangar al cierre]',
+    'hangar.cs.s4.velocity.h': 'Velocidad de entrega',
+    'hangar.cs.s4.velocity.v': '[MÉTRICA: reducción en tiempo de desarrollo de nuevas features UI]',
+    'hangar.cs.s4.a11y.h': 'Accesibilidad',
+    'hangar.cs.s4.a11y.v': '[MÉTRICA: porcentaje de componentes con cobertura WCAG AA]',
+    'hangar.cs.s4.reach.h': 'Alcance',
+    'hangar.cs.s4.reach.v':
+      'Componentes desplegados en productos que llegan a millones de pasajeros en más de 10 países.',
   },
 } as const;
 

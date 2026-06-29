@@ -1,0 +1,275 @@
+---
+import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
+import SiteHeader from '~/components/portfolio/SiteHeader.astro';
+import { useTranslations } from '~/i18n/ui';
+
+const langCookie = Astro.cookies.get('lang');
+const lang = (langCookie?.value === 'es' ? 'es' : 'en') as 'en' | 'es';
+const { t } = useTranslations(lang);
+---
+
+<PortfolioLayout
+  title={`${t('hangar.cs.title')} — Rodrigo Bustamante`}
+  description={t('hangar.cs.subtitle')}
+  lang={lang}
+>
+  <SiteHeader lang={lang} variant="portfolio" homeHref="/" />
+
+  <main>
+    <article class="cs-wrap">
+
+      <!-- Back link -->
+      <a class="back-link" href="/#work">{t('hangar.cs.back')}</a>
+
+      <!-- Header -->
+      <header class="cs-header">
+        <span class="cs-tag">{t('hangar.cs.tag')}</span>
+        <h1 class="cs-title">{t('hangar.cs.title')}</h1>
+        <p class="cs-subtitle">{t('hangar.cs.subtitle')}</p>
+      </header>
+
+      <!-- Meta grid -->
+      <div class="cs-meta">
+        <div class="cs-meta-item">
+          <span class="cs-meta-k">{t('hangar.cs.meta.role')}</span>
+          <span class="cs-meta-v">{t('hangar.cs.meta.role.v')}</span>
+        </div>
+        <div class="cs-meta-item">
+          <span class="cs-meta-k">{t('hangar.cs.meta.period')}</span>
+          <span class="cs-meta-v">{t('hangar.cs.meta.period.v')}</span>
+        </div>
+        <div class="cs-meta-item">
+          <span class="cs-meta-k">{t('hangar.cs.meta.scope')}</span>
+          <span class="cs-meta-v">{t('hangar.cs.meta.scope.v')}</span>
+        </div>
+        <div class="cs-meta-item">
+          <span class="cs-meta-k">{t('hangar.cs.meta.stack')}</span>
+          <span class="cs-meta-v">{t('hangar.cs.meta.stack.v')}</span>
+        </div>
+      </div>
+
+      <!-- Section 1: Problem & Context -->
+      <section class="cs-section">
+        <span class="cs-section-label">{t('hangar.cs.s1.label')}</span>
+        <h2 class="cs-section-title">{t('hangar.cs.s1.title')}</h2>
+        <p class="cs-body">{t('hangar.cs.s1.p1')}</p>
+        <p class="cs-body">{t('hangar.cs.s1.p2')}</p>
+      </section>
+
+      <!-- Section 2: Architecture -->
+      <section class="cs-section">
+        <span class="cs-section-label">{t('hangar.cs.s2.label')}</span>
+        <h2 class="cs-section-title">{t('hangar.cs.s2.title')}</h2>
+        <div class="cs-pillars">
+          <div class="cs-pillar">
+            <h3 class="cs-pillar-h">{t('hangar.cs.s2.tokens.h')}</h3>
+            <p class="cs-body">{t('hangar.cs.s2.tokens.p')}</p>
+          </div>
+          <div class="cs-pillar">
+            <h3 class="cs-pillar-h">{t('hangar.cs.s2.components.h')}</h3>
+            <p class="cs-body">{t('hangar.cs.s2.components.p')}</p>
+          </div>
+          <div class="cs-pillar">
+            <h3 class="cs-pillar-h">{t('hangar.cs.s2.cicd.h')}</h3>
+            <p class="cs-body">{t('hangar.cs.s2.cicd.p')}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Differentiator -->
+      <section class="cs-section cs-section--highlight">
+        <span class="cs-section-label">{t('hangar.cs.s3.label')}</span>
+        <h2 class="cs-section-title">{t('hangar.cs.s3.title')}</h2>
+        <p class="cs-body">{t('hangar.cs.s3.p1')}</p>
+        <p class="cs-body">{t('hangar.cs.s3.p2')}</p>
+      </section>
+
+      <!-- Section 4: Impact -->
+      <section class="cs-section">
+        <span class="cs-section-label">{t('hangar.cs.s4.label')}</span>
+        <h2 class="cs-section-title">{t('hangar.cs.s4.title')}</h2>
+        <dl class="cs-metrics">
+          <div class="cs-metric">
+            <dt class="cs-metric-k">{t('hangar.cs.s4.adoption.h')}</dt>
+            <dd class="cs-metric-v">{t('hangar.cs.s4.adoption.v')}</dd>
+          </div>
+          <div class="cs-metric">
+            <dt class="cs-metric-k">{t('hangar.cs.s4.velocity.h')}</dt>
+            <dd class="cs-metric-v">{t('hangar.cs.s4.velocity.v')}</dd>
+          </div>
+          <div class="cs-metric">
+            <dt class="cs-metric-k">{t('hangar.cs.s4.a11y.h')}</dt>
+            <dd class="cs-metric-v">{t('hangar.cs.s4.a11y.v')}</dd>
+          </div>
+          <div class="cs-metric">
+            <dt class="cs-metric-k">{t('hangar.cs.s4.reach.h')}</dt>
+            <dd class="cs-metric-v">{t('hangar.cs.s4.reach.v')}</dd>
+          </div>
+        </dl>
+      </section>
+
+    </article>
+  </main>
+</PortfolioLayout>
+
+<style is:inline>
+  .cs-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(48px, 8vh, 96px) var(--pad) clamp(64px, 10vh, 120px);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 40px;
+    transition: color 0.2s;
+  }
+  .back-link:hover {
+    color: var(--ink);
+  }
+
+  .cs-tag {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .cs-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    margin-bottom: 20px;
+  }
+  .cs-subtitle {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.4vw, 24px);
+    color: var(--ink-soft);
+    line-height: 1.45;
+    font-weight: 300;
+    max-width: 52ch;
+    text-wrap: pretty;
+  }
+
+  .cs-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 48px 0 0;
+  }
+  .cs-meta-item {
+    background: var(--paper);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cs-meta-k {
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cs-meta-v {
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .cs-section {
+    margin-top: clamp(56px, 8vh, 88px);
+    padding-top: clamp(40px, 6vh, 64px);
+    border-top: 1px solid var(--line-soft);
+  }
+  .cs-section--highlight {
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in oklab, var(--accent) 20%, transparent);
+    border-radius: 14px;
+    padding: clamp(28px, 4vh, 44px) clamp(24px, 3vw, 40px);
+    margin-top: clamp(56px, 8vh, 88px);
+  }
+  .cs-section-label {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .cs-section-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(26px, 3.5vw, 38px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+  .cs-body {
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    text-wrap: pretty;
+    margin-bottom: 16px;
+  }
+  .cs-body:last-child {
+    margin-bottom: 0;
+  }
+
+  .cs-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .cs-pillar-h {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .cs-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  @media (max-width: 560px) {
+    .cs-metrics {
+      grid-template-columns: 1fr;
+    }
+  }
+  .cs-metric {
+    background: var(--paper);
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cs-metric-k {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .cs-metric-v {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+</style>
