@@ -101,6 +101,5 @@ export default defineConfig({
     platformProxy: {
       enabled: true,
     },
-    configPath: './wrangler.adapter.json',
   }),
 });
