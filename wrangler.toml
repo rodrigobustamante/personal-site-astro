@@ -5,5 +5,8 @@ compatibility_date = "2025-03-12"
 # Node.js compatibility
 compatibility_flags = ["nodejs_compat"]
 
+[assets]
+binding = "STATIC_CONTENT"
+
 [vars]
 NODE_VERSION = "22"
