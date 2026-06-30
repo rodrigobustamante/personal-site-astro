@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "personal-site-astro",
+  "compatibility_date": "2025-03-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "STATIC_CONTENT"
+  }
+}
