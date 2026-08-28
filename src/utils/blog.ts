@@ -41,7 +41,7 @@ const generatePermalink = async ({
 };
 
 const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> => {
-  const { id, slug: rawSlug = '', data } = post;
+  const { id, data } = post;
   const { Content, remarkPluginFrontmatter } = await render(post);
 
   const {
@@ -58,7 +58,8 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
     translation,
   } = data;
 
-  const slug = cleanSlug(rawSlug); // cleanSlug(rawSlug.split('/').pop());
+  // Astro 5+ content collections no longer expose `entry.slug`; the slug lives in `entry.id`.
+  const slug = cleanSlug(id);
   const publishDate = new Date(rawPublishDate);
   const updateDate = rawUpdateDate ? new Date(rawUpdateDate) : undefined;
   const category = rawCategory ? cleanSlug(rawCategory) : undefined;
