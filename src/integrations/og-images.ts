@@ -80,7 +80,11 @@ export function cardFromHtml(html: string): { key: string; card: OgCard } | unde
       kind: 'article',
       lang,
       label,
-      title: isBlogIndex ? (es ? 'Notas sobre rendimiento web, frontend y design systems' : 'Notes on web performance, frontend engineering and design systems') : title,
+      title: isBlogIndex
+        ? es
+          ? 'Notas sobre rendimiento web, frontend y design systems'
+          : 'Notes on web performance, frontend engineering and design systems'
+        : title,
       subtitle: isBlogIndex ? undefined : description,
     },
   };
