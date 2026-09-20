@@ -17,6 +17,10 @@ export const ui = {
     'hero.stat.millions.sub': 'of passengers reached',
     'hero.stat.countries': 'countries',
     'hero.location': 'Madrid, Spain',
+
+    // <meta name="description"> of the home page
+    'meta.home.description':
+      'Rodrigo Bustamante — Staff Frontend Engineer & Design Systems Architect. 9 years building scalable frontend systems and design systems for global brands.',
     'hero.remote': 'Remote-friendly',
     'hero.cta.contact': 'Get in touch',
     'hero.cta.cv': 'Download CV',
@@ -214,6 +218,10 @@ export const ui = {
     'hero.stat.millions.sub': 'de pasajeros',
     'hero.stat.countries': 'países',
     'hero.location': 'Madrid, España',
+
+    // <meta name="description"> de la home
+    'meta.home.description':
+      'Rodrigo Bustamante — Staff Frontend Engineer y Design Systems Architect. 9 años construyendo sistemas frontend y design systems escalables para marcas globales.',
     'hero.remote': 'Disponible en remoto',
     'hero.cta.contact': 'Hablemos',
     'hero.cta.cv': 'Descargar CV',
