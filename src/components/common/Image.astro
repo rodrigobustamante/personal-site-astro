@@ -3,7 +3,6 @@ import { findImage } from '~/utils/images';
 import {
   getImagesOptimized,
   astroAssetsOptimizer,
-  unpicOptimizer,
   type ImageProps,
   type AttributesProps,
 } from '~/utils/images-optimization';
@@ -47,9 +46,8 @@ let image: ImageType | undefined = undefined;
 
 if (_image !== null && typeof _image === 'object') {
   image = await getImagesOptimized(_image, props, astroAssetsOptimizer);
-} else if (typeof _image === 'string' && (_image.startsWith('http://') || _image.startsWith('https://'))) {
-  image = await getImagesOptimized(_image, props, unpicOptimizer);
 } else if (_image) {
+  // Remote URLs and public/ paths: plain <img>, no srcset (nothing uses them today).
   image = await getImagesOptimized(_image, props);
 }
 ---
