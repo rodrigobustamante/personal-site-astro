@@ -933,13 +933,3 @@ const { t, tl } = useTranslations(lang);
   </main>
 </PortfolioLayout>
 
-<script>
-  document.querySelectorAll(".reveal").forEach((el) => {
-    new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) el.classList.add("in");
-      },
-      { threshold: 0 },
-    ).observe(el);
-  });
-</script>

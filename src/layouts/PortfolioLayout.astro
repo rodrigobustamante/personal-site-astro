@@ -94,7 +94,7 @@ const jsonLd = JSON.stringify({
     <link rel="preload" as="font" href="/fonts/newsreader-normal-latin.woff2" type="font/woff2" crossorigin />
     <link rel="preload" as="font" href="/fonts/hanken-normal-latin.woff2" type="font/woff2" crossorigin />
     <slot name="head" />
-    <style is:inline>
+    <style is:global>
   /* ——— Self-hosted fonts ——— */
   @font-face {
     font-family: 'Newsreader';
@@ -1069,5 +1069,19 @@ const jsonLd = JSON.stringify({
   </head>
   <body>
     <slot />
+    <script>
+      // Scroll reveal shared by every page using this layout.
+      document.querySelectorAll('.reveal').forEach((el) => {
+        new IntersectionObserver(
+          ([entry], observer) => {
+            if (entry.isIntersecting) {
+              el.classList.add('in');
+              observer.disconnect();
+            }
+          },
+          { threshold: 0 }
+        ).observe(el);
+      });
+    </script>
   </body>
 </html>
