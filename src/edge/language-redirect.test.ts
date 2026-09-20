@@ -35,15 +35,24 @@ test('redirects /es back to / for an English browser (symmetric)', () => {
 });
 
 test('the lang cookie overrides the browser language in both directions', () => {
-  assert.equal(languageRedirect(req('/', { cookie: 'lang=es', 'accept-language': 'en-US' }))?.headers.get('location'), '/es');
-  assert.equal(languageRedirect(req('/es', { cookie: 'lang=en', 'accept-language': 'es-ES' }))?.headers.get('location'), '/');
+  assert.equal(
+    languageRedirect(req('/', { cookie: 'lang=es', 'accept-language': 'en-US' }))?.headers.get('location'),
+    '/es'
+  );
+  assert.equal(
+    languageRedirect(req('/es', { cookie: 'lang=en', 'accept-language': 'es-ES' }))?.headers.get('location'),
+    '/'
+  );
   assert.equal(languageRedirect(req('/es', { cookie: 'lang=es', 'accept-language': 'en-US' })), undefined);
 });
 
 test('case study pages redirect to their localized sibling, keeping the query string', () => {
   const res = languageRedirect(req('/work/hangar-design-system?utm=x', { 'accept-language': 'es' }));
   assert.equal(res?.headers.get('location'), '/es/work/hangar-design-system?utm=x');
-  assert.equal(languageRedirect(req('/es/work/hangar-design-system', { 'accept-language': 'en' }))?.headers.get('location'), '/work/hangar-design-system');
+  assert.equal(
+    languageRedirect(req('/es/work/hangar-design-system', { 'accept-language': 'en' }))?.headers.get('location'),
+    '/work/hangar-design-system'
+  );
 });
 
 test('no redirect when the page already matches, when no preference exists, or for crawlers without Accept-Language', () => {

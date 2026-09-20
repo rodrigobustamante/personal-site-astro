@@ -20,10 +20,7 @@ const currentPage = page.currentPage ?? 1;
 const lang = 'en';
 ---
 
-<BlogLayout
-  title={`Blog${currentPage > 1 ? ` — Page ${currentPage}` : ''}`}
-  lang={lang}
->
+<BlogLayout title={`Blog${currentPage > 1 ? ` — Page ${currentPage}` : ''}`} lang={lang}>
   <div class="blog-wrap">
     <div class="blog-headline reveal">
       <h1>The Blog</h1>

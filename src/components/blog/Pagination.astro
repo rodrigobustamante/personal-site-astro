@@ -12,21 +12,21 @@ const newer = lang ? (lang === 'es' ? 'Más recientes' : 'Newer posts') : null;
 const older = lang ? (lang === 'es' ? 'Más antiguos' : 'Older posts') : null;
 ---
 
-{(prevUrl || nextUrl) && (
-  <nav class="pagination">
-    <a
-      href={prevUrl ? getPermalink(prevUrl) : '#'}
-      class={`page-btn${!prevUrl ? ' invisible' : ''}`}
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-      {newer ?? 'Newer posts'}
-    </a>
-    <a
-      href={nextUrl ? getPermalink(nextUrl) : '#'}
-      class={`page-btn${!nextUrl ? ' invisible' : ''}`}
-    >
-      {older ?? 'Older posts'}
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-    </a>
-  </nav>
-)}
+{
+  (prevUrl || nextUrl) && (
+    <nav class="pagination">
+      <a href={prevUrl ? getPermalink(prevUrl) : '#'} class={`page-btn${!prevUrl ? ' invisible' : ''}`}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        {newer ?? 'Newer posts'}
+      </a>
+      <a href={nextUrl ? getPermalink(nextUrl) : '#'} class={`page-btn${!nextUrl ? ' invisible' : ''}`}>
+        {older ?? 'Older posts'}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </a>
+    </nav>
+  )
+}

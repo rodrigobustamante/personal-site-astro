@@ -11,7 +11,7 @@ metadata:
   title:
     default: Rodrigo Bustamante
     template: '%s — Rodrigo Bustamante'
-  description: "Web UI Developer"
+  description: 'Web UI Developer'
   robots:
     index: true
     follow: true
