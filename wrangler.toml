@@ -9,4 +9,8 @@ directory = "dist/client"
 binding = "ASSETS"
 # Serve /es from es/index.html without redirecting to /es/ (matches Astro trailingSlash: never)
 html_handling = "drop-trailing-slash"
+# Only the pages that exist in both languages go through the Worker, so the
+# edge language redirect (src/edge/language-redirect.ts) can run before the
+# static HTML is served. Everything else is served directly as an asset.
+run_worker_first = ["/", "/es", "/es/", "/work/hangar-design-system", "/es/work/hangar-design-system"]
 

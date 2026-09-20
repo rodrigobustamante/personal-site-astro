@@ -10,11 +10,11 @@ interface Props {
   ogImage?: string;
   canonicalURL?: string;
   /**
-   * When true, the page has a sibling in the other language at the
-   * localized path, and the anti-FOUC script redirects visitors whose
-   * stored language preference does not match this page's language.
+   * When true, the page has a sibling in the other language at the localized
+   * path: hreflang alternates point at it, and the Worker redirects visitors
+   * to their preferred language at the edge (src/edge/language-redirect.ts).
    */
-  langRedirect?: boolean;
+  hasLocalizedSibling?: boolean;
 }
 const {
   title = 'Rodrigo Bustamante — Staff Frontend Engineer · Design Systems Architect',
@@ -22,7 +22,7 @@ const {
   lang = 'en',
   ogImage = `/og/home/${Astro.props.lang ?? 'en'}.png`,
   canonicalURL = Astro.url.href,
-  langRedirect = false,
+  hasLocalizedSibling = false,
 } = Astro.props;
 
 const origin = Astro.site ?? Astro.url;
@@ -31,13 +31,12 @@ const ogImageAbs = new URL(ogImage, origin).href;
 // hreflang alternates. Portfolio pages have a real sibling per language;
 // blog pages point both alternates at themselves (their translation is a
 // different slug, handled by the header's translationUrl).
-const alternates = langRedirect
+const alternates = hasLocalizedSibling
   ? {
       en: new URL(localizedPath(Astro.url.pathname, 'en'), origin).href,
       es: new URL(localizedPath(Astro.url.pathname, 'es'), origin).href,
     }
   : { en: canonicalURL, es: canonicalURL };
-const altUrl = langRedirect ? localizedPath(Astro.url.pathname, lang === 'es' ? 'en' : 'es') : undefined;
 
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
@@ -64,7 +63,6 @@ const jsonLd = JSON.stringify({
   data-theme="light"
   data-lang={lang}
   data-fixed-lang={lang}
-  {...(altUrl ? { 'data-alt-url': altUrl } : {})}
 >
   <head>
     <meta charset="UTF-8" />
@@ -1051,16 +1049,8 @@ const jsonLd = JSON.stringify({
           Plum: { l: 'oklch(0.52 0.13 350)', d: 'oklch(0.72 0.12 352)', li: 'oklch(0.45 0.13 350)', di: 'oklch(0.78 0.12 354)' },
         };
         var el = document.documentElement;
-        // Language lives in the URL. If this page has a sibling in the other
-        // language and the visitor prefers that one, jump there before paint.
-        var altUrl = el.dataset.altUrl;
-        if (altUrl) {
-          var preferred = localStorage.getItem('lang') || ((navigator.language || '').startsWith('es') ? 'es' : 'en');
-          if (preferred !== el.dataset.fixedLang) {
-            location.replace(altUrl + location.hash);
-            return;
-          }
-        }
+        // Language lives in the URL; the Worker redirects to the preferred one
+        // at the edge, so nothing language-related happens here.
         var theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         var palette = localStorage.getItem('palette') || 'Terracotta';
         el.dataset.theme = theme;
