@@ -10,5 +10,7 @@ const { posts } = Astro.props;
 ---
 
 <ul class="post-list">
-  {posts.map((post) => <Item post={post} />)}
+  {posts.map((post) => (
+    <Item post={post} />
+  ))}
 </ul>

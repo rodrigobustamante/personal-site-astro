@@ -80,7 +80,7 @@ const jsonLd = JSON.stringify({
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageAbs} />
     <!-- JSON-LD Person schema -->
-    <script type="application/ld+json" set:html={jsonLd} />
+    <script type="application/ld+json" set:html={jsonLd}></script>
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -153,8 +153,8 @@ const jsonLd = JSON.stringify({
       }
 
       /* ——————————————————————————————————————————
-     Design tokens
-  —————————————————————————————————————————— */
+         Design tokens
+      —————————————————————————————————————————— */
       :root {
         --paper: oklch(0.972 0.013 79);
         --paper-2: oklch(0.945 0.016 78);
@@ -1045,7 +1045,7 @@ const jsonLd = JSON.stringify({
     <!-- Anti-FOUC: set theme + lang before first paint -->
     <script is:inline>
       (function () {
-        var PALETTES = {
+        const PALETTES = {
           Terracotta: {
             l: 'oklch(0.585 0.125 42)',
             d: 'oklch(0.72 0.12 48)',
@@ -1077,16 +1077,16 @@ const jsonLd = JSON.stringify({
             di: 'oklch(0.78 0.12 354)',
           },
         };
-        var el = document.documentElement;
+        const el = document.documentElement;
         // Language lives in the URL; the Worker redirects to the preferred one
         // at the edge, so nothing language-related happens here.
-        var theme =
+        const theme =
           localStorage.getItem('theme') ||
           (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        var palette = localStorage.getItem('palette') || 'Terracotta';
+        const palette = localStorage.getItem('palette') || 'Terracotta';
         el.dataset.theme = theme;
-        var p = PALETTES[palette] || PALETTES.Terracotta;
-        var d = theme === 'dark';
+        const p = PALETTES[palette] || PALETTES.Terracotta;
+        const d = theme === 'dark';
         el.style.setProperty('--accent', d ? p.d : p.l);
         el.style.setProperty('--accent-ink', d ? p.di : p.li);
         el.style.setProperty(

@@ -37,10 +37,14 @@ const nav =
   <div class="header-inner">
     <a class="wordmark" href={homeHref}>
       <span class="wordmark-name">Rodrigo Bustamante</span>
-      <span class="wordmark-dot" aria-hidden="true">●</span>
+      <span class="wordmark-dot" aria-hidden="true">
+        ●
+      </span>
     </a>
     <nav class="header-nav" aria-label="Primary">
-      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      {nav.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
     </nav>
     <div class="header-tools">
       <button class="tool-btn lang-btn" id="lang-toggle" type="button" aria-label="Toggle language">
@@ -62,9 +66,7 @@ const nav =
           style="display:none"
           aria-hidden="true"
         >
-          <path
-            d="M12 4.5v-2M12 21.5v-2M4.5 12h-2M21.5 12h-2M6.3 6.3L4.9 4.9M19.1 19.1l-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"
-          ></path>
+          <path d="M12 4.5v-2M12 21.5v-2M4.5 12h-2M21.5 12h-2M6.3 6.3L4.9 4.9M19.1 19.1l-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"></path>
         </svg>
         <svg
           id="icon-moon"

@@ -20,50 +20,42 @@ const { Content } = post;
   <header class="post-header reveal">
     <div class="post-header-meta">
       <time datetime={String(post.publishDate)}>{getFormattedDate(post.publishDate)}</time>
-      {
-        post.category && (
-          <>
-            <span class="post-header-dot" />
-            <a class="post-header-cat" href={getPermalink(post.category, 'category')}>
-              {post.category.replaceAll('-', ' ')}
-            </a>
-          </>
-        )
-      }
-      {
-        post.readingTime && (
-          <>
-            <span class="post-header-dot" />
-            <span>{post.readingTime} min read</span>
-          </>
-        )
-      }
+      {post.category && (
+        <>
+          <span class="post-header-dot" />
+          <a class="post-header-cat" href={getPermalink(post.category, 'category')}>
+            {post.category.replaceAll('-', ' ')}
+          </a>
+        </>
+      )}
+      {post.readingTime && (
+        <>
+          <span class="post-header-dot" />
+          <span>{post.readingTime} min read</span>
+        </>
+      )}
     </div>
     <h1 class="post-title">{post.title}</h1>
     {post.excerpt && <p class="post-excerpt">{post.excerpt}</p>}
   </header>
 
-  {
-    post.image ? (
-      <Image
-        src={post.image}
-        class="post-hero-img"
-        widths={[480, 720, 860, 1290, 1720]}
-        sizes="(max-width: 860px) 100vw, 860px"
-        alt={post.excerpt || post.title}
-        width={860}
-        height={484}
-        loading="eager"
-        decoding="async"
-      />
-    ) : (
-      <hr class="post-divider" />
-    )
-  }
+  {post.image ? (
+    <Image
+      src={post.image}
+      class="post-hero-img"
+      widths={[480, 720, 860, 1290, 1720]}
+      sizes="(max-width: 860px) 100vw, 860px"
+      alt={post.excerpt || post.title}
+      width={860}
+      height={484}
+      loading="eager"
+      decoding="async"
+    />
+  ) : (
+    <hr class="post-divider" />
+  )}
 
-  <div class="prose reveal">
-    {Content ? <Content /> : <Fragment set:html={post.content || ''} />}
-  </div>
+  <div class="prose reveal">{Content ? <Content /> : <Fragment set:html={post.content || ''} />}</div>
 
   <div class="post-footer reveal">
     <PostTags tags={post.tags} />

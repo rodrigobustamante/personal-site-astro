@@ -30,7 +30,9 @@ const metadata = {
 
 <BlogLayout title={metadata.title}>
   <div class="blog-wrap">
-    <Headline><span style="text-transform: capitalize">{category.replaceAll('-', ' ')}</span></Headline>
+    <Headline>
+      <span style="text-transform: capitalize">{category.replaceAll('-', ' ')}</span>
+    </Headline>
     <BlogList posts={page.data} />
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
   </div>
