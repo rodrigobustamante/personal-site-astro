@@ -29,9 +29,10 @@ module.exports = {
         // Timing metrics only warn: GitHub runners are too noisy to block on them.
         'largest-contentful-paint': ['warn', { maxNumericValue: 2500, aggregationMethod: 'median-run' }],
         'total-blocking-time': ['warn', { maxNumericValue: 200, aggregationMethod: 'median-run' }],
-        // Home transfers ~365 KB today, 308 KB of which are the five self-hosted
-        // font files. Budget sits just above that so it flags regressions only.
-        'resource-summary:total:size': ['warn', { maxNumericValue: 400 * 1024 }],
+        // Heaviest page today is the home at ~205 KB (148 KB of it fonts, after
+        // instancing them down to the axes in use). Budgets sit just above.
+        'resource-summary:total:size': ['warn', { maxNumericValue: 250 * 1024 }],
+        'resource-summary:font:size': ['warn', { maxNumericValue: 160 * 1024 }],
       },
     },
     upload: {
