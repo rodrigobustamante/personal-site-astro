@@ -4,7 +4,6 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import compress from 'astro-compress';
-import tasks from './src/utils/tasks';
 import ogImages from './src/integrations/og-images';
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter.mjs';
 import { SITE } from './src/utils/config.ts';
@@ -25,7 +24,6 @@ export default defineConfig({
   integrations: [
     sitemap(),
     mdx(),
-    tasks(),
     ogImages(),
     compress({
       CSS: true,
