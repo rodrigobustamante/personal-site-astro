@@ -6,6 +6,7 @@ interface Props {
   title?: string;
   description?: string;
   lang?: Lang;
+  /** Path or URL of the 1200x630 Open Graph card. Defaults to the home card for `lang`. */
   ogImage?: string;
   canonicalURL?: string;
   /**
@@ -19,7 +20,7 @@ const {
   title = 'Rodrigo Bustamante — Staff Frontend Engineer · Design Systems Architect',
   description = 'Rodrigo Bustamante — Staff Frontend Engineer & Design Systems Architect. 9 years building scalable frontend systems and design systems for global brands.',
   lang = 'en',
-  ogImage = '/images/portrait-crop.png',
+  ogImage = `/og/home/${Astro.props.lang ?? 'en'}.png`,
   canonicalURL = Astro.url.href,
   langRedirect = false,
 } = Astro.props;
@@ -80,8 +81,8 @@ const jsonLd = JSON.stringify({
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageAbs} />
-    <meta property="og:image:width" content="608" />
-    <meta property="og:image:height" content="760" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />

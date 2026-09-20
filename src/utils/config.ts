@@ -87,9 +87,9 @@ const config = {
       site_name: 'Rodrigo Bustamante',
       images: [
         {
-          url: '~/assets/images/default.png',
+          url: '/og/home/en.png',
           width: 1200,
-          height: 628,
+          height: 630,
         },
       ],
       type: 'website',
