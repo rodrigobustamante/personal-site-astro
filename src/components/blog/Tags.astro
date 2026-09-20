@@ -13,15 +13,17 @@ export interface Props {
 const { tags, title = undefined, isCategory = false } = Astro.props;
 ---
 
-{tags && Array.isArray(tags) && (
-  <div class="post-footer-tags">
-    {title !== undefined && <span>{title}</span>}
-    {tags.map((tag) => (
-      !APP_BLOG?.tag?.isEnabled ? (
-        <span>{tag}</span>
-      ) : (
-        <a href={getPermalink(tag, isCategory ? 'category' : 'tag')}>{tag}</a>
-      )
-    ))}
-  </div>
-)}
+{
+  tags && Array.isArray(tags) && (
+    <div class="post-footer-tags">
+      {title !== undefined && <span>{title}</span>}
+      {tags.map((tag) =>
+        !APP_BLOG?.tag?.isEnabled ? (
+          <span>{tag}</span>
+        ) : (
+          <a href={getPermalink(tag, isCategory ? 'category' : 'tag')}>{tag}</a>
+        )
+      )}
+    </div>
+  )
+}

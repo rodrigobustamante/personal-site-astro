@@ -6,11 +6,11 @@ site actually uses. The full latin subsets were 129–147 KB each because of the
 `opsz` (optical size) axis; these are 22–85 KB with identical rendering in the
 range used.
 
-| File | Axes kept |
-|---|---|
+| File                        | Axes kept                                                                 |
+| --------------------------- | ------------------------------------------------------------------------- |
 | `newsreader-normal-*.woff2` | `wght` 300–500, `opsz` 18–72 (body text at 17px up to the 72px hero name) |
-| `newsreader-italic-*.woff2` | `wght` 300–400, `opsz` pinned at 18 (italic only appears at text sizes) |
-| `hanken-normal-*.woff2` | `wght` 400–600 |
+| `newsreader-italic-*.woff2` | `wght` 300–400, `opsz` pinned at 18 (italic only appears at text sizes)   |
+| `hanken-normal-*.woff2`     | `wght` 400–600                                                            |
 
 The `@font-face` rules in `src/layouts/PortfolioLayout.astro` must declare the
 same `font-weight` ranges.
