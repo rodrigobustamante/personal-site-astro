@@ -25,6 +25,11 @@ export default defineConfig({
   base: SITE.base,
   trailingSlash: SITE.trailingSlash ? 'always' : 'never',
   output: 'server',
+  build: {
+    // The whole portfolio stylesheet is ~4 KB gzipped: cheaper inlined in
+    // <head> than as a render-blocking request on first visit.
+    inlineStylesheets: 'always',
+  },
   integrations: [
     tailwind({
       applyBaseStyles: false,
