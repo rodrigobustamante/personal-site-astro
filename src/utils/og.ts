@@ -92,8 +92,19 @@ const frame = (children: unknown[]) =>
 const label = (text: string) =>
   el(
     'div',
-    { display: 'flex', alignItems: 'center', gap: 14, fontSize: 22, fontWeight: 600, letterSpacing: '0.14em', color: C.accent },
-    [el('div', { width: 10, height: 10, borderRadius: 5, backgroundColor: C.accent }), el('span', {}, text.toUpperCase())]
+    {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 14,
+      fontSize: 22,
+      fontWeight: 600,
+      letterSpacing: '0.14em',
+      color: C.accent,
+    },
+    [
+      el('div', { width: 10, height: 10, borderRadius: 5, backgroundColor: C.accent }),
+      el('span', {}, text.toUpperCase()),
+    ]
   );
 
 const footer = () =>
@@ -108,7 +119,10 @@ const footer = () =>
       fontSize: 24,
       color: C.muted,
     },
-    [el('span', { fontFamily: 'Newsreader', fontSize: 28, color: C.inkSoft }, 'Rodrigo Bustamante'), el('span', {}, 'rodrigobustamante.cl')]
+    [
+      el('span', { fontFamily: 'Newsreader', fontSize: 28, color: C.inkSoft }, 'Rodrigo Bustamante'),
+      el('span', {}, 'rodrigobustamante.cl'),
+    ]
   );
 
 async function portfolioCard(card: Extract<OgCard, { kind: 'portfolio' }>) {
@@ -118,10 +132,17 @@ async function portfolioCard(card: Extract<OgCard, { kind: 'portfolio' }>) {
     el('div', { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 48 }, [
       el('div', { display: 'flex', flexDirection: 'column', gap: 32, maxWidth: 680 }, [
         label(card.label),
-        el('div', { fontFamily: 'Newsreader', fontSize: 92, lineHeight: 0.98, letterSpacing: '-0.02em', color: C.ink }, card.name),
+        el(
+          'div',
+          { fontFamily: 'Newsreader', fontSize: 92, lineHeight: 0.98, letterSpacing: '-0.02em', color: C.ink },
+          card.name
+        ),
         el('div', { fontSize: 32, fontWeight: 600, color: C.inkSoft, lineHeight: 1.3, maxWidth: 600 }, card.title),
       ]),
-      { type: 'img', props: { src: portrait, width: PORTRAIT.w, height: PORTRAIT.h, style: { borderRadius: 6, objectFit: 'cover' } } },
+      {
+        type: 'img',
+        props: { src: portrait, width: PORTRAIT.w, height: PORTRAIT.h, style: { borderRadius: 6, objectFit: 'cover' } },
+      },
     ]),
     footer(),
   ]);
@@ -133,9 +154,23 @@ function articleCard(card: Extract<OgCard, { kind: 'article' }>) {
   return frame([
     el('div', { display: 'flex', flexDirection: 'column', gap: 30 }, [
       label(card.label),
-      el('div', { fontFamily: 'Newsreader', fontSize: titleSize, lineHeight: 1.08, letterSpacing: '-0.015em', color: C.ink }, title),
-      ...(card.subtitle ? [el('div', { fontSize: 28, color: C.muted, lineHeight: 1.4, maxWidth: 1000 }, clamp(card.subtitle, 150))] : []),
-      ...(card.meta ? [el('div', { fontSize: 22, fontWeight: 600, letterSpacing: '0.06em', color: C.inkSoft }, card.meta.toUpperCase())] : []),
+      el(
+        'div',
+        { fontFamily: 'Newsreader', fontSize: titleSize, lineHeight: 1.08, letterSpacing: '-0.015em', color: C.ink },
+        title
+      ),
+      ...(card.subtitle
+        ? [el('div', { fontSize: 28, color: C.muted, lineHeight: 1.4, maxWidth: 1000 }, clamp(card.subtitle, 150))]
+        : []),
+      ...(card.meta
+        ? [
+            el(
+              'div',
+              { fontSize: 22, fontWeight: 600, letterSpacing: '0.06em', color: C.inkSoft },
+              card.meta.toUpperCase()
+            ),
+          ]
+        : []),
     ]),
     footer(),
   ]);
@@ -144,7 +179,10 @@ function articleCard(card: Extract<OgCard, { kind: 'article' }>) {
 // ---- helpers --------------------------------------------------------------
 
 function clamp(text: string, max: number) {
-  const clean = text.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  const clean = text
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
   return clean.length <= max ? clean : `${clean.slice(0, max - 1).trimEnd()}…`;
 }
 
@@ -170,6 +208,9 @@ function oklchToHex(L: number, Cc: number, hDeg: number): string {
     const v = Math.min(1, Math.max(0, c));
     return v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055;
   };
-  const hex = (c: number) => Math.round(gamma(c) * 255).toString(16).padStart(2, '0');
+  const hex = (c: number) =>
+    Math.round(gamma(c) * 255)
+      .toString(16)
+      .padStart(2, '0');
   return `#${hex(r)}${hex(g)}${hex(bl)}`;
 }

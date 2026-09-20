@@ -10,5 +10,3 @@ binding = "ASSETS"
 # Serve /es from es/index.html without redirecting to /es/ (matches Astro trailingSlash: never)
 html_handling = "drop-trailing-slash"
 
-[vars]
-NODE_VERSION = "22"

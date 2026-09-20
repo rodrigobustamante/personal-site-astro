@@ -2,23 +2,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
-import partytown from '@astrojs/partytown';
 import compress from 'astro-compress';
-import icon from 'astro-icon';
 import tasks from './src/utils/tasks';
 import ogImages from './src/integrations/og-images';
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter.mjs';
-import { ANALYTICS, SITE } from './src/utils/config.ts';
+import { SITE } from './src/utils/config.ts';
 import cloudflare from '@astrojs/cloudflare';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const whenExternalScripts = (items = []) =>
-  ANALYTICS.vendors.googleAnalytics.id && ANALYTICS.vendors.googleAnalytics.partytown
-    ? Array.isArray(items)
-      ? items.map((item) => item())
-      : [items()]
-    : [];
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,52 +23,8 @@ export default defineConfig({
     inlineStylesheets: 'always',
   },
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
     sitemap(),
     mdx(),
-    icon({
-      include: {
-        tabler: [
-          // Navigation & UI
-          'chevron-down',
-          'chevron-left',
-          'chevron-right',
-          'check',
-          'info-square',
-          'sun',
-          'clock',
-          'mail',
-          'rss',
-          // Social brands
-          'brand-x',
-          'brand-instagram',
-          'brand-linkedin',
-          'brand-github',
-          'brand-facebook',
-          'brand-whatsapp',
-        ],
-        'flat-color-icons': [
-          'template',
-          'gallery',
-          'approval',
-          'document',
-          'advertising',
-          'currency-exchange',
-          'voice-presentation',
-          'business-contact',
-          'database',
-        ],
-      },
-    }),
-    ...whenExternalScripts(() =>
-      partytown({
-        config: {
-          forward: ['dataLayer.push'],
-        },
-      })
-    ),
     tasks(),
     ogImages(),
     compress({

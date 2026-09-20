@@ -1,2 +1,4 @@
 User-agent: *
 Disallow:
+
+Sitemap: https://rodrigobustamante.cl/sitemap-index.xml
