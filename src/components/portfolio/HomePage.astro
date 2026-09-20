@@ -28,16 +28,26 @@ const { t, tl } = useTranslations(lang);
       <div class="wrap hero-grid">
         <div class="hero-left">
           <div class="hero-role">Staff Frontend Engineer &amp; Design Systems Architect</div>
-          <h1 class="hero-name">Rodrigo<br />Bustamante</h1>
+          <h1 class="hero-name">
+            Rodrigo
+            <br />
+            Bustamante
+          </h1>
           <p class="hero-pitch" set:html={t('hero.pitch')} />
           <div class="hero-stats">
-            <span class="hero-stat"><b>9</b> {t('hero.stat.years')}</span>
-            <span class="hero-stat"><b>50+</b> {t('hero.stat.teams')}</span>
-            <span class="hero-stat"
-              ><b>{t('hero.stat.millions')}</b>
-              {t('hero.stat.millions.sub')}</span
-            >
-            <span class="hero-stat"><b>10+</b> {t('hero.stat.countries')}</span>
+            <span class="hero-stat">
+              <b>9</b> {t('hero.stat.years')}
+            </span>
+            <span class="hero-stat">
+              <b>50+</b> {t('hero.stat.teams')}
+            </span>
+            <span class="hero-stat">
+              <b>{t('hero.stat.millions')}</b>
+              {t('hero.stat.millions.sub')}
+            </span>
+            <span class="hero-stat">
+              <b>10+</b> {t('hero.stat.countries')}
+            </span>
           </div>
           <div class="hero-meta">
             {t('hero.location')}
@@ -55,8 +65,10 @@ const { t, tl } = useTranslations(lang);
                 stroke-width="1.7"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                aria-hidden="true"><path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path></svg
+                aria-hidden="true"
               >
+                <path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path>
+              </svg>
               {t('hero.cta.contact')}
             </a>
             <a class="btn btn-ghost" href="/uploads/cv-rodrigo-bustamante-general.pdf" target="_blank" rel="noopener">
@@ -69,8 +81,10 @@ const { t, tl } = useTranslations(lang);
                 stroke-width="1.7"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4.5 20.5h15"></path></svg
+                aria-hidden="true"
               >
+                <path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4.5 20.5h15"></path>
+              </svg>
               {t('hero.cta.cv')}
             </a>
           </div>
@@ -121,7 +135,9 @@ const { t, tl } = useTranslations(lang);
                   <span class="role-title">Software Architect</span>
                 </div>
                 <ul class="role-bullets">
-                  {tl('exp.hangar.bullets').map((b) => <li>{b}</li>)}
+                  {tl('exp.hangar.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
                 </ul>
               </div>
               <div class="entry-stack">
@@ -136,7 +152,9 @@ const { t, tl } = useTranslations(lang);
                 <span class="chip">Redis</span>
                 <span class="chip">Storybook</span>
               </div>
-              <a class="cs-link" href={localizedPath('/work/hangar-design-system', lang)}>{t('exp.hangar.cs')}</a>
+              <a class="cs-link" href={localizedPath('/work/hangar-design-system', lang)}>
+                {t('exp.hangar.cs')}
+              </a>
             </div>
           </article>
 
@@ -158,7 +176,9 @@ const { t, tl } = useTranslations(lang);
                   <span class="role-title">Senior Software Engineer</span>
                 </div>
                 <ul class="role-bullets">
-                  {tl('exp.dme-latam.bullets').map((b) => <li>{b}</li>)}
+                  {tl('exp.dme-latam.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
                 </ul>
               </div>
               <div class="entry-stack">
@@ -192,7 +212,9 @@ const { t, tl } = useTranslations(lang);
                   <span class="role-title">Web UI Developer — Senior / SSr Adv</span>
                 </div>
                 <ul class="role-bullets">
-                  {tl('exp.dme-globant.bullets').map((b) => <li>{b}</li>)}
+                  {tl('exp.dme-globant.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
                 </ul>
               </div>
               <div class="entry-stack">
@@ -226,7 +248,9 @@ const { t, tl } = useTranslations(lang);
                   <span class="role-title">Subject Matter Expert</span>
                 </div>
                 <ul class="role-bullets">
-                  {tl('exp.simple-sme.bullets').map((b) => <li>{b}</li>)}
+                  {tl('exp.simple-sme.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
                 </ul>
               </div>
               <div class="entry-stack">
@@ -259,7 +283,9 @@ const { t, tl } = useTranslations(lang);
                   <span class="role-title">Backend Developer</span>
                 </div>
                 <ul class="role-bullets">
-                  {tl('exp.gateway.bullets').map((b) => <li>{b}</li>)}
+                  {tl('exp.gateway.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
                 </ul>
               </div>
               <div class="entry-stack">
@@ -292,7 +318,9 @@ const { t, tl } = useTranslations(lang);
                   <span class="role-title">FullStack Developer</span>
                 </div>
                 <ul class="role-bullets">
-                  {tl('exp.simple-fs.bullets').map((b) => <li>{b}</li>)}
+                  {tl('exp.simple-fs.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
                 </ul>
               </div>
               <div class="entry-stack">
@@ -326,7 +354,9 @@ const { t, tl } = useTranslations(lang);
                   <span class="role-period">Jun 2018 — May 2019</span>
                 </div>
                 <ul class="role-bullets">
-                  {tl('exp.innspiral.bullets').map((b) => <li>{b}</li>)}
+                  {tl('exp.innspiral.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
                 </ul>
               </div>
               <div class="entry-stack">
@@ -357,7 +387,9 @@ const { t, tl } = useTranslations(lang);
                   <span class="role-period">Feb 2018 — May 2018</span>
                 </div>
                 <ul class="role-bullets">
-                  {tl('exp.earlier.ormasoft.bullets').map((b) => <li>{b}</li>)}
+                  {tl('exp.earlier.ormasoft.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
                 </ul>
               </div>
               <div class="role">
@@ -366,7 +398,9 @@ const { t, tl } = useTranslations(lang);
                   <span class="role-period">Sep 2017 — Dec 2017</span>
                 </div>
                 <ul class="role-bullets">
-                  {tl('exp.earlier.analisis.bullets').map((b) => <li>{b}</li>)}
+                  {tl('exp.earlier.analisis.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
                 </ul>
               </div>
               <div class="role">
@@ -375,7 +409,9 @@ const { t, tl } = useTranslations(lang);
                   <span class="role-period">Mar 2015 — Dec 2017</span>
                 </div>
                 <ul class="role-bullets">
-                  {tl('exp.earlier.duoc.bullets').map((b) => <li>{b}</li>)}
+                  {tl('exp.earlier.duoc.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
                 </ul>
               </div>
               <div class="entry-stack">
@@ -479,12 +515,12 @@ const { t, tl } = useTranslations(lang);
               <span class="chip">Strava API</span>
             </div>
             <div class="project-links">
-              <a class="project-link" href="https://github.com/rodrigobustamante/pace" aria-label="PACE repo"
-                >{t('projects.repo')}</a
-              >
-              <a class="project-link" href="https://pace.rodrigobustamante.cl/" aria-label="PACE demo"
-                >{t('projects.demo')}</a
-              >
+              <a class="project-link" href="https://github.com/rodrigobustamante/pace" aria-label="PACE repo">
+                {t('projects.repo')}
+              </a>
+              <a class="project-link" href="https://pace.rodrigobustamante.cl/" aria-label="PACE demo">
+                {t('projects.demo')}
+              </a>
             </div>
           </article>
           <article class="project-card">
@@ -501,12 +537,12 @@ const { t, tl } = useTranslations(lang);
               <span class="chip">TypeScript</span>
             </div>
             <div class="project-links">
-              <a class="project-link" href="https://github.com/rodrigobustamante/intervalo" aria-label="Intervalo repo"
-                >{t('projects.repo')}</a
-              >
-              <a class="project-link" href="https://intervalo.rodrigobustamante.cl/" aria-label="Intervalo demo"
-                >{t('projects.demo')}</a
-              >
+              <a class="project-link" href="https://github.com/rodrigobustamante/intervalo" aria-label="Intervalo repo">
+                {t('projects.repo')}
+              </a>
+              <a class="project-link" href="https://intervalo.rodrigobustamante.cl/" aria-label="Intervalo demo">
+                {t('projects.demo')}
+              </a>
             </div>
           </article>
         </div>
@@ -565,165 +601,163 @@ const { t, tl } = useTranslations(lang);
           <p class="section-sub">{t('writing.sub')}</p>
         </div>
         <div class="posts reveal">
-          {
-            lang === 'es' ? (
-              <>
-                <a class="post" href="/blog/es/rendimiento-web-rendimiento-especulativo-guia">
-                  <div class="post-meta">
-                    <span class="post-cat">Performance</span>
-                    <span class="dot" />
-                    <span>12 Mar 2025</span>
-                    <span class="dot" />
-                    <span>8 min de lectura</span>
+          {lang === 'es' ? (
+            <>
+              <a class="post" href="/blog/es/rendimiento-web-rendimiento-especulativo-guia">
+                <div class="post-meta">
+                  <span class="post-cat">Performance</span>
+                  <span class="dot" />
+                  <span>12 Mar 2025</span>
+                  <span class="dot" />
+                  <span>8 min de lectura</span>
+                </div>
+                <h3 class="post-title">Speculative Rendering — Mejorando el performance web</h3>
+                <p class="post-excerpt">
+                  Qué es el speculative rendering, cómo mejora el performance y buenas prácticas para implementarlo en
+                  tu sitio.
+                </p>
+                <div class="post-foot">
+                  <div class="post-tags">
+                    <>
+                      <span>#performance</span>
+                      <span>#seo</span>
+                    </>
                   </div>
-                  <h3 class="post-title">Speculative Rendering — Mejorando el performance web</h3>
-                  <p class="post-excerpt">
-                    Qué es el speculative rendering, cómo mejora el performance y buenas prácticas para implementarlo en
-                    tu sitio.
-                  </p>
-                  <div class="post-foot">
-                    <div class="post-tags">
-                      <>
-                        <span>#performance</span>
-                        <span>#seo</span>
-                      </>
-                    </div>
-                    <span class="post-arrow">
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M6 18L18 6M9 6h9v9" />
-                      </svg>
-                    </span>
+                  <span class="post-arrow">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 18L18 6M9 6h9v9" />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+              <a class="post" href="/blog/es/core-web-vitals-guia-completa-para-principiantes">
+                <div class="post-meta">
+                  <span class="post-cat">Tutoriales</span>
+                  <span class="dot" />
+                  <span>6 Mar 2025</span>
+                  <span class="dot" />
+                  <span>12 min de lectura</span>
+                </div>
+                <h3 class="post-title">Core Web Vitals — Guía completa para principiantes</h3>
+                <p class="post-excerpt">
+                  Todo sobre Core Web Vitals — qué son, por qué importan y cómo mejorar performance, accesibilidad y
+                  SEO.
+                </p>
+                <div class="post-foot">
+                  <div class="post-tags">
+                    <>
+                      <span>#performance</span>
+                      <span>#a11y</span>
+                      <span>#seo</span>
+                    </>
                   </div>
-                </a>
-                <a class="post" href="/blog/es/core-web-vitals-guia-completa-para-principiantes">
-                  <div class="post-meta">
-                    <span class="post-cat">Tutoriales</span>
-                    <span class="dot" />
-                    <span>6 Mar 2025</span>
-                    <span class="dot" />
-                    <span>12 min de lectura</span>
+                  <span class="post-arrow">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 18L18 6M9 6h9v9" />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            </>
+          ) : (
+            <>
+              <a class="post" href="/blog/en/speculative-rendering-web-performance-guide">
+                <div class="post-meta">
+                  <span class="post-cat">Performance</span>
+                  <span class="dot" />
+                  <span>Mar 12, 2025</span>
+                  <span class="dot" />
+                  <span>8 min read</span>
+                </div>
+                <h3 class="post-title">Speculative Rendering — Enhancing Web Performance</h3>
+                <p class="post-excerpt">
+                  What speculative rendering is, how it improves performance, and best practices for implementing it on
+                  your site.
+                </p>
+                <div class="post-foot">
+                  <div class="post-tags">
+                    <>
+                      <span>#performance</span>
+                      <span>#seo</span>
+                    </>
                   </div>
-                  <h3 class="post-title">Core Web Vitals — Guía completa para principiantes</h3>
-                  <p class="post-excerpt">
-                    Todo sobre Core Web Vitals — qué son, por qué importan y cómo mejorar performance, accesibilidad y
-                    SEO.
-                  </p>
-                  <div class="post-foot">
-                    <div class="post-tags">
-                      <>
-                        <span>#performance</span>
-                        <span>#a11y</span>
-                        <span>#seo</span>
-                      </>
-                    </div>
-                    <span class="post-arrow">
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M6 18L18 6M9 6h9v9" />
-                      </svg>
-                    </span>
+                  <span class="post-arrow">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 18L18 6M9 6h9v9" />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+              <a class="post" href="/blog/en/core-web-vitals-complete-guide-for-beginners">
+                <div class="post-meta">
+                  <span class="post-cat">Tutorials</span>
+                  <span class="dot" />
+                  <span>Mar 6, 2025</span>
+                  <span class="dot" />
+                  <span>12 min read</span>
+                </div>
+                <h3 class="post-title">Core Web Vitals — A Complete Guide for Beginners</h3>
+                <p class="post-excerpt">
+                  Everything about Core Web Vitals — what they are, why they matter, and how to improve performance,
+                  accessibility and SEO.
+                </p>
+                <div class="post-foot">
+                  <div class="post-tags">
+                    <>
+                      <span>#performance</span>
+                      <span>#a11y</span>
+                      <span>#seo</span>
+                    </>
                   </div>
-                </a>
-              </>
-            ) : (
-              <>
-                <a class="post" href="/blog/en/speculative-rendering-web-performance-guide">
-                  <div class="post-meta">
-                    <span class="post-cat">Performance</span>
-                    <span class="dot" />
-                    <span>Mar 12, 2025</span>
-                    <span class="dot" />
-                    <span>8 min read</span>
-                  </div>
-                  <h3 class="post-title">Speculative Rendering — Enhancing Web Performance</h3>
-                  <p class="post-excerpt">
-                    What speculative rendering is, how it improves performance, and best practices for implementing it
-                    on your site.
-                  </p>
-                  <div class="post-foot">
-                    <div class="post-tags">
-                      <>
-                        <span>#performance</span>
-                        <span>#seo</span>
-                      </>
-                    </div>
-                    <span class="post-arrow">
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M6 18L18 6M9 6h9v9" />
-                      </svg>
-                    </span>
-                  </div>
-                </a>
-                <a class="post" href="/blog/en/core-web-vitals-complete-guide-for-beginners">
-                  <div class="post-meta">
-                    <span class="post-cat">Tutorials</span>
-                    <span class="dot" />
-                    <span>Mar 6, 2025</span>
-                    <span class="dot" />
-                    <span>12 min read</span>
-                  </div>
-                  <h3 class="post-title">Core Web Vitals — A Complete Guide for Beginners</h3>
-                  <p class="post-excerpt">
-                    Everything about Core Web Vitals — what they are, why they matter, and how to improve performance,
-                    accessibility and SEO.
-                  </p>
-                  <div class="post-foot">
-                    <div class="post-tags">
-                      <>
-                        <span>#performance</span>
-                        <span>#a11y</span>
-                        <span>#seo</span>
-                      </>
-                    </div>
-                    <span class="post-arrow">
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M6 18L18 6M9 6h9v9" />
-                      </svg>
-                    </span>
-                  </div>
-                </a>
-              </>
-            )
-          }
+                  <span class="post-arrow">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 18L18 6M9 6h9v9" />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            </>
+          )}
         </div>
         <div class="writing-more reveal">
           <a class="more-link" href={`/blog/${lang}`}>
@@ -737,8 +771,10 @@ const { t, tl } = useTranslations(lang);
               stroke-width="1.7"
               stroke-linecap="round"
               stroke-linejoin="round"
-              aria-hidden="true"><path d="M6 18L18 6M9 6h9v9"></path></svg
+              aria-hidden="true"
             >
+              <path d="M6 18L18 6M9 6h9v9"></path>
+            </svg>
           </a>
         </div>
       </div>
@@ -761,24 +797,22 @@ const { t, tl } = useTranslations(lang);
                 stroke-width="1.7"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                aria-hidden="true"><path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path></svg
+                aria-hidden="true"
               >
+                <path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path>
+              </svg>
               rbustamantejelvez@gmail.com
             </a>
             <a class="btn btn-ghost" href="https://www.linkedin.com/in/rod-bustamante/" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
-                ><path
-                  d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zm1.78 13.02H3.56V9h3.56v11.45z"
-                ></path></svg
-              >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+                <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zm1.78 13.02H3.56V9h3.56v11.45z"></path>
+              </svg>
               LinkedIn
             </a>
             <a class="btn btn-ghost" href="https://github.com/rodrigobustamante" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
-                ><path
-                  d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0012 2z"
-                ></path></svg
-              >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+                <path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0012 2z"></path>
+              </svg>
               GitHub
             </a>
           </div>
@@ -790,18 +824,14 @@ const { t, tl } = useTranslations(lang);
           <span>{t('footer.credit')}</span>
           <div class="footer-socials">
             <a href="https://www.linkedin.com/in/rod-bustamante/" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
-                ><path
-                  d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zm1.78 13.02H3.56V9h3.56v11.45z"
-                ></path></svg
-              >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+                <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zm1.78 13.02H3.56V9h3.56v11.45z"></path>
+              </svg>
             </a>
             <a href="https://github.com/rodrigobustamante" target="_blank" rel="noopener" aria-label="GitHub">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"
-                ><path
-                  d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0012 2z"
-                ></path></svg
-              >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+                <path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0012 2z"></path>
+              </svg>
             </a>
             <a href="mailto:rbustamantejelvez@gmail.com" aria-label="Email">
               <svg
@@ -813,8 +843,10 @@ const { t, tl } = useTranslations(lang);
                 stroke-width="1.7"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                aria-hidden="true"><path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path></svg
+                aria-hidden="true"
               >
+                <path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path>
+              </svg>
             </a>
           </div>
         </div>

@@ -17,45 +17,35 @@ const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : 
     <div>
       <div class="post-card-meta">
         <time datetime={String(post.publishDate)}>{getFormattedDate(post.publishDate)}</time>
-        {
-          post.category && (
-            <>
-              <span class="post-card-dot" />
-              <a class="post-card-cat" href={getPermalink(post.category, 'category')}>
-                {post.category.replaceAll('-', ' ')}
-              </a>
-            </>
-          )
-        }
-        {
-          post.readingTime && (
-            <>
-              <span class="post-card-dot" />
-              <span>{post.readingTime} min read</span>
-            </>
-          )
-        }
+        {post.category && (
+          <>
+            <span class="post-card-dot" />
+            <a class="post-card-cat" href={getPermalink(post.category, 'category')}>
+              {post.category.replaceAll('-', ' ')}
+            </a>
+          </>
+        )}
+        {post.readingTime && (
+          <>
+            <span class="post-card-dot" />
+            <span>{post.readingTime} min read</span>
+          </>
+        )}
       </div>
-      <h2>
-        {link ? <a href={link}>{post.title}</a> : post.title}
-      </h2>
+      <h2>{link ? <a href={link}>{post.title}</a> : post.title}</h2>
       {post.excerpt && <p>{post.excerpt}</p>}
-      {
-        post.tags && post.tags.length > 0 && (
-          <div class="post-card-tags">
-            {post.tags.map((tag) =>
-              APP_BLOG?.tag?.isEnabled ? <a href={getPermalink(tag, 'tag')}>{tag}</a> : <span>{tag}</span>
-            )}
-          </div>
-        )
-      }
+      {post.tags && post.tags.length > 0 && (
+        <div class="post-card-tags">
+          {post.tags.map((tag) =>
+            APP_BLOG?.tag?.isEnabled ? <a href={getPermalink(tag, 'tag')}>{tag}</a> : <span>{tag}</span>
+          )}
+        </div>
+      )}
     </div>
-    {
-      link && (
-        <span class="post-card-arrow" aria-hidden="true">
-          ↗
-        </span>
-      )
-    }
+    {link && (
+      <span class="post-card-arrow" aria-hidden="true">
+        ↗
+      </span>
+    )}
   </div>
 </li>
