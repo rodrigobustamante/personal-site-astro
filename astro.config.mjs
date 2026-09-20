@@ -8,6 +8,7 @@ import partytown from '@astrojs/partytown';
 import compress from 'astro-compress';
 import icon from 'astro-icon';
 import tasks from './src/utils/tasks';
+import ogImages from './src/integrations/og-images';
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter.mjs';
 import { ANALYTICS, SITE } from './src/utils/config.ts';
 import cloudflare from '@astrojs/cloudflare';
@@ -78,6 +79,7 @@ export default defineConfig({
       })
     ),
     tasks(),
+    ogImages(),
     compress({
       CSS: true,
       HTML: false,

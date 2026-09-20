@@ -45,7 +45,13 @@ const metadata = merge(
 ) as MetaData;
 ---
 
-<BlogLayout title={metadata.title} description={metadata.description as string | undefined} translationUrl={post.translation} lang={lang}>
+<BlogLayout
+  title={metadata.title}
+  description={metadata.description as string | undefined}
+  translationUrl={post.translation}
+  lang={lang}
+  ogImage={`/og/post/${post.slug}.png`}
+>
   <ToBlogLink lang={lang} />
   <SinglePost post={{ ...post, image: image }} url={url}>
     {post.Content ? <post.Content /> : <Fragment set:html={post.content || ''} />}

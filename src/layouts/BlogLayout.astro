@@ -7,6 +7,8 @@ interface Props {
   description?: string;
   translationUrl?: string;
   lang?: 'en' | 'es';
+  /** 1200x630 Open Graph card. Defaults to the blog card for the resolved language. */
+  ogImage?: string;
 }
 
 const {
@@ -14,12 +16,14 @@ const {
   description = 'Articles on web performance, frontend engineering, and software craftsmanship.',
   translationUrl,
   lang,
+  ogImage,
 } = Astro.props;
 
 const resolvedLang = (lang ?? 'en') as 'en' | 'es';
+const resolvedOgImage = ogImage ?? `/og/blog/${resolvedLang}.png`;
 ---
 
-<PortfolioLayout title={title} description={description} lang={resolvedLang}>
+<PortfolioLayout title={title} description={description} lang={resolvedLang} ogImage={resolvedOgImage}>
   <Fragment slot="head">
     <style is:global>
   /* Footer (blog pages) */
