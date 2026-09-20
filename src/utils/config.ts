@@ -38,9 +38,9 @@ export const SITE: SiteConfig = {
   trailingSlash: false,
 };
 
-/** Only `description` is read today (RSS feed). */
+/** Only `description` is read today (RSS feed). Kept in sync with BlogLayout's default description. */
 export const METADATA = {
-  description: 'Web UI Developer',
+  description: 'Articles on web performance, frontend engineering, and software craftsmanship.',
 };
 
 export const I18N = {
