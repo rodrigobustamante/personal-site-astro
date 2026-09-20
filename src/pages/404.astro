@@ -1,6 +1,8 @@
 ---
 import BlogLayout from '~/layouts/BlogLayout.astro';
 import { getHomePermalink } from '~/utils/permalinks';
+
+export const prerender = true;
 ---
 
 <BlogLayout title="404 — Page Not Found">

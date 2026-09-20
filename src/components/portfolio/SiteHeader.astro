@@ -1,17 +1,22 @@
 ---
 import { useTranslations, type Lang } from '~/i18n/ui';
+import { alternateLang, localizedPath } from '~/i18n/paths';
 
 interface Props {
   lang: Lang;
   variant?: 'portfolio' | 'blog';
-  homeHref?: string;
+  /** URL of this page in the other language. Defaults to the localized sibling path. */
   translationUrl?: string;
 }
 
-const { lang, variant = 'portfolio', homeHref = '/', translationUrl } = Astro.props;
+const { lang, variant = 'portfolio', translationUrl } = Astro.props;
 const { t } = useTranslations(lang);
 
+const otherLang = alternateLang(lang);
+const homeHref = localizedPath('/', lang);
 const blogHref = `/blog/${lang}`;
+const altUrl =
+  translationUrl ?? (variant === 'blog' ? `/blog/${otherLang}` : localizedPath(Astro.url.pathname, otherLang));
 
 const nav =
   variant === 'portfolio'
@@ -22,9 +27,9 @@ const nav =
         { href: '#contact', label: t('nav.contact') },
       ]
     : [
-        { href: '/', label: t('nav.home') },
+        { href: homeHref, label: t('nav.home') },
         { href: blogHref, label: t('nav.blog') },
-        { href: '/#contact', label: t('nav.contact') },
+        { href: localizedPath('/#contact', lang), label: t('nav.contact') },
       ];
 ---
 
@@ -32,7 +37,7 @@ const nav =
   class="header"
   id="site-header"
   data-variant={variant}
-  {...(translationUrl ? { 'data-translation-url': translationUrl } : {})}
+  data-alt-url={altUrl}
 >
   <div class="header-inner">
     <a class="wordmark" href={homeHref}>
@@ -110,7 +115,6 @@ const nav =
   }
 
   const header = document.getElementById('site-header');
-  const variant = header?.dataset.variant ?? 'portfolio';
 
   window.addEventListener(
     'scroll',
@@ -148,20 +152,13 @@ const nav =
   langBtn?.addEventListener('click', () => {
     const current = document.documentElement.dataset.lang || 'en';
     const next = current === 'en' ? 'es' : 'en';
-    document.cookie = `lang=${next};path=/;max-age=31536000`;
     localStorage.setItem('lang', next);
+    // Drop the legacy cookie from the SSR-era language switch.
+    document.cookie = 'lang=;path=/;max-age=0';
 
-    const translationUrl = header?.dataset.translationUrl;
-    if (translationUrl) {
-      window.location.href = translationUrl;
-      return;
+    const altUrl = header?.dataset.altUrl;
+    if (altUrl) {
+      window.location.href = altUrl + window.location.hash;
     }
-
-    if (variant === 'blog') {
-      window.location.href = `/blog/${next}`;
-      return;
-    }
-
-    window.location.reload();
   });
 </script>
