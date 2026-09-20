@@ -57,7 +57,9 @@ export default defineConfig({
     },
   },
   adapter: cloudflare({
-    imageService: 'passthrough',
+    // Every page is prerendered, so images are optimized by sharp at build time
+    // and served as static assets; nothing is transformed in the Worker.
+    imageService: 'compile',
     platformProxy: {
       enabled: true,
     },
