@@ -153,8 +153,9 @@ const nav =
     const current = document.documentElement.dataset.lang || 'en';
     const next = current === 'en' ? 'es' : 'en';
     localStorage.setItem('lang', next);
-    // Drop the legacy cookie from the SSR-era language switch.
-    document.cookie = 'lang=;path=/;max-age=0';
+    // The edge redirect (src/edge/language-redirect.ts) honours this cookie
+    // over Accept-Language, so an explicit choice sticks across visits.
+    document.cookie = `lang=${next};path=/;max-age=31536000;samesite=lax`;
 
     const altUrl = header?.dataset.altUrl;
     if (altUrl) {

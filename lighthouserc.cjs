@@ -2,12 +2,11 @@
  * Lighthouse CI budget. Runs against the static build in dist/client, so it
  * measures the pages exactly as prerendered, independent of Cloudflare.
  *
- * `/es` is not listed on purpose: the anti-FOUC script redirects portfolio
- * pages to the browser's preferred language, so in CI (en-US Chrome) `/es`
- * would just be audited as `/`. Spanish coverage comes from the blog index,
- * which never redirects. Locally, a Spanish Chrome flips it the other way.
+ * Language negotiation happens in the Worker (src/edge/language-redirect.ts),
+ * which this static server bypasses, so every localized page can be audited
+ * directly regardless of the browser language.
  */
-const PORTFOLIO = ['/', '/work/hangar-design-system/'];
+const PORTFOLIO = ['/', '/es/', '/work/hangar-design-system/'];
 const BLOG = ['/blog/en/', '/blog/es/', '/blog/en/core-web-vitals-complete-guide-for-beginners/'];
 
 /** @type {import('@lhci/cli').LighthouseCiConfig} */

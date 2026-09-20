@@ -42,9 +42,15 @@ export default defineConfig({
   },
   vite: {
     resolve: {
-      alias: {
-        '~': path.resolve(__dirname, './src'),
-      },
+      alias: [
+        { find: '~', replacement: path.resolve(__dirname, './src') },
+        // Wrap the Cloudflare adapter's Worker entrypoint so the edge language
+        // redirect runs before prerendered pages are served (see src/edge/worker.ts).
+        {
+          find: /^@astrojs\/cloudflare\/entrypoints\/server(\.js)?$/,
+          replacement: path.resolve(__dirname, './src/edge/worker.ts'),
+        },
+      ],
     },
     optimizeDeps: {
       include: ['sharp'],
