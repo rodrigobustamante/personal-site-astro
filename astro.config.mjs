@@ -6,6 +6,7 @@ import mdx from '@astrojs/mdx';
 import compress from 'astro-compress';
 import ogImages from './src/integrations/og-images';
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter.mjs';
+import { unified } from '@astrojs/markdown-remark';
 import { SITE } from './src/utils/config.ts';
 import cloudflare from '@astrojs/cloudflare';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -35,8 +36,12 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [readingTimeRemarkPlugin],
-    rehypePlugins: [responsiveTablesRehypePlugin],
+    // Explicit unified() processor: the top-level remark/rehype options are
+    // deprecated and @astrojs/mdx 8 only honours them through it.
+    processor: unified({
+      remarkPlugins: [readingTimeRemarkPlugin],
+      rehypePlugins: [responsiveTablesRehypePlugin],
+    }),
   },
   vite: {
     resolve: {
