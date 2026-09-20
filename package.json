@@ -17,11 +17,11 @@
     "test": "node --test 'src/**/*.test.ts'"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.0.1",
-    "@astrojs/rss": "4.0.18",
-    "@astrojs/sitemap": "3.7.3",
-    "astro": "^7.0.3",
-    "limax": "4.1.0",
+    "@astrojs/cloudflare": "^14.3.2",
+    "@astrojs/rss": "4.0.19",
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "^7.3.3",
+    "limax": "4.2.3",
     "lodash.merge": "^4.6.2",
     "unpic": "^3.15.0"
   },
@@ -33,17 +33,17 @@
     "@types/lodash.merge": "^4.6.9",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
-    "astro-compress": "^2.2.3",
+    "astro-compress": "^2.4.3",
     "eslint": "^8.55.0",
     "eslint-plugin-astro": "^0.30.0",
     "mdast-util-to-string": "^4.0.0",
-    "prettier": "^3.1.0",
+    "prettier": "^3.9.8",
     "prettier-plugin-astro": "^0.12.2",
     "reading-time": "^1.5.0",
     "satori": "^0.33.4",
     "sharp": "^0.33.5",
     "typescript": "^5.3.3",
-    "wrangler": "^4.105.0"
+    "wrangler": "^4.135.0"
   },
   "type": "module",
   "engines": {
