@@ -9,6 +9,8 @@ export interface SiteConfig {
   site: string;
   base: string;
   trailingSlash: boolean;
+  /** Cloudflare Web Analytics beacon token (public). Empty string disables the beacon. */
+  analyticsToken: string;
 }
 
 export interface RobotsConfig {
@@ -36,6 +38,7 @@ export const SITE: SiteConfig = {
   site: 'https://rodrigobustamante.cl',
   base: '/',
   trailingSlash: false,
+  analyticsToken: '6926c477a8094b5b834e4f94047a6c2e',
 };
 
 /** Only `description` is read today (RSS feed). Kept in sync with BlogLayout's default description. */
