@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { SITE } from '~/utils/config';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 
@@ -27,6 +28,9 @@ const {
 } = Astro.props;
 
 const origin = Astro.site ?? Astro.url;
+// Cloudflare Web Analytics: cookie-less RUM. `spa: true` so client-side
+// navigations through ClientRouter are counted as page views too.
+const beaconConfig = SITE.analyticsToken ? JSON.stringify({ token: SITE.analyticsToken, spa: true }) : undefined;
 const ogImageAbs = new URL(ogImage, origin).href;
 
 // hreflang alternates. Portfolio pages have a real sibling per language;
@@ -1126,5 +1130,13 @@ const jsonLd = JSON.stringify({
       initReveal();
       document.addEventListener('astro:page-load', initReveal);
     </script>
+    {beaconConfig && (
+      <script
+        is:inline
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={beaconConfig}
+      ></script>
+    )}
   </body>
 </html>
