@@ -17,6 +17,10 @@ export default defineConfig({
   base: SITE.base,
   trailingSlash: SITE.trailingSlash ? 'always' : 'never',
   output: 'server',
+  // Prefetch every internal link on hover/focus; with clientPrerender the
+  // prefetch becomes a Speculation Rules `prerender` on Chromium.
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
+  experimental: { clientPrerender: true },
   build: {
     // The whole portfolio stylesheet is ~4 KB gzipped: cheaper inlined in
     // <head> than as a render-blocking request on first visit.

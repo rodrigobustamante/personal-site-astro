@@ -88,93 +88,56 @@ const nav =
 </header>
 
 <script>
-  const PALETTES: Record<string, { l: string; d: string; li: string; di: string }> = {
-    Terracotta: {
-      l: 'oklch(0.585 0.125 42)',
-      d: 'oklch(0.72 0.12 48)',
-      li: 'oklch(0.46 0.12 42)',
-      di: 'oklch(0.78 0.12 50)',
-    },
-    Ochre: { l: 'oklch(0.62 0.12 75)', d: 'oklch(0.78 0.11 82)', li: 'oklch(0.5 0.11 72)', di: 'oklch(0.82 0.11 84)' },
-    Olive: {
-      l: 'oklch(0.55 0.09 130)',
-      d: 'oklch(0.72 0.1 135)',
-      li: 'oklch(0.45 0.09 128)',
-      di: 'oklch(0.78 0.1 138)',
-    },
-    Indigo: {
-      l: 'oklch(0.5 0.11 270)',
-      d: 'oklch(0.7 0.12 275)',
-      li: 'oklch(0.45 0.12 270)',
-      di: 'oklch(0.76 0.12 278)',
-    },
-    Plum: {
-      l: 'oklch(0.52 0.13 350)',
-      d: 'oklch(0.72 0.12 352)',
-      li: 'oklch(0.45 0.13 350)',
-      di: 'oklch(0.78 0.12 354)',
-    },
-  };
+  // The theme/palette logic lives in PortfolioLayout's inline script and is
+  // exposed as window.__applyTheme so it can run before first paint.
+  const applyTheme = () => (window as Window & { __applyTheme?: () => void }).__applyTheme?.();
 
-  function applyPalette(theme: string) {
-    const palette = localStorage.getItem('palette') || 'Terracotta';
-    const p = PALETTES[palette] ?? PALETTES.Terracotta;
-    const el = document.documentElement;
-    const isDark = theme === 'dark';
-    el.style.setProperty('--accent', isDark ? p.d : p.l);
-    el.style.setProperty('--accent-ink', isDark ? p.di : p.li);
-    el.style.setProperty(
-      '--accent-soft',
-      `color-mix(in oklab, ${isDark ? p.d : p.l} ${isDark ? 16 : 12}%, transparent)`
+  let scrollBound = false;
+  function bindScroll() {
+    if (scrollBound) return;
+    scrollBound = true;
+    window.addEventListener(
+      'scroll',
+      () => document.getElementById('site-header')?.classList.toggle('scrolled', window.scrollY > 10),
+      { passive: true }
     );
   }
 
-  const header = document.getElementById('site-header');
+  // Runs on first load and after every ClientRouter swap, which replaces the
+  // header element and its listeners.
+  function initHeader() {
+    const header = document.getElementById('site-header');
+    if (!header || header.dataset.bound) return;
+    header.dataset.bound = '';
+    bindScroll();
+    requestAnimationFrame(() => header.classList.toggle('scrolled', window.scrollY > 10));
 
-  window.addEventListener(
-    'scroll',
-    () => {
-      header?.classList.toggle('scrolled', window.scrollY > 10);
-    },
-    { passive: true }
-  );
-  requestAnimationFrame(() => {
-    header?.classList.toggle('scrolled', window.scrollY > 10);
-  });
+    const iconSun = document.getElementById('icon-sun') as HTMLElement | null;
+    const iconMoon = document.getElementById('icon-moon') as HTMLElement | null;
+    const applyThemeIcons = (theme: string) => {
+      if (iconSun) iconSun.style.display = theme === 'dark' ? 'block' : 'none';
+      if (iconMoon) iconMoon.style.display = theme === 'dark' ? 'none' : 'block';
+    };
+    applyThemeIcons(document.documentElement.dataset.theme || 'light');
 
-  const themeBtn = document.getElementById('theme-toggle');
-  const iconSun = document.getElementById('icon-sun') as HTMLElement | null;
-  const iconMoon = document.getElementById('icon-moon') as HTMLElement | null;
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      const next = (document.documentElement.dataset.theme || 'light') === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', next);
+      applyTheme();
+      applyThemeIcons(next);
+    });
 
-  function applyThemeIcons(theme: string) {
-    if (iconSun) iconSun.style.display = theme === 'dark' ? 'block' : 'none';
-    if (iconMoon) iconMoon.style.display = theme === 'dark' ? 'none' : 'block';
+    document.getElementById('lang-toggle')?.addEventListener('click', () => {
+      const next = (document.documentElement.dataset.lang || 'en') === 'en' ? 'es' : 'en';
+      localStorage.setItem('lang', next);
+      // The edge redirect (src/edge/language-redirect.ts) honours this cookie
+      // over Accept-Language, so an explicit choice sticks across visits.
+      document.cookie = `lang=${next};path=/;max-age=31536000;samesite=lax`;
+      const altUrl = header.dataset.altUrl;
+      if (altUrl) window.location.href = altUrl + window.location.hash;
+    });
   }
 
-  const initialTheme = document.documentElement.dataset.theme || 'light';
-  applyThemeIcons(initialTheme);
-
-  themeBtn?.addEventListener('click', () => {
-    const current = document.documentElement.dataset.theme || 'light';
-    const next = current === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem('theme', next);
-    applyThemeIcons(next);
-    applyPalette(next);
-  });
-
-  const langBtn = document.getElementById('lang-toggle');
-  langBtn?.addEventListener('click', () => {
-    const current = document.documentElement.dataset.lang || 'en';
-    const next = current === 'en' ? 'es' : 'en';
-    localStorage.setItem('lang', next);
-    // The edge redirect (src/edge/language-redirect.ts) honours this cookie
-    // over Accept-Language, so an explicit choice sticks across visits.
-    document.cookie = `lang=${next};path=/;max-age=31536000;samesite=lax`;
-
-    const altUrl = header?.dataset.altUrl;
-    if (altUrl) {
-      window.location.href = altUrl + window.location.hash;
-    }
-  });
+  initHeader();
+  document.addEventListener('astro:page-load', initHeader);
 </script>
