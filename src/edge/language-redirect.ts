@@ -12,8 +12,9 @@
 import type { Lang } from '../i18n/ui.ts';
 import { LANGS, localizedPath, stripLocale } from '../i18n/paths.ts';
 
-/** English paths of the pages that exist in both languages. */
-export const LOCALIZED_PAGES: readonly string[] = ['/', '/work/hangar-design-system'];
+/** English paths of the pages that exist in both languages: the home and everything under /work. */
+export const isLocalizedPage = (basePath: string) =>
+  basePath === '/' || basePath === '/work' || basePath.startsWith('/work/');
 
 const isLang = (value: string | undefined): value is Lang => LANGS.includes(value as Lang);
 
@@ -43,7 +44,7 @@ export function languageRedirect(request: Request): Response | undefined {
   const pathname = url.pathname.length > 1 ? url.pathname.replace(/\/+$/, '') : url.pathname;
   const isSpanish = pathname === '/es' || pathname.startsWith('/es/');
   const base = stripLocale(pathname);
-  if (!LOCALIZED_PAGES.includes(base)) return undefined;
+  if (!isLocalizedPage(base)) return undefined;
 
   const pageLang: Lang = isSpanish ? 'es' : 'en';
   const preferred = preferredLanguage(request);

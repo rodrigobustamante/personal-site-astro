@@ -1,0 +1,14 @@
+---
+interface Props {
+  label: string;
+  title: string;
+  highlight?: boolean;
+}
+const { label, title, highlight = false } = Astro.props;
+---
+
+<section class:list={['cs-section', { 'cs-section--highlight': highlight }]}>
+  <span class="cs-section-label">{label}</span>
+  <h2 class="cs-section-title">{title}</h2>
+  <slot />
+</section>

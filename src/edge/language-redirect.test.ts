@@ -62,6 +62,15 @@ test('no redirect when the page already matches, when no preference exists, or f
   assert.equal(languageRedirect(req('/es')), undefined);
 });
 
+test('the /work index and any case study are localized pages', () => {
+  assert.equal(languageRedirect(req('/work', { 'accept-language': 'es' }))?.headers.get('location'), '/es/work');
+  assert.equal(
+    languageRedirect(req('/es/work/future-case-study', { 'accept-language': 'en' }))?.headers.get('location'),
+    '/work/future-case-study'
+  );
+  assert.equal(languageRedirect(req('/workshop', { 'accept-language': 'es' })), undefined);
+});
+
 test('never touches routes outside the portfolio pages', () => {
   for (const p of ['/blog/en', '/blog/es', '/rss.xml', '/privacy', '/og/home/en.png', '/es/blog/en']) {
     assert.equal(languageRedirect(req(p, { cookie: 'lang=es', 'accept-language': 'es' })), undefined, p);

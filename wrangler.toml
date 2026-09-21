@@ -12,5 +12,5 @@ html_handling = "drop-trailing-slash"
 # Only the pages that exist in both languages go through the Worker, so the
 # edge language redirect (src/edge/language-redirect.ts) can run before the
 # static HTML is served. Everything else is served directly as an asset.
-run_worker_first = ["/", "/es", "/es/", "/work/hangar-design-system", "/es/work/hangar-design-system"]
+run_worker_first = ["/", "/es", "/es/", "/work", "/work/*", "/es/work", "/es/work/*"]
 

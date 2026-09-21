@@ -6,7 +6,7 @@
  * which this static server bypasses, so every localized page can be audited
  * directly regardless of the browser language.
  */
-const PORTFOLIO = ['/', '/es/', '/work/hangar-design-system/'];
+const PORTFOLIO = ['/', '/es/', '/work/', '/work/hangar-design-system/'];
 const BLOG = ['/blog/en/', '/blog/es/', '/blog/en/core-web-vitals-complete-guide-for-beginners/'];
 
 /** @type {import('@lhci/cli').LighthouseCiConfig} */

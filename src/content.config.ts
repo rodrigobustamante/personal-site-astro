@@ -67,6 +67,24 @@ const postCollection = defineCollection({
   }),
 });
 
+const workCollection = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/work' }),
+  schema: z.object({
+    title: z.string(),
+    subtitle: z.string(),
+    /** Small label above the title, e.g. "Case Study". */
+    tag: z.string(),
+    client: z.string().optional(),
+    role: z.string(),
+    period: z.string(),
+    scope: z.string(),
+    stack: z.array(z.string()),
+    /** Sort order in the /work index (ascending). */
+    order: z.number().default(0),
+  }),
+});
+
 export const collections = {
   post: postCollection,
+  work: workCollection,
 };

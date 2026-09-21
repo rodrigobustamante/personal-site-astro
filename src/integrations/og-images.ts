@@ -72,7 +72,16 @@ export function cardFromHtml(html: string): { key: string; card: OgCard } | unde
   }
 
   const title = rawTitle.replace(new RegExp(`\\s+—\\s+${SITE_NAME}$`), '');
-  const label = key.startsWith('work/') ? (es ? 'Caso de estudio' : 'Case study') : 'Blog';
+  const isWorkIndex = /^work\/(en|es)$/.test(key);
+  const label = isWorkIndex
+    ? es
+      ? 'Trabajos'
+      : 'Work'
+    : key.startsWith('work/')
+      ? es
+        ? 'Caso de estudio'
+        : 'Case study'
+      : 'Blog';
   const isBlogIndex = /^blog\/(en|es)$/.test(key);
   return {
     key,

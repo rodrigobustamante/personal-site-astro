@@ -1,6 +1,6 @@
 ---
 import { useTranslations, type Lang } from '~/i18n/ui';
-import { alternateLang, localizedPath } from '~/i18n/paths';
+import { alternateLang, localizedPath, stripLocale } from '~/i18n/paths';
 
 interface Props {
   lang: Lang;
@@ -15,16 +15,20 @@ const { t } = useTranslations(lang);
 const otherLang = alternateLang(lang);
 const homeHref = localizedPath('/', lang);
 const blogHref = `/blog/${lang}`;
+const isHome = stripLocale(Astro.url.pathname) === '/';
+// Section anchors only work on the home page; elsewhere they point back to it.
+const section = (id: string) => (isHome ? `#${id}` : localizedPath(`/#${id}`, lang));
 const altUrl =
   translationUrl ?? (variant === 'blog' ? `/blog/${otherLang}` : localizedPath(Astro.url.pathname, otherLang));
 
 const nav =
   variant === 'portfolio'
     ? [
-        { href: '#work', label: t('nav.experience') },
-        { href: '#skills', label: t('nav.skills') },
-        { href: '#writing', label: t('nav.writing') },
-        { href: '#contact', label: t('nav.contact') },
+        { href: section('work'), label: t('nav.experience') },
+        { href: localizedPath('/work', lang), label: t('nav.work') },
+        { href: section('skills'), label: t('nav.skills') },
+        { href: section('writing'), label: t('nav.writing') },
+        { href: section('contact'), label: t('nav.contact') },
       ]
     : [
         { href: homeHref, label: t('nav.home') },

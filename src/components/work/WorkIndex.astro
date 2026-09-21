@@ -1,0 +1,274 @@
+---
+import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
+import SiteHeader from '~/components/portfolio/SiteHeader.astro';
+import { useTranslations, type Lang } from '~/i18n/ui';
+import { localizedPath } from '~/i18n/paths';
+import { getWork, workSlug } from '~/utils/work';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { t } = useTranslations(lang);
+const entries = await getWork(lang);
+---
+
+<PortfolioLayout
+  title={`${t('work.index.title')} — Rodrigo Bustamante`}
+  description={t('work.index.intro')}
+  lang={lang}
+  ogImage={`/og/work/${lang}.png`}
+  hasLocalizedSibling
+>
+  <SiteHeader lang={lang} variant="portfolio" />
+
+  <main>
+    <div class="cs-wrap">
+      <header class="cs-header">
+        <span class="cs-tag">{t('nav.work')}</span>
+        <h1 class="cs-title">{t('work.index.title')}</h1>
+      </header>
+      <p class="work-intro">{t('work.index.intro')}</p>
+
+      <ul class="work-list">
+        {entries.map((entry) => (
+          <li>
+            <a class="work-card reveal" href={localizedPath(`/work/${workSlug(entry)}`, lang)}>
+              <span class="cs-tag">{entry.data.tag}</span>
+              <h2>{entry.data.title}</h2>
+              <p>{entry.data.subtitle}</p>
+              <div class="work-card-meta">
+                {entry.data.client && <span>{entry.data.client}</span>}
+                <span>{entry.data.period}</span>
+                <span>{entry.data.role}</span>
+              </div>
+              <span class="work-card-cta">{t('work.read')} →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </main>
+</PortfolioLayout>
+
+<style is:global>
+  .cs-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(48px, 8vh, 96px) var(--pad) clamp(64px, 10vh, 120px);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 40px;
+    transition: color 0.2s;
+  }
+  .back-link:hover {
+    color: var(--ink);
+  }
+
+  .cs-tag {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .cs-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin-bottom: 20px;
+  }
+  .cs-subtitle {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.4vw, 24px);
+    color: var(--ink-soft);
+    line-height: 1.45;
+    font-weight: 300;
+    max-width: 52ch;
+    text-wrap: pretty;
+  }
+
+  .cs-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 48px 0 0;
+  }
+  .cs-meta-item {
+    background: var(--paper);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cs-meta-k {
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cs-meta-v {
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .cs-section {
+    margin-top: clamp(56px, 8vh, 88px);
+    padding-top: clamp(40px, 6vh, 64px);
+    border-top: 1px solid var(--line-soft);
+  }
+  .cs-section--highlight {
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in oklab, var(--accent) 20%, transparent);
+    border-radius: 14px;
+    padding: clamp(28px, 4vh, 44px) clamp(24px, 3vw, 40px);
+    margin-top: clamp(56px, 8vh, 88px);
+  }
+  .cs-section-label {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .cs-section-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(26px, 3.5vw, 38px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+  .cs-section p,
+  .cs-pillar p {
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    text-wrap: pretty;
+    margin-bottom: 16px;
+  }
+  .cs-section p:last-child,
+  .cs-pillar p:last-child {
+    margin-bottom: 0;
+  }
+
+  .cs-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .cs-pillar-h {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .cs-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  @media (max-width: 560px) {
+    .cs-metrics {
+      grid-template-columns: 1fr;
+    }
+  }
+  .cs-metric {
+    background: var(--paper);
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cs-metric-k {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .cs-metric-v {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* ——— /work index ——— */
+  .work-intro {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(18px, 2.2vw, 22px);
+    color: var(--muted);
+    line-height: 1.5;
+    max-width: 640px;
+    margin: 0 0 40px;
+  }
+  .work-list {
+    display: grid;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .work-card {
+    display: block;
+    padding: 28px 28px 24px;
+    background: var(--paper-2);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.2s ease;
+  }
+  .work-card:hover {
+    border-color: var(--accent);
+  }
+  .work-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-top: 16px;
+  }
+  .work-card h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(24px, 3vw, 32px);
+    line-height: 1.15;
+    margin: 10px 0 8px;
+  }
+  .work-card p {
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .work-card-cta {
+    display: inline-block;
+    margin-top: 18px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+</style>

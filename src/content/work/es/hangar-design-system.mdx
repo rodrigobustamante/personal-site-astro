@@ -1,0 +1,70 @@
+---
+title: 'Hangar Design System'
+subtitle: 'El backbone de design system para la aerolínea más grande de América Latina'
+tag: 'Caso de estudio'
+client: LATAM Airlines
+role: 'Software Architect'
+period: 'Sep 2024 — Mar 2026'
+scope: '50+ equipos · React & React Native · Millones de pasajeros'
+stack: [React, React Native, Next.js, TypeScript, Storybook, GCP, Terraform, GitLab CI, Docker]
+order: 1
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problema y contexto" title="Escalar consistencia de UI en 50+ equipos">
+
+LATAM Airlines opera a una escala que pocas organizaciones frontend enfrentan: decenas de equipos de producto independientes, dos plataformas principales (web y mobile), y una base de pasajeros de millones en América Latina y Europa. Antes de Hangar, cada equipo mantenía su propia librería de componentes, generando UX inconsistente, esfuerzo de ingeniería duplicado y ciclos de iteración lentos.
+
+El mandato era claro pero técnicamente complejo: diseñar y construir un design system unificado que más de 50 equipos pudieran adoptar sin sacrificar su autonomía, garantizando accesibilidad, performance y consistencia de marca en cada touchpoint.
+
+</Section>
+
+<Section label="02 — Arquitectura" title="Tokens, componentes y pipelines">
+  <Pillars>
+    <Pillar title="Design tokens">
+
+Una capa de tokens estructurada — color, tipografía, espaciado, movimiento y elevación — funcionó como fuente única de verdad compartida entre diseño (Figma) e ingeniería. Los tokens se versionaban y distribuían como paquetes NPM, permitiendo que los equipos actualizaran de forma incremental.
+
+    </Pillar>
+    <Pillar title="Librería de componentes">
+
+Componentes cross-platform para React (web) y React Native (mobile) cubrieron el espectro completo de UI: formularios, navegación, visualización de datos, feedback y primitivas de layout. Cada componente se documentó en Storybook con anotaciones de accesibilidad y guías de uso.
+
+    </Pillar>
+    <Pillar title="CI/CD y distribución">
+
+Los pipelines de GitLab CI gestionaron testing automatizado, revisiones de regresión visual, versionado semántico y publicación en NPM en cada merge a main. Terraform Cloud administró la infraestructura GCP que soporta el tooling interno y la instancia de Storybook.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Diferenciador" title="MCPs y Skills: hacer el DS agent-native" highlight>
+
+Más allá de la librería de componentes en sí, diseñé y construí servidores MCP (Model Context Protocol) y Claude Skills que permitieron que los equipos de producto — y los agentes de IA — consumieran Hangar directamente desde su entorno de desarrollo. Los ingenieros podían consultar APIs de componentes, obtener ejemplos de uso y generar UIs conformes sin salir de su editor.
+
+Esto convirtió a Hangar en uno de los primeros design systems de la región explícitamente arquitectado para flujos de desarrollo asistidos por IA, reduciendo la fricción de onboarding para nuevos equipos y acelerando la adopción.
+
+</Section>
+
+<Metrics
+  label="04 — Impacto"
+  title="Métricas y resultados"
+  items={[
+    { label: 'Adopción', value: '50+ equipos de producto consumiendo Hangar' },
+    {
+      label: 'Velocidad de entrega',
+      value: '~40% más rápido en entrega de UI vía componentes compartidos + Storybook',
+    },
+    { label: 'Accesibilidad', value: '100% de los componentes core con WCAG AA' },
+    {
+      label: 'Alcance',
+      value: 'Componentes desplegados en productos que llegan a millones de pasajeros en más de 10 países.',
+    },
+  ]}
+/>
