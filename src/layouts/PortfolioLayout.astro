@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 
@@ -87,6 +88,7 @@ const jsonLd = JSON.stringify({
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="preload" as="font" href="/fonts/newsreader-normal-latin.woff2" type="font/woff2" crossorigin />
     <link rel="preload" as="font" href="/fonts/hanken-normal-latin.woff2" type="font/woff2" crossorigin />
+    <ClientRouter />
     <slot name="head" />
     <style is:global>
       /* ——— Self-hosted fonts ——— */
@@ -1077,40 +1079,52 @@ const jsonLd = JSON.stringify({
             di: 'oklch(0.78 0.12 354)',
           },
         };
-        const el = document.documentElement;
-        // Language lives in the URL; the Worker redirects to the preferred one
-        // at the edge, so nothing language-related happens here.
-        const theme =
-          localStorage.getItem('theme') ||
-          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        const palette = localStorage.getItem('palette') || 'Terracotta';
-        el.dataset.theme = theme;
-        const p = PALETTES[palette] || PALETTES.Terracotta;
-        const d = theme === 'dark';
-        el.style.setProperty('--accent', d ? p.d : p.l);
-        el.style.setProperty('--accent-ink', d ? p.di : p.li);
-        el.style.setProperty(
-          '--accent-soft',
-          'color-mix(in oklab, ' + (d ? p.d : p.l) + ' ' + (d ? 16 : 12) + '%, transparent)'
-        );
+        // Applies the stored theme and accent palette to <html>. Runs before
+        // first paint, again after every ClientRouter swap (which copies the
+        // static <html> attributes), and from the header toggle.
+        function applyTheme() {
+          const el = document.documentElement;
+          const theme =
+            localStorage.getItem('theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          const palette = localStorage.getItem('palette') || 'Terracotta';
+          el.dataset.theme = theme;
+          const p = PALETTES[palette] || PALETTES.Terracotta;
+          const d = theme === 'dark';
+          el.style.setProperty('--accent', d ? p.d : p.l);
+          el.style.setProperty('--accent-ink', d ? p.di : p.li);
+          el.style.setProperty(
+            '--accent-soft',
+            'color-mix(in oklab, ' + (d ? p.d : p.l) + ' ' + (d ? 16 : 12) + '%, transparent)'
+          );
+        }
+        applyTheme();
+        window.__applyTheme = applyTheme;
+        document.addEventListener('astro:after-swap', applyTheme);
       })();
     </script>
   </head>
   <body>
     <slot />
     <script>
-      // Scroll reveal shared by every page using this layout.
-      document.querySelectorAll('.reveal').forEach((el) => {
-        new IntersectionObserver(
-          ([entry], observer) => {
-            if (entry.isIntersecting) {
-              el.classList.add('in');
-              observer.disconnect();
-            }
-          },
-          { threshold: 0 }
-        ).observe(el);
-      });
+      // Scroll reveal shared by every page using this layout. Re-runs after
+      // each client-side navigation; already-observed elements are skipped.
+      function initReveal() {
+        document.querySelectorAll<HTMLElement>('.reveal:not([data-reveal])').forEach((el) => {
+          el.dataset.reveal = '';
+          new IntersectionObserver(
+            ([entry], observer) => {
+              if (entry.isIntersecting) {
+                el.classList.add('in');
+                observer.disconnect();
+              }
+            },
+            { threshold: 0 }
+          ).observe(el);
+        });
+      }
+      initReveal();
+      document.addEventListener('astro:page-load', initReveal);
     </script>
   </body>
 </html>
