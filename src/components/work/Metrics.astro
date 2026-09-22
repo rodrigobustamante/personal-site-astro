@@ -1,0 +1,21 @@
+---
+interface Props {
+  label: string;
+  title: string;
+  items: Array<{ label: string; value: string }>;
+}
+const { label, title, items } = Astro.props;
+---
+
+<section class="cs-section">
+  <span class="cs-section-label">{label}</span>
+  <h2 class="cs-section-title">{title}</h2>
+  <dl class="cs-metrics">
+    {items.map((m) => (
+      <div class="cs-metric">
+        <dt class="cs-metric-k">{m.label}</dt>
+        <dd class="cs-metric-v">{m.value}</dd>
+      </div>
+    ))}
+  </dl>
+</section>

@@ -1,124 +1,65 @@
 ---
+import { render, type CollectionEntry } from 'astro:content';
 import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
 import SiteHeader from '~/components/portfolio/SiteHeader.astro';
 import { useTranslations, type Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
+import { workSlug } from '~/utils/work';
 
 interface Props {
+  entry: CollectionEntry<'work'>;
   lang: Lang;
 }
 
-const { lang } = Astro.props;
+const { entry, lang } = Astro.props;
 const { t } = useTranslations(lang);
+const { Content } = await render(entry);
+const { data } = entry;
+const slug = workSlug(entry);
+const meta = [
+  ['work.meta.role', data.role],
+  ['work.meta.period', data.period],
+  ['work.meta.scope', data.scope],
+  ['work.meta.stack', data.stack.join(', ')],
+] as const;
 ---
 
 <PortfolioLayout
-  title={`${t('hangar.cs.title')} — Rodrigo Bustamante`}
-  description={t('hangar.cs.subtitle')}
+  title={`${data.title} — Rodrigo Bustamante`}
+  description={data.subtitle}
   lang={lang}
-  ogImage={`/og/work/hangar-design-system/${lang}.png`}
+  ogImage={`/og/work/${slug}/${lang}.png`}
   hasLocalizedSibling
 >
   <SiteHeader lang={lang} variant="portfolio" />
 
   <main>
     <article class="cs-wrap">
-      <!-- Back link -->
-      <a class="back-link" href={localizedPath('/#work', lang)}>
-        {t('hangar.cs.back')}
+      <a class="back-link" href={localizedPath('/work', lang)}>
+        {t('work.back')}
       </a>
 
-      <!-- Header -->
       <header class="cs-header">
-        <span class="cs-tag">{t('hangar.cs.tag')}</span>
-        <h1 class="cs-title">{t('hangar.cs.title')}</h1>
-        <p class="cs-subtitle">{t('hangar.cs.subtitle')}</p>
+        <span class="cs-tag">{data.tag}</span>
+        <h1 class="cs-title">{data.title}</h1>
+        <p class="cs-subtitle">{data.subtitle}</p>
       </header>
 
-      <!-- Meta grid -->
       <div class="cs-meta">
-        <div class="cs-meta-item">
-          <span class="cs-meta-k">{t('hangar.cs.meta.role')}</span>
-          <span class="cs-meta-v">{t('hangar.cs.meta.role.v')}</span>
-        </div>
-        <div class="cs-meta-item">
-          <span class="cs-meta-k">{t('hangar.cs.meta.period')}</span>
-          <span class="cs-meta-v">{t('hangar.cs.meta.period.v')}</span>
-        </div>
-        <div class="cs-meta-item">
-          <span class="cs-meta-k">{t('hangar.cs.meta.scope')}</span>
-          <span class="cs-meta-v">{t('hangar.cs.meta.scope.v')}</span>
-        </div>
-        <div class="cs-meta-item">
-          <span class="cs-meta-k">{t('hangar.cs.meta.stack')}</span>
-          <span class="cs-meta-v">{t('hangar.cs.meta.stack.v')}</span>
-        </div>
+        {meta.map(([key, value]) => (
+          <div class="cs-meta-item">
+            <span class="cs-meta-k">{t(key)}</span>
+            <span class="cs-meta-v">{value}</span>
+          </div>
+        ))}
       </div>
 
-      <!-- Section 1: Problem & Context -->
-      <section class="cs-section">
-        <span class="cs-section-label">{t('hangar.cs.s1.label')}</span>
-        <h2 class="cs-section-title">{t('hangar.cs.s1.title')}</h2>
-        <p class="cs-body">{t('hangar.cs.s1.p1')}</p>
-        <p class="cs-body">{t('hangar.cs.s1.p2')}</p>
-      </section>
-
-      <!-- Section 2: Architecture -->
-      <section class="cs-section">
-        <span class="cs-section-label">{t('hangar.cs.s2.label')}</span>
-        <h2 class="cs-section-title">{t('hangar.cs.s2.title')}</h2>
-        <div class="cs-pillars">
-          <div class="cs-pillar">
-            <h3 class="cs-pillar-h">{t('hangar.cs.s2.tokens.h')}</h3>
-            <p class="cs-body">{t('hangar.cs.s2.tokens.p')}</p>
-          </div>
-          <div class="cs-pillar">
-            <h3 class="cs-pillar-h">{t('hangar.cs.s2.components.h')}</h3>
-            <p class="cs-body">{t('hangar.cs.s2.components.p')}</p>
-          </div>
-          <div class="cs-pillar">
-            <h3 class="cs-pillar-h">{t('hangar.cs.s2.cicd.h')}</h3>
-            <p class="cs-body">{t('hangar.cs.s2.cicd.p')}</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 3: Differentiator -->
-      <section class="cs-section cs-section--highlight">
-        <span class="cs-section-label">{t('hangar.cs.s3.label')}</span>
-        <h2 class="cs-section-title">{t('hangar.cs.s3.title')}</h2>
-        <p class="cs-body">{t('hangar.cs.s3.p1')}</p>
-        <p class="cs-body">{t('hangar.cs.s3.p2')}</p>
-      </section>
-
-      <!-- Section 4: Impact -->
-      <section class="cs-section">
-        <span class="cs-section-label">{t('hangar.cs.s4.label')}</span>
-        <h2 class="cs-section-title">{t('hangar.cs.s4.title')}</h2>
-        <dl class="cs-metrics">
-          <div class="cs-metric">
-            <dt class="cs-metric-k">{t('hangar.cs.s4.adoption.h')}</dt>
-            <dd class="cs-metric-v">{t('hangar.cs.s4.adoption.v')}</dd>
-          </div>
-          <div class="cs-metric">
-            <dt class="cs-metric-k">{t('hangar.cs.s4.velocity.h')}</dt>
-            <dd class="cs-metric-v">{t('hangar.cs.s4.velocity.v')}</dd>
-          </div>
-          <div class="cs-metric">
-            <dt class="cs-metric-k">{t('hangar.cs.s4.a11y.h')}</dt>
-            <dd class="cs-metric-v">{t('hangar.cs.s4.a11y.v')}</dd>
-          </div>
-          <div class="cs-metric">
-            <dt class="cs-metric-k">{t('hangar.cs.s4.reach.h')}</dt>
-            <dd class="cs-metric-v">{t('hangar.cs.s4.reach.v')}</dd>
-          </div>
-        </dl>
-      </section>
+      <Content />
     </article>
   </main>
 </PortfolioLayout>
 
-<style>
+<style is:global>
   .cs-wrap {
     max-width: 760px;
     margin: 0 auto;
@@ -222,14 +163,16 @@ const { t } = useTranslations(lang);
     letter-spacing: -0.02em;
     margin-bottom: 24px;
   }
-  .cs-body {
+  .cs-section p,
+  .cs-pillar p {
     font-size: 16.5px;
     color: var(--ink-soft);
     line-height: 1.65;
     text-wrap: pretty;
     margin-bottom: 16px;
   }
-  .cs-body:last-child {
+  .cs-section p:last-child,
+  .cs-pillar p:last-child {
     margin-bottom: 0;
   }
 

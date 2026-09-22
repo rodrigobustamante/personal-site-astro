@@ -1,0 +1,64 @@
+---
+title: 'Hangar Design System'
+subtitle: 'Building the design system backbone for the largest airline in Latin America'
+tag: 'Case Study'
+client: LATAM Airlines
+role: 'Software Architect'
+period: 'Sep 2024 — Mar 2026'
+scope: '50+ teams · React & React Native · Millions of passengers'
+stack: [React, React Native, Next.js, TypeScript, Storybook, GCP, Terraform, GitLab CI, Docker]
+order: 1
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problem & Context" title="Scaling UI consistency across 50+ teams">
+
+LATAM Airlines operates at a scale few frontend organizations face: dozens of independent product teams, two primary platforms (web and mobile), and a passenger base in the millions across Latin America and Europe. Before Hangar, each team maintained its own component library, leading to inconsistent UX, duplicated engineering effort, and slow iteration cycles.
+
+The mandate was clear but technically complex: design and build a unified design system that 50+ teams could adopt without sacrificing their autonomy, while ensuring accessibility, performance, and brand consistency at every touchpoint.
+
+</Section>
+
+<Section label="02 — Architecture" title="Tokens, components, and pipelines">
+  <Pillars>
+    <Pillar title="Design tokens">
+
+A structured token layer — covering color, typography, spacing, motion, and elevation — served as the single source of truth shared between design (Figma) and engineering. Tokens were versioned and distributed as NPM packages, enabling teams to upgrade incrementally.
+
+    </Pillar>
+    <Pillar title="Component library">
+
+Cross-platform components built for React (web) and React Native (mobile) covered the full UI spectrum: forms, navigation, data display, feedback, and layout primitives. Each component was documented in Storybook with accessibility annotations and usage guidelines.
+
+    </Pillar>
+    <Pillar title="CI/CD and distribution">
+
+GitLab CI pipelines handled automated testing, visual regression checks, semantic versioning, and NPM publishing on every merge to main. Terraform Cloud managed the GCP infrastructure backing internal tooling and the Storybook instance.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Differentiator" title="MCPs and Skills: making the DS agent-native" highlight>
+
+Beyond the component library itself, I designed and built Model Context Protocol (MCP) servers and Claude Skills that allowed product teams — and AI coding agents — to consume Hangar directly from their development environment. Engineers could query component APIs, get usage examples, and scaffold compliant UIs without leaving their editor.
+
+This made Hangar one of the first design systems in the region explicitly architected for AI-assisted development workflows, reducing onboarding friction for new teams and accelerating adoption.
+
+</Section>
+
+<Metrics
+  label="04 — Impact"
+  title="Metrics and outcomes"
+  items={[
+    { label: 'Adoption', value: '50+ product teams consuming Hangar' },
+    { label: 'Delivery velocity', value: '~40% faster UI delivery via shared components + Storybook' },
+    { label: 'Accessibility', value: '100% of core components WCAG AA' },
+    { label: 'Reach', value: 'Components shipped to products touching millions of passengers across 10+ countries.' },
+  ]}
+/>

@@ -1,0 +1,16 @@
+---
+import type { GetStaticPaths } from 'astro';
+import CaseStudyPage from '~/components/work/CaseStudyPage.astro';
+import { getWork, workSlug } from '~/utils/work';
+
+export const prerender = true;
+
+export const getStaticPaths = (async () => {
+  const entries = await getWork('es');
+  return entries.map((entry) => ({ params: { slug: workSlug(entry) }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+---
+
+<CaseStudyPage entry={entry} lang="es" />
