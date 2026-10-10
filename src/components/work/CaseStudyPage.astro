@@ -41,7 +41,9 @@ const meta = [
 
       <header class="cs-header">
         <span class="cs-tag">{data.tag}</span>
-        <h1 class="cs-title">{data.title}</h1>
+        <h1 class="cs-title" transition:name={`work-title-${slug}`}>
+          {data.title}
+        </h1>
         <p class="cs-subtitle">{data.subtitle}</p>
       </header>
 

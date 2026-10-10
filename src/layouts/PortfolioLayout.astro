@@ -460,6 +460,9 @@ const jsonLd = JSON.stringify({
         letter-spacing: -0.01em;
         color: var(--ink);
       }
+      .hero-stat b[data-count] {
+        font-variant-numeric: tabular-nums;
+      }
       .hero-meta {
         display: flex;
         align-items: center;
@@ -553,11 +556,53 @@ const jsonLd = JSON.stringify({
       }
 
       /* ——— Experience timeline ——— */
+      .timeline {
+        --tl-aside: 132px;
+        --tl-gap: clamp(20px, 4vw, 52px);
+        --tl-pad: clamp(28px, 4vh, 44px);
+        /* x of the rail, measured from each entry's left edge */
+        --tl-x: calc(var(--tl-aside) + var(--tl-gap) / 2);
+        /* y of each entry's dot, centred on the first line of .entry-years */
+        --tl-dot-y: calc(var(--tl-pad) + 12px);
+        --tl-dot: var(--accent);
+        position: relative;
+      }
+      /* Rail: a faint track (::before) and an accent fill (::after) that is
+         drawn by scroll where scroll-driven animations are supported. */
+      .timeline::before,
+      .timeline::after {
+        content: '';
+        position: absolute;
+        top: var(--tl-dot-y);
+        bottom: 0;
+        left: var(--tl-x);
+        width: 1px;
+        background: var(--line-soft);
+        pointer-events: none;
+      }
+      .timeline::after {
+        display: none;
+        background: var(--accent);
+        transform-origin: top;
+      }
       .entry {
+        position: relative;
         display: grid;
-        grid-template-columns: 132px 1fr;
-        gap: clamp(20px, 4vw, 52px);
-        padding: clamp(28px, 4vh, 44px) 0;
+        grid-template-columns: var(--tl-aside) 1fr;
+        gap: var(--tl-gap);
+        padding: var(--tl-pad) 0;
+      }
+      .entry::before {
+        content: '';
+        position: absolute;
+        top: var(--tl-dot-y);
+        left: calc(var(--tl-x) - 4px);
+        width: 9px;
+        height: 9px;
+        margin-top: -4px;
+        border-radius: 50%;
+        background: var(--tl-dot);
+        box-shadow: 0 0 0 4px var(--paper);
       }
       .entry + .entry {
         border-top: 1px solid var(--line-soft);
@@ -667,6 +712,15 @@ const jsonLd = JSON.stringify({
         background: var(--card);
       }
       @media (max-width: 680px) {
+        /* Single column: the rail moves to a gutter on the left. */
+        .timeline {
+          --tl-x: -20px;
+          padding-left: 28px;
+        }
+        .timeline::before,
+        .timeline::after {
+          left: calc(28px + var(--tl-x));
+        }
         .entry {
           grid-template-columns: 1fr;
           gap: 14px;
@@ -1046,6 +1100,54 @@ const jsonLd = JSON.stringify({
           opacity: 1;
           transform: none;
         }
+        .reveal-instant .reveal {
+          transition: none;
+        }
+      }
+
+      /* ——— Timeline drawn by scroll ———
+         The rail's tip follows the middle of the viewport: the fill starts when
+         the timeline's top reaches 50vh and completes when its bottom does.
+         Each dot lights up as the tip passes it. Browsers without scroll-driven
+         animations keep the static rail with lit dots. */
+      @property --tl-dot {
+        syntax: '<color>';
+        inherits: true;
+        initial-value: transparent;
+      }
+      @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+          .timeline::after {
+            display: block;
+            animation: tl-draw linear both;
+            animation-timeline: --timeline;
+            animation-range: cover 50vh cover calc(100% - 50vh);
+          }
+          .timeline {
+            view-timeline: --timeline;
+          }
+          .entry {
+            animation: tl-dot linear both;
+            animation-timeline: view();
+            animation-range: cover calc(50vh + var(--tl-dot-y) - 8px) cover calc(50vh + var(--tl-dot-y) + 8px);
+          }
+        }
+      }
+      @keyframes tl-draw {
+        from {
+          transform: scaleY(0);
+        }
+        to {
+          transform: scaleY(1);
+        }
+      }
+      @keyframes tl-dot {
+        from {
+          --tl-dot: var(--line);
+        }
+        to {
+          --tl-dot: var(--accent);
+        }
       }
     </style>
     <!-- Anti-FOUC: set theme + lang before first paint -->
@@ -1129,6 +1231,19 @@ const jsonLd = JSON.stringify({
       }
       initReveal();
       document.addEventListener('astro:page-load', initReveal);
+
+      // On client-side navigation the view transition already animates the
+      // page in, so content that lands inside the viewport is shown at once.
+      // Otherwise a shared element (e.g. a case study title morphing back into
+      // its /work card) would arrive inside a still-hidden .reveal parent.
+      document.addEventListener('astro:after-swap', () => {
+        const root = document.documentElement;
+        root.classList.add('reveal-instant');
+        document.querySelectorAll('.reveal').forEach((el) => {
+          if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('in');
+        });
+        requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('reveal-instant')));
+      });
     </script>
     {beaconConfig && (
       <script
