@@ -1103,6 +1103,33 @@ const jsonLd = JSON.stringify({
         .reveal-instant .reveal {
           transition: none;
         }
+
+        /* Hero intro, first page of the session only (see data-intro). */
+        /* The portrait is the LCP element and is left out on purpose. */
+        [data-intro] .hero-left > * {
+          animation: hero-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+        }
+        [data-intro] .hero-name {
+          animation-delay: 70ms;
+        }
+        [data-intro] .hero-pitch {
+          animation-delay: 140ms;
+        }
+        [data-intro] .hero-stats {
+          animation-delay: 210ms;
+        }
+        [data-intro] .hero-meta {
+          animation-delay: 280ms;
+        }
+        [data-intro] .hero-cta {
+          animation-delay: 350ms;
+        }
+      }
+      @keyframes hero-in {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
       }
 
       /* ——— Timeline drawn by scroll ———
@@ -1203,6 +1230,17 @@ const jsonLd = JSON.stringify({
             '--accent-soft',
             'color-mix(in oklab, ' + (d ? p.d : p.l) + ' ' + (d ? 16 : 12) + '%, transparent)'
           );
+        }
+        // First page of the session: flag <html> so the hero plays its intro
+        // (staggered entrance + stat count-up) once. ClientRouter swaps copy
+        // the static <html> attributes, so the flag is gone after navigating.
+        try {
+          if (!sessionStorage.getItem('intro-seen')) {
+            sessionStorage.setItem('intro-seen', '1');
+            document.documentElement.dataset.intro = '';
+          }
+        } catch {
+          // Storage blocked: skip the intro.
         }
         applyTheme();
         window.__applyTheme = applyTheme;
