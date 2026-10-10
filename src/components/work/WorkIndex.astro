@@ -36,7 +36,7 @@ const entries = await getWork(lang);
           <li>
             <a class="work-card reveal" href={localizedPath(`/work/${workSlug(entry)}`, lang)}>
               <span class="cs-tag">{entry.data.tag}</span>
-              <h2>{entry.data.title}</h2>
+              <h2 transition:name={`work-title-${workSlug(entry)}`}>{entry.data.title}</h2>
               <p>{entry.data.subtitle}</p>
               <div class="work-card-meta">
                 {entry.data.client && <span>{entry.data.client}</span>}

@@ -1100,6 +1100,9 @@ const jsonLd = JSON.stringify({
           opacity: 1;
           transform: none;
         }
+        .reveal-instant .reveal {
+          transition: none;
+        }
       }
 
       /* ——— Timeline drawn by scroll ———
@@ -1228,6 +1231,17 @@ const jsonLd = JSON.stringify({
       }
       initReveal();
       document.addEventListener('astro:page-load', initReveal);
+
+      // On client-side navigation the view transition already animates the
+      // page in, so content that lands inside the viewport is shown at once.
+      // Otherwise a shared element (e.g. a case study title morphing back into
+      // its /work card) would arrive inside a still-hidden .reveal parent.
+      document.addEventListener('astro:after-swap', () => {
+        const root = document.documentElement;
+        root.classList.add('reveal-instant');
+        document.querySelectorAll('.reveal').forEach((el) => {
+          if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('in');
+        });
         requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('reveal-instant')));
       });
     </script>
