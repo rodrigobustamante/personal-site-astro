@@ -43,7 +43,12 @@ const entries = await getWork(lang);
                 <span>{entry.data.period}</span>
                 <span>{entry.data.role}</span>
               </div>
-              <span class="work-card-cta">{t('work.read')} →</span>
+              <span class="work-card-cta">
+                {t('work.read')}{' '}
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </span>
             </a>
           </li>
         ))}
@@ -270,5 +275,10 @@ const entries = await getWork(lang);
     margin-top: 18px;
     color: var(--accent);
     font-weight: 500;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .work-card:hover .work-card-cta .arrow {
+      transform: translateX(4px);
+    }
   }
 </style>

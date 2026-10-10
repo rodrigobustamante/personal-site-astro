@@ -649,6 +649,7 @@ const jsonLd = JSON.stringify({
         border-radius: 999px;
       }
       .entry-highlight .star {
+        display: inline-block;
         font-size: 12px;
       }
       .role {
@@ -1011,10 +1012,6 @@ const jsonLd = JSON.stringify({
         color: var(--accent-ink);
         border-bottom: 1px solid var(--accent);
         padding-bottom: 2px;
-        transition: gap 0.2s;
-      }
-      .cs-link:hover {
-        gap: 10px;
       }
 
       /* ——— Projects grid ——— */
@@ -1086,6 +1083,9 @@ const jsonLd = JSON.stringify({
       .project-link:hover {
         opacity: 0.75;
       }
+      .project-link .arrow {
+        margin-left: 3px;
+      }
 
       /* ——— Scroll reveal ——— */
       @media (prefers-reduced-motion: no-preference) {
@@ -1100,8 +1100,50 @@ const jsonLd = JSON.stringify({
           opacity: 1;
           transform: none;
         }
-        .reveal-instant .reveal {
+        .reveal-instant .reveal,
+        .reveal-instant .reveal .chip {
           transition: none;
+        }
+
+        /* Stack chips cascade in once their entry / card is revealed. */
+        .reveal :is(.entry-stack, .project-stack) .chip {
+          opacity: 0;
+          transform: translateY(6px);
+          transition:
+            opacity 0.4s ease,
+            transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+        .reveal.in :is(.entry-stack, .project-stack) .chip {
+          opacity: 1;
+          transform: none;
+          transition-delay: calc(250ms + var(--chip-i, 0) * 35ms);
+        }
+        .chip:nth-child(2) {
+          --chip-i: 1;
+        }
+        .chip:nth-child(3) {
+          --chip-i: 2;
+        }
+        .chip:nth-child(4) {
+          --chip-i: 3;
+        }
+        .chip:nth-child(5) {
+          --chip-i: 4;
+        }
+        .chip:nth-child(6) {
+          --chip-i: 5;
+        }
+        .chip:nth-child(7) {
+          --chip-i: 6;
+        }
+        .chip:nth-child(8) {
+          --chip-i: 7;
+        }
+        .chip:nth-child(9) {
+          --chip-i: 8;
+        }
+        .chip:nth-child(10) {
+          --chip-i: 9;
         }
 
         /* Hero intro, first page of the session only (see data-intro). */
@@ -1123,6 +1165,27 @@ const jsonLd = JSON.stringify({
         }
         [data-intro] .hero-cta {
           animation-delay: 350ms;
+        }
+
+        /* Link arrows nudge in the direction they point. */
+        .arrow {
+          display: inline-block;
+          transition: transform 0.2s ease;
+        }
+        .cs-link:hover .arrow {
+          transform: translateX(4px);
+        }
+        .project-link:hover .arrow {
+          transform: translate(2px, -2px);
+        }
+      }
+      @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+        /* The highlight star twinkles while its entry is hovered. */
+        .entry-highlight .star {
+          transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+        .entry:hover .entry-highlight .star {
+          transform: rotate(90deg) scale(1.2);
         }
       }
       @keyframes hero-in {

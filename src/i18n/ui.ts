@@ -51,7 +51,7 @@ export const ui = {
       'Designed and built CI/CD pipelines, application deployment workflows, and created MCPs and Skills for use by teams and agents.',
       'Automated processes and built data collection and metrics tools to support decision-making.',
     ],
-    'exp.hangar.cs': 'Read case study →',
+    'exp.hangar.cs': 'Read case study',
 
     'exp.dme-latam.sector': 'Digital Marketing · Platforms',
     'exp.dme-latam.loc': 'Madrid & Santiago · Remote',
@@ -221,7 +221,7 @@ export const ui = {
       'Diseñé y construí los distintos pipelines de CI/CD, el despliegue de aplicaciones y la creación de MCPs y Skills para uso de equipos y agentes.',
       'Automaticé procesos y construí herramientas de recopilación de datos y métricas para la toma de decisiones.',
     ],
-    'exp.hangar.cs': 'Ver caso de estudio →',
+    'exp.hangar.cs': 'Ver caso de estudio',
 
     'exp.dme-latam.sector': 'Marketing Digital · Plataformas',
     'exp.dme-latam.loc': 'Madrid y Santiago · Remoto',
