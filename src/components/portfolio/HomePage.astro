@@ -36,19 +36,58 @@ const { t, tl } = useTranslations(lang);
           <p class="hero-pitch" set:html={t('hero.pitch')} />
           <div class="hero-stats">
             <span class="hero-stat">
-              <b>9</b> {t('hero.stat.years')}
+              <b data-count="9">9</b> {t('hero.stat.years')}
             </span>
             <span class="hero-stat">
-              <b>50+</b> {t('hero.stat.teams')}
+              <b data-count="50" data-suffix="+">
+                50+
+              </b>{' '}
+              {t('hero.stat.teams')}
             </span>
             <span class="hero-stat">
               <b>{t('hero.stat.millions')}</b>
               {t('hero.stat.millions.sub')}
             </span>
             <span class="hero-stat">
-              <b>10+</b> {t('hero.stat.countries')}
+              <b data-count="10" data-suffix="+">
+                10+
+              </b>{' '}
+              {t('hero.stat.countries')}
             </span>
           </div>
+          <!--
+            Count-up for the hero stats. Inline and placed right after the markup
+            so the numbers reset to 0 before first paint; the server-rendered
+            values stay as the no-JS / reduced-motion fallback. Runs once per
+            session so returning to the home page doesn't replay it.
+          -->
+          <script is:inline>
+            (function () {
+              let seen = false;
+              try {
+                seen = !!sessionStorage.getItem('stats-counted');
+                sessionStorage.setItem('stats-counted', '1');
+              } catch {
+                // Storage blocked: animate anyway.
+              }
+              if (seen || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+              const ease = (t) => 1 - Math.pow(1 - t, 3);
+              const duration = 1100;
+              document.querySelectorAll('.hero-stats [data-count]').forEach((el, i) => {
+                const target = +el.dataset.count;
+                const suffix = el.dataset.suffix || '';
+                // Lock the final width so the growing number doesn't shift its neighbours (CLS).
+                el.style.minWidth = el.getBoundingClientRect().width + 'px';
+                el.textContent = '0' + suffix;
+                const start = performance.now() + i * 120;
+                requestAnimationFrame(function tick(now) {
+                  const t = Math.min(Math.max((now - start) / duration, 0), 1);
+                  el.textContent = Math.round(ease(t) * target) + suffix;
+                  if (t < 1) requestAnimationFrame(tick);
+                });
+              });
+            })();
+          </script>
           <div class="hero-meta">
             {t('hero.location')}
             <span class="dot"></span>
