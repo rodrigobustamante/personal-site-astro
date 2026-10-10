@@ -9,7 +9,12 @@ export interface SiteConfig {
   site: string;
   base: string;
   trailingSlash: boolean;
-  /** Cloudflare Web Analytics beacon token (public). Empty string disables the beacon. */
+  /**
+   * Cloudflare Web Analytics beacon token (public). Empty string disables the
+   * manual beacon. Keep it empty while the site uses Automatic setup in the
+   * Cloudflare dashboard: the edge injects its own beacon, and a second one
+   * fails (its RUM requests are rejected) and would double-count.
+   */
   analyticsToken: string;
 }
 
@@ -38,7 +43,7 @@ export const SITE: SiteConfig = {
   site: 'https://rodrigobustamante.cl',
   base: '/',
   trailingSlash: false,
-  analyticsToken: '6926c477a8094b5b834e4f94047a6c2e',
+  analyticsToken: '',
 };
 
 /** Only `description` is read today (RSS feed). Kept in sync with BlogLayout's default description. */

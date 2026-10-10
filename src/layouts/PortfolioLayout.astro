@@ -28,8 +28,9 @@ const {
 } = Astro.props;
 
 const origin = Astro.site ?? Astro.url;
-// Cloudflare Web Analytics: cookie-less RUM. `spa: true` so client-side
-// navigations through ClientRouter are counted as page views too.
+// Cloudflare Web Analytics: cookie-less RUM. Only rendered when a manual token
+// is set (see SITE.analyticsToken); the beacon tracks ClientRouter navigations
+// by default, `spa: true` just makes it explicit.
 const beaconConfig = SITE.analyticsToken ? JSON.stringify({ token: SITE.analyticsToken, spa: true }) : undefined;
 const ogImageAbs = new URL(ogImage, origin).href;
 
