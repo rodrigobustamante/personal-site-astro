@@ -47,14 +47,14 @@ Las promociones, las tarifas y la propia home se cacheaban en Redis, para que un
 
 <Section label="03 — Antes y después" title="De una cáscara renderizada en el cliente a una home centrada en la reserva">
 
-En la home de 2020 archivada solo sobreviven las partes estáticas: las tarjetas de tarifas y el buscador de vuelos están vacíos, porque en el sitio antiguo los llenaba el JavaScript en el navegador. La home de hoy pone el buscador primero y llena la página con tarifas por mercado, con fechas y precios, sobre la arquitectura que construimos.
+En la home de 2020 archivada sobreviven el carrusel y los bloques de promociones con mucho texto, pero el buscador de vuelos es un marco vacío: en el sitio antiguo lo dibujaba el JavaScript en el navegador. La home de hoy pone el buscador primero, sobre la imagen principal, y convierte las promociones en tarjetas de tarifas con imagen, fechas de viaje, precios y filtros por tipo de viaje, sobre la arquitectura que construimos.
 
 <BeforeAfter
   items={[
     {
       name: 'latam-home-2020',
-      alt: 'La home de latam.com en marzo de 2020 archivada: un buscador de vuelos vacío y tarjetas de tarifas en blanco',
-      caption: 'latam.com en marzo de 2020, archivada por Wayback Machine.',
+      alt: 'La home de latam.com en junio de 2020 archivada: un carrusel, un buscador de vuelos vacío y bloques azules de promociones',
+      caption: 'latam.com (Chile) en junio de 2020, archivada por Wayback Machine.',
       width: 1200,
       height: 1113,
     },
