@@ -143,7 +143,17 @@ const [, , w, h] = SCENES[scene].viewBox.split(' ');
           requested = true;
           fetch(el.dataset.src ?? '')
             .then((res) => (res.ok ? res.text() : ''))
-            .then((svg) => (el.innerHTML = svg))
+            .then((svg) => {
+              el.innerHTML = svg;
+              // Re-home the scene's <style> as an HTML element: some browsers
+              // don't apply a <style> nested in inline SVG added after load.
+              const sheet = el.querySelector('svg style');
+              if (!sheet) return;
+              const style = document.createElement('style');
+              style.textContent = sheet.textContent;
+              sheet.remove();
+              el.prepend(style);
+            })
             .catch(() => {
               // Decorative: on failure the reserved space simply stays empty.
             });
