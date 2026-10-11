@@ -1,0 +1,72 @@
+---
+title: 'LATAM Airlines Home'
+subtitle: 'Rebuilding the front door of the largest airline in Latin America, and letting marketing publish without a deploy'
+tag: 'Case Study'
+client: LATAM Airlines
+role: 'Web UI Developer → Senior Software Engineer'
+period: 'Aug 2020 — Sep 2024'
+scope: '~1M daily visits · Home & promotions · 10-person team'
+stack: [React, Next.js, TypeScript, Node.js, Express, Redis, Jenkins, GCP]
+order: 2
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problem & Context" title="A legacy home for a million visits a day">
+
+The home page of latamairlines.com is the airline's front door: around a million visits a day. When I joined the Digital Marketing Engage team in 2020, it still ran on the airline's previous experience, a client-rendered Backbone application.
+
+LATAM decided to rebuild the site from scratch with a new user experience. That meant a new frontend architecture, new services between the frontend and the transactional backend, and a new way for marketing to get promotions in front of customers.
+
+</Section>
+
+<Section label="02 — Architecture" title="Server-rendered microfrontends on top of a service layer">
+  <Pillars>
+    <Pillar title="Next.js microfrontends">
+
+The home was built as microfrontends in React and Next.js, rendered on the server. Moving from client-side Backbone to SSR put real content in the first response, which matters for both perceived speed and search.
+
+    </Pillar>
+    <Pillar title="BFFs in Node.js">
+
+Backend-for-frontend services in Node.js and Express held the business logic the UI needed and talked to the backend: transactional layers in Java, deployed on GCP as microservices.
+
+    </Pillar>
+    <Pillar title="Redis caching">
+
+Promotions, fares and the home itself were cached in Redis, so a page serving a million visits a day did not hit the transactional backend on every request.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Differentiator" title="Promotions without a deploy" highlight>
+
+Marketing analysts created promotions in a backoffice the team built and maintained, setting the activation date and time and the markets where each one should appear. No approval step and no deploy: a promotion went live on the home and on the promotion and market minisites, which were managed in an Adobe CMS, within about five minutes.
+
+Each promotion was cached in Redis, and editing or deleting it purged that cache, so what customers saw always matched what marketing had published.
+
+</Section>
+
+<Section label="04 — My role" title="From developer to the home's reference">
+
+I joined in 2020 as a Semi-Senior Advanced Web UI Developer through Globant, was promoted to Senior in December 2021, and in July 2023 moved to LATAM Airlines directly as a Senior Software Engineer, staying on the same product.
+
+Over those four years I became the team's reference for the home. I took part in the architectural shift from Backbone to Next.js, led the home's development team while the tech lead was on leave, and pushed for the performance, accessibility and SEO work. The new site launched with zero accessibility issues reported by axe and PageSpeed.
+
+</Section>
+
+<Metrics
+  label="05 — Impact"
+  title="Metrics and outcomes"
+  items={[
+    { label: 'Traffic', value: '~1M visits a day on the home page' },
+    { label: 'Promotions', value: 'Live in ~5 minutes, scheduled by date and market, with no deploy' },
+    { label: 'Accessibility', value: '0 issues in axe and PageSpeed at launch' },
+    { label: 'Delivery', value: 'Daily deploys with a 10-person team' },
+  ]}
+/>
