@@ -14,6 +14,7 @@ import Section from '~/components/work/Section.astro';
 import Pillars from '~/components/work/Pillars.astro';
 import Pillar from '~/components/work/Pillar.astro';
 import Metrics from '~/components/work/Metrics.astro';
+import BeforeAfter from '~/components/work/BeforeAfter.astro';
 
 <Section label="01 — Problem & Context" title="A legacy home for a million visits a day">
 
@@ -44,7 +45,32 @@ Promotions, fares and the home itself were cached in Redis, so a page serving a 
   </Pillars>
 </Section>
 
-<Section label="03 — Differentiator" title="Promotions without a deploy" highlight>
+<Section label="03 — Before & after" title="From a client-rendered shell to a booking-first home">
+
+In the archived 2020 home only the static parts survive: the fare cards and the flight search are empty, because on the old site they were filled in by JavaScript in the browser. The home today puts the search first and fills the page with fares by market, with dates and prices, on top of the architecture we built.
+
+<BeforeAfter
+  items={[
+    {
+      name: 'latam-home-2020',
+      alt: 'The latam.com home in March 2020 as archived: an empty flight search and blank fare cards',
+      caption: 'latam.com in March 2020, as archived by the Wayback Machine.',
+      width: 1200,
+      height: 1113,
+    },
+    {
+      name: 'latam-home-2026',
+      alt: 'The latamairlines.com home today: flight search over a hero image, a promotion and fares from Madrid with prices',
+      caption: 'latamairlines.com today (Spain, October 2026). Some features came after my time on the team.',
+      width: 1200,
+      height: 1156,
+    },
+  ]}
+/>
+
+</Section>
+
+<Section label="04 — Differentiator" title="Promotions without a deploy" highlight>
 
 Marketing analysts created promotions in a backoffice the team built and maintained, setting the activation date and time and the markets where each one should appear. No approval step and no deploy: a promotion went live on the home and on the promotion and market minisites, which were managed in an Adobe CMS, within about five minutes.
 
@@ -52,7 +78,7 @@ Each promotion was cached in Redis, and editing or deleting it purged that cache
 
 </Section>
 
-<Section label="04 — My role" title="From developer to the home's reference">
+<Section label="05 — My role" title="From developer to the home's reference">
 
 I joined in 2020 as a Semi-Senior Advanced Web UI Developer through Globant, was promoted to Senior in December 2021, and in July 2023 moved to LATAM Airlines directly as a Senior Software Engineer, staying on the same product.
 
@@ -61,7 +87,7 @@ Over those four years I became the team's reference for the home. I took part in
 </Section>
 
 <Metrics
-  label="05 — Impact"
+  label="06 — Impact"
   title="Metrics and outcomes"
   items={[
     { label: 'Traffic', value: '~1M visits a day on the home page' },

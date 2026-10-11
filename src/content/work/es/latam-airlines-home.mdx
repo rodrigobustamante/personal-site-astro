@@ -14,6 +14,7 @@ import Section from '~/components/work/Section.astro';
 import Pillars from '~/components/work/Pillars.astro';
 import Pillar from '~/components/work/Pillar.astro';
 import Metrics from '~/components/work/Metrics.astro';
+import BeforeAfter from '~/components/work/BeforeAfter.astro';
 
 <Section label="01 — Problema y contexto" title="Una home antigua para un millón de visitas al día">
 
@@ -44,7 +45,33 @@ Las promociones, las tarifas y la propia home se cacheaban en Redis, para que un
   </Pillars>
 </Section>
 
-<Section label="03 — Diferenciador" title="Promociones sin deploy" highlight>
+<Section label="03 — Antes y después" title="De una cáscara renderizada en el cliente a una home centrada en la reserva">
+
+En la home de 2020 archivada solo sobreviven las partes estáticas: las tarjetas de tarifas y el buscador de vuelos están vacíos, porque en el sitio antiguo los llenaba el JavaScript en el navegador. La home de hoy pone el buscador primero y llena la página con tarifas por mercado, con fechas y precios, sobre la arquitectura que construimos.
+
+<BeforeAfter
+  items={[
+    {
+      name: 'latam-home-2020',
+      alt: 'La home de latam.com en marzo de 2020 archivada: un buscador de vuelos vacío y tarjetas de tarifas en blanco',
+      caption: 'latam.com en marzo de 2020, archivada por Wayback Machine.',
+      width: 1200,
+      height: 1113,
+    },
+    {
+      name: 'latam-home-2026',
+      alt: 'La home de latamairlines.com hoy: buscador de vuelos sobre una imagen, una promoción y tarifas desde Madrid con precios',
+      caption:
+        'latamairlines.com hoy (España, octubre de 2026). Algunas funcionalidades llegaron después de mi paso por el equipo.',
+      width: 1200,
+      height: 1156,
+    },
+  ]}
+/>
+
+</Section>
+
+<Section label="04 — Diferenciador" title="Promociones sin deploy" highlight>
 
 Los analistas de marketing creaban promociones en un backoffice que el equipo construía y mantenía, definiendo la fecha y hora de activación y los mercados donde debía aparecer cada una. Sin paso de aprobación y sin deploy: la promoción quedaba publicada en la home y en los minisitios de promoción y de mercado, gestionados en un CMS de Adobe, en unos cinco minutos.
 
@@ -52,7 +79,7 @@ Cada promoción se cacheaba en Redis, y al editarla o eliminarla se purgaba ese 
 
 </Section>
 
-<Section label="04 — Mi rol" title="De desarrollador a referente de la home">
+<Section label="05 — Mi rol" title="De desarrollador a referente de la home">
 
 Entré en 2020 como Web UI Developer Semi-Senior Advanced a través de Globant, me promovieron a Senior en diciembre de 2021 y en julio de 2023 pasé a LATAM Airlines directamente como Senior Software Engineer, en el mismo producto.
 
@@ -61,7 +88,7 @@ En esos cuatro años me convertí en el referente del equipo para la home. Fui p
 </Section>
 
 <Metrics
-  label="05 — Impacto"
+  label="06 — Impacto"
   title="Métricas y resultados"
   items={[
     { label: 'Tráfico', value: '~1M de visitas diarias en la home' },
