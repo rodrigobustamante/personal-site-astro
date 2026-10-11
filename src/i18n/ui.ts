@@ -166,7 +166,7 @@ export const ui = {
     'footer.credit': 'Designed & built by Rodrigo Bustamante · Madrid · 2026',
     'footer.more': 'More',
     'footer.system': 'Design system',
-    'footer.uses': 'Colophon',
+    'footer.uses': 'How it’s built',
 
     // case study — Hangar Design System
   },
@@ -339,7 +339,7 @@ export const ui = {
     'footer.credit': 'Diseñado y construido por Rodrigo Bustamante · Madrid · 2026',
     'footer.more': 'Más',
     'footer.system': 'Sistema de diseño',
-    'footer.uses': 'Colofón',
+    'footer.uses': 'Cómo está hecho',
 
     // case study — Hangar Design System
   },

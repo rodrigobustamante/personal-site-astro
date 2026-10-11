@@ -86,7 +86,9 @@ export function cardFromHtml(html: string): { key: string; card: OgCard } | unde
           ? 'Sistema de diseño'
           : 'Design system'
         : key.startsWith('uses/')
-          ? 'Uses'
+          ? es
+            ? 'Cómo está hecho'
+            : 'How it’s built'
           : 'Blog';
   const isBlogIndex = /^blog\/(en|es)$/.test(key);
   return {
