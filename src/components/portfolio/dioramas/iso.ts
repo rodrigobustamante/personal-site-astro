@@ -119,7 +119,8 @@ export function createScene(S = 16) {
       const inside: V = [(stations[i].x + stations[i + 1].x) / 2, yc, (stations[i].z + stations[i + 1].z) / 2];
       for (let k = 0; k < sides; k++) {
         const k2 = (k + 1) % sides;
-        out.push(...face([rings[i][k], rings[i + 1][k], rings[i + 1][k2], rings[i][k2]], mat, inside));
+        const quad = [rings[i][k], rings[i + 1][k], rings[i + 1][k2], rings[i][k2]];
+        out.push(...face(quad, mat, inside));
       }
     }
     const last = stations.length - 1;
@@ -181,19 +182,30 @@ export function createScene(S = 16) {
       );
     const ln = (a: V, b: V) => line(M(a), M(b));
 
-    const fuselage = L(
-      [
-        { x: 10.9, r: 0.12, z: 2.05 },
-        { x: 12, r: 0.5, z: 1.75 },
-        { x: 13.5, r: 0.85, z: 1.45 },
-        { x: 20.4, r: 0.85, z: 1.45 },
-        { x: 21.6, r: 0.7, z: 1.38 },
-        { x: 22.4, r: 0.42, z: 1.28 },
-        { x: 22.85, r: 0.1, z: 1.2 },
-      ],
-      0,
-      'body'
-    );
+    // Fuselage profile: upswept tail cone, constant section, rounded nose
+    const STATIONS = [
+      { x: 10.9, r: 0.12, z: 2.05 },
+      { x: 12, r: 0.5, z: 1.75 },
+      { x: 13.5, r: 0.85, z: 1.45 },
+      { x: 20.6, r: 0.85, z: 1.45 },
+      { x: 21.4, r: 0.8, z: 1.42 },
+      { x: 21.95, r: 0.69, z: 1.37 },
+      { x: 22.35, r: 0.52, z: 1.3 },
+      { x: 22.62, r: 0.33, z: 1.23 },
+      { x: 22.78, r: 0.15, z: 1.18 },
+      { x: 22.85, r: 0.04, z: 1.16 },
+    ];
+    /** A point on the fuselage skin at station u, `deg` degrees above the +y side. */
+    const skin = (u: number, deg: number, lift = 0.01): V => {
+      const i = Math.max(0, STATIONS.findIndex((st) => st.x >= u) - 1);
+      const [a, b] = [STATIONS[i], STATIONS[i + 1]];
+      const t = (u - a.x) / (b.x - a.x);
+      const r = a.r + t * (b.r - a.r) + lift;
+      const zc = a.z + t * (b.z - a.z);
+      const rad = (deg * Math.PI) / 180;
+      return [u, r * Math.cos(rad), zc + r * Math.sin(rad)];
+    };
+    const fuselage = L(STATIONS, 0, 'body');
     const WZ = 1.0;
     const wing = (k: 1 | -1): Shape[] => [
       ...F(
@@ -250,7 +262,10 @@ export function createScene(S = 16) {
       'roof',
       [12, -1, 3]
     );
-    const gear = (u: number, v: number, top: number) => mark('dio-gear', ln([u, v, top], [u, v, 0]));
+    // Strokes are in screen units: scale them with the plane, or a small one
+    // ends up with oversized windows and pillars that hide its windscreen.
+    const sw = (w: number, extra = '') => (s === 1 ? '' : `stroke-width:${r1(w * s * 100) / 100}${extra}`);
+    const gear = (u: number, v: number, top: number) => mark('dio-gear', ln([u, v, top], [u, v, 0]), sw(2));
     const winA = 0.6; // window row, just above the +y side of the fuselage
     const [wy, wz] = [0.85 * Math.cos(winA), 1.45 + 0.85 * Math.sin(winA)];
 
@@ -282,6 +297,24 @@ export function createScene(S = 16) {
     ]
       .map((d) => mark('dio-shadow', d))
       .join('');
+    // Cockpit: side windows and the front panes wrapping over the nose, split
+    // by thin pillars in the fuselage colour.
+    const pane = (pts: [number, number][]) => mark('dio-cockpit', poly(pts.map(([u, d]) => M(skin(u, d)))));
+    const pillar = (u0: number, d0: number, u1: number, d1: number) =>
+      mark('dio-pillar', line(M(skin(u0, d0, 0.02)), M(skin(u1, d1, 0.02))), sw(0.9));
+    const cockpit = [
+      pane([
+        [21.45, 40],
+        [21.95, 38],
+        [22.18, 52],
+        [22.22, 72],
+        [22.05, 74],
+        [21.85, 58],
+        [21.45, 54],
+      ]),
+      pillar(21.85, 38, 21.86, 58),
+      pillar(22.1, 46, 22.07, 70),
+    ].join('');
     // Far side, fuselage and fin, then the near side; gear, livery and
     // windows go in between so the near wing can overlap them.
     const body = [
@@ -289,8 +322,8 @@ export function createScene(S = 16) {
       gear(16.2, -0.9, 0.9),
       paths([...stab(-1), ...engine(-1), ...wing(-1), ...fuselage, ...fin, ...stab(1)]),
       mark('dio-cheat', ln([13.5, 0.85, 1.45], [20.4, 0.85, 1.45])),
-      mark('dio-windows', ln([13.9, wy, wz], [20.1, wy, wz])),
-      mark('dio-cockpit', ln([21.45, 0.42, 1.88], [22.02, 0.28, 1.66])),
+      mark('dio-windows', ln([13.9, wy, wz], [20.1, wy, wz]), sw(2, `;stroke-dasharray:0 ${r1(4 * s * 10) / 10}`)),
+      cockpit,
       gear(16.2, 0.9, 0.9),
       paths([...engine(1), ...wing(1)]),
     ].join('');
@@ -315,7 +348,7 @@ export function createScene(S = 16) {
       }, [])
       .map((s) => `<path d="${s.d}" class="${s.cls}"/>`)
       .join('');
-  const mark = (cls: string, d: string) => `<path class="${cls}" d="${d}"/>`;
+  const mark = (cls: string, d: string, style = '') => `<path class="${cls}" d="${d}"${style && ` style="${style}"`}/>`;
   const beacons = (points: V[]) =>
     points
       .map((p, i) => {

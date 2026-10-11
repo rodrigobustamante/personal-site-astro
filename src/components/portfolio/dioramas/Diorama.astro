@@ -92,10 +92,15 @@ const [, , w, h] = SCENES[scene].viewBox.split(' ');
     stroke-dasharray: 0 4;
   }
   .dio .dio-cockpit {
+    fill: var(--dio-void);
     stroke: var(--dio-void);
-    stroke-width: 3;
-    stroke-linecap: round;
+    stroke-width: 0.4;
   }
+  .dio .dio-pillar {
+    stroke: var(--dio-body);
+    stroke-width: 0.9;
+  }
+
   .dio .dio-beacon {
     fill: var(--accent);
     stroke: color-mix(in oklab, var(--accent) 35%, transparent);
