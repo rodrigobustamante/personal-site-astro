@@ -1,0 +1,157 @@
+---
+/**
+ * A diorama (see iso.ts and scenes.ts). The page only carries an empty figure
+ * that reserves the scene's aspect ratio; its SVG is a separate file, fetched
+ * and inlined (so its fills can read the colour tokens) once the figure nears
+ * the viewport. That keeps ~4 KB of gzipped markup out of the page HTML and
+ * its first round trip. Holds the styles every scene shares; each scene's own
+ * tones and loop travel inside its SVG.
+ */
+import { SCENES, type SceneName } from './scenes';
+
+interface Props {
+  scene: SceneName;
+}
+
+const { scene } = Astro.props;
+const [, , w, h] = SCENES[scene].viewBox.split(' ');
+---
+
+<figure class="dio" aria-hidden="true" data-src={`/dioramas/${scene}.svg`} style={`aspect-ratio: ${w} / ${h}`}></figure>
+
+<style is:global>
+  /* Tones 0 (lit) … 3 (shaded) mix each base towards --ink; the amounts flip
+     in dark mode, where --ink is the light end. */
+  .dio {
+    --dio-k0: 0%;
+    --dio-k1: 9%;
+    --dio-k2: 18%;
+    --dio-k3: 30%;
+    --dio-wall: var(--card);
+    --dio-body: var(--card);
+    --dio-void: color-mix(in oklab, var(--ink) 85%, var(--paper));
+    margin: 48px 0 0;
+  }
+  /* Without scripting the scene never loads: drop the reserved space. */
+  @media (scripting: none) {
+    .dio {
+      display: none;
+    }
+  }
+  :root[data-theme='dark'] .dio {
+    --dio-k0: 28%;
+    --dio-k1: 18%;
+    --dio-k2: 9%;
+    --dio-k3: 2%;
+    /* Lift the volumes off the dark apron; the plane reads as the lightest. */
+    --dio-wall: color-mix(in oklab, var(--ink) 22%, var(--card));
+    --dio-body: color-mix(in oklab, var(--ink) 58%, var(--card));
+    --dio-void: color-mix(in oklab, var(--paper), var(--ink) 5%);
+  }
+  .dio svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .dio path {
+    fill: var(--f);
+    stroke: var(--f);
+    stroke-width: 0.6;
+    stroke-linejoin: round;
+  }
+  .dio .dio-void {
+    fill: var(--dio-void);
+  }
+  .dio .dio-shadow {
+    fill: var(--ink);
+    opacity: 0.07;
+  }
+  .dio .dio-lane,
+  .dio .dio-stand,
+  .dio .dio-cheat {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.4;
+  }
+  .dio .dio-lane {
+    stroke-dasharray: 7 6;
+    opacity: 0.6;
+  }
+  .dio .dio-stand {
+    opacity: 0.35;
+  }
+  .dio .dio-gear {
+    stroke: var(--dio-void);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .dio .dio-windows {
+    stroke: var(--dio-void);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 0 4;
+  }
+  .dio .dio-cockpit {
+    stroke: var(--dio-void);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+  .dio .dio-beacon {
+    fill: var(--accent);
+    stroke: color-mix(in oklab, var(--accent) 35%, transparent);
+    stroke-width: 3;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dio .dio-beacon {
+      animation: dio-blink 2.4s steps(1) infinite both;
+      animation-delay: calc(var(--i) * -0.6s);
+    }
+    .dio svg {
+      animation: dio-in 0.6s ease-out both;
+    }
+    .dio[data-paused] * {
+      animation-play-state: paused;
+    }
+  }
+  @keyframes dio-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes dio-blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+</style>
+
+<script>
+  // Load each diorama as it nears the viewport, and pause its loop while it is
+  // off screen.
+  function initDioramas() {
+    document.querySelectorAll<HTMLElement>('.dio[data-src]:not([data-io])').forEach((el) => {
+      el.dataset.io = '';
+      let requested = false;
+      new IntersectionObserver(
+        ([entry]) => {
+          el.toggleAttribute('data-paused', !entry.isIntersecting);
+          if (!entry.isIntersecting || requested) return;
+          requested = true;
+          fetch(el.dataset.src ?? '')
+            .then((res) => (res.ok ? res.text() : ''))
+            .then((svg) => (el.innerHTML = svg))
+            .catch(() => {
+              // Decorative: on failure the reserved space simply stays empty.
+            });
+        },
+        { rootMargin: '200px 0px' }
+      ).observe(el);
+    });
+  }
+  initDioramas();
+  document.addEventListener('astro:page-load', initDioramas);
+</script>
