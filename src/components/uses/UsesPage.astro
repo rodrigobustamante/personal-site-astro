@@ -1,0 +1,261 @@
+---
+import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
+import SiteHeader from '~/components/portfolio/SiteHeader.astro';
+import type { Lang } from '~/i18n/ui';
+import { localizedPath } from '~/i18n/paths';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+interface Item {
+  name: string;
+  body: string;
+}
+
+const COPY: Record<
+  Lang,
+  { title: string; tag: string; intro: string; system: string; groups: { title: string; items: Item[] }[] }
+> = {
+  en: {
+    title: 'Colophon',
+    tag: 'Uses',
+    intro:
+      'How this site is built. It is small on purpose: no client framework, no animation library, and every page prerendered and served from the edge.',
+    system: 'See the design system',
+    groups: [
+      {
+        title: 'Platform',
+        items: [
+          {
+            name: 'Astro',
+            body: 'Every page is prerendered at build time. Blog posts and case studies are MDX content collections, one file per language.',
+          },
+          {
+            name: 'Cloudflare Workers',
+            body: 'Static assets are served from the edge. A small Worker runs first on the localized routes and redirects to English or Spanish from the language cookie or Accept-Language, so there is no client-side redirect.',
+          },
+          {
+            name: 'Open Graph cards',
+            body: 'Generated at build time with Satori and Sharp from each page’s own title and description: 1200×630, one per page and language.',
+          },
+        ],
+      },
+      {
+        title: 'Performance',
+        items: [
+          {
+            name: 'Navigation',
+            body: 'Astro’s ClientRouter with view transitions, and Speculation Rules that prerender a page on hover in Chromium, so most navigations are instant.',
+          },
+          {
+            name: 'Fonts',
+            body: 'Newsreader and Hanken Grotesk, self-hosted as partial instances of the variable fonts with only the axis ranges the site uses: about half the original weight.',
+          },
+          {
+            name: 'Measurement',
+            body: 'Lighthouse CI audits the main pages on every pull request; Cloudflare Web Analytics reports real-user Core Web Vitals without cookies.',
+          },
+        ],
+      },
+      {
+        title: 'Design and motion',
+        items: [
+          {
+            name: 'Tokens',
+            body: 'Warm neutrals and five accent palettes in OKLCH, with light and dark themes applied before first paint.',
+          },
+          {
+            name: 'Motion',
+            body: 'CSS first: scroll-driven animations for the timeline, view transitions between pages, and a few lines of script for the stat counters. All of it behind prefers-reduced-motion.',
+          },
+        ],
+      },
+      {
+        title: 'Workflow',
+        items: [
+          {
+            name: 'Quality',
+            body: 'TypeScript, ESLint, Prettier and Node’s test runner for the edge logic, run in CI with a preview deployment per branch.',
+          },
+        ],
+      },
+    ],
+  },
+  es: {
+    title: 'Colofón',
+    tag: 'Uses',
+    intro:
+      'Cómo está hecho este sitio. Es pequeño a propósito: sin framework en el cliente, sin librerías de animación, y cada página prerenderizada y servida desde el edge.',
+    system: 'Ver el sistema de diseño',
+    groups: [
+      {
+        title: 'Plataforma',
+        items: [
+          {
+            name: 'Astro',
+            body: 'Todas las páginas se prerenderizan en el build. Los posts y los casos de estudio son colecciones de contenido en MDX, un archivo por idioma.',
+          },
+          {
+            name: 'Cloudflare Workers',
+            body: 'Los assets estáticos se sirven desde el edge. Un Worker pequeño corre primero en las rutas localizadas y redirige a inglés o español según la cookie de idioma o Accept-Language, sin redirección en el cliente.',
+          },
+          {
+            name: 'Tarjetas Open Graph',
+            body: 'Se generan en el build con Satori y Sharp a partir del título y la descripción de cada página: 1200×630, una por página e idioma.',
+          },
+        ],
+      },
+      {
+        title: 'Rendimiento',
+        items: [
+          {
+            name: 'Navegación',
+            body: 'ClientRouter de Astro con view transitions, y Speculation Rules que prerenderizan la página al pasar el mouse en Chromium, así que la mayoría de las navegaciones son instantáneas.',
+          },
+          {
+            name: 'Fuentes',
+            body: 'Newsreader y Hanken Grotesk, alojadas en el sitio como instancias parciales de las fuentes variables, solo con los rangos de ejes que se usan: cerca de la mitad del peso original.',
+          },
+          {
+            name: 'Medición',
+            body: 'Lighthouse CI audita las páginas principales en cada pull request; Cloudflare Web Analytics mide los Core Web Vitals de usuarios reales sin cookies.',
+          },
+        ],
+      },
+      {
+        title: 'Diseño y movimiento',
+        items: [
+          {
+            name: 'Tokens',
+            body: 'Neutros cálidos y cinco paletas de acento en OKLCH, con tema claro y oscuro aplicados antes del primer pintado.',
+          },
+          {
+            name: 'Movimiento',
+            body: 'CSS primero: animaciones por scroll para el timeline, view transitions entre páginas y unas pocas líneas de script para los contadores. Todo detrás de prefers-reduced-motion.',
+          },
+        ],
+      },
+      {
+        title: 'Flujo de trabajo',
+        items: [
+          {
+            name: 'Calidad',
+            body: 'TypeScript, ESLint, Prettier y el test runner de Node para la lógica del edge, en CI con un deploy de preview por rama.',
+          },
+        ],
+      },
+    ],
+  },
+};
+
+const c = COPY[lang];
+---
+
+<PortfolioLayout
+  title={`${c.title} — Rodrigo Bustamante`}
+  description={c.intro}
+  lang={lang}
+  ogImage={`/og/uses/${lang}.png`}
+  hasLocalizedSibling
+>
+  <SiteHeader lang={lang} variant="portfolio" />
+
+  <main class="uses">
+    <header>
+      <span class="uses-tag">{c.tag}</span>
+      <h1 class="uses-title">{c.title}</h1>
+      <p class="uses-intro">{c.intro}</p>
+    </header>
+
+    {c.groups.map((group) => (
+      <section class="uses-group">
+        <h2>{group.title}</h2>
+        <dl>
+          {group.items.map((item) => (
+            <div class="uses-item">
+              <dt>{item.name}</dt>
+              <dd>{item.body}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    ))}
+
+    <a class="cs-link uses-next" href={localizedPath('/system', lang)}>
+      {c.system}
+      <span class="arrow" aria-hidden="true">
+        →
+      </span>
+    </a>
+  </main>
+</PortfolioLayout>
+
+<style>
+  .uses {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(48px, 8vh, 96px) var(--pad) clamp(64px, 10vh, 120px);
+  }
+  .uses-tag {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+  .uses-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 14px 0 20px;
+  }
+  .uses-intro {
+    font-size: 19px;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .uses-group {
+    margin-top: clamp(40px, 7vh, 64px);
+    padding-top: 24px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .uses-group h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(24px, 3vw, 30px);
+    letter-spacing: -0.015em;
+    margin-bottom: 8px;
+  }
+  .uses-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .uses-item dt {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .uses-item dd {
+    color: var(--ink-soft);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+  @media (max-width: 560px) {
+    .uses-item {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+  }
+  .uses-next {
+    margin-top: clamp(40px, 7vh, 64px);
+  }
+</style>

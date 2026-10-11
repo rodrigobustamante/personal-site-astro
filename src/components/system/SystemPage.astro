@@ -1,0 +1,567 @@
+---
+import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
+import SiteHeader from '~/components/portfolio/SiteHeader.astro';
+import type { Lang } from '~/i18n/ui';
+import { localizedPath } from '~/i18n/paths';
+import { PALETTES, DEFAULT_PALETTE } from '~/utils/palettes';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const COPY = {
+  en: {
+    title: 'Design system',
+    tag: 'System',
+    intro:
+      'The tokens and components this site is built with, rendered live from the same CSS. Switch the accent palette or the theme and everything below — and the rest of the site — follows.',
+    accent: 'Accent palettes',
+    accentSub:
+      'One accent per palette, with a darker ink variant for text in light mode and a lighter one in dark mode. Your choice is saved in this browser.',
+    current: 'current',
+    neutrals: 'Color tokens',
+    neutralsSub: 'Warm neutrals in OKLCH. Values update with the theme.',
+    type: 'Typography',
+    typeSub:
+      'Newsreader for display and reading, Hanken Grotesk for interface text. Both self-hosted as trimmed variable fonts.',
+    layout: 'Layout',
+    components: 'Components',
+    motion: 'Motion',
+    motionSub: 'Every animation sits behind prefers-reduced-motion: no-preference and degrades to the static layout.',
+    colophon: 'How the site is built',
+    roles: {
+      '--paper': 'Page background',
+      '--paper-2': 'Raised surfaces',
+      '--card': 'Cards and chips',
+      '--ink': 'Primary text',
+      '--ink-soft': 'Body copy',
+      '--muted': 'Secondary text',
+      '--faint': 'Decoration',
+      '--line': 'Borders',
+      '--line-soft': 'Dividers',
+      '--accent': 'Accent',
+      '--accent-ink': 'Accent text',
+      '--accent-soft': 'Accent tint',
+    },
+    specimen: {
+      display: 'Display — Newsreader 400',
+      title: 'Section title — Newsreader 400',
+      heading: 'Heading — Newsreader 500',
+      body: 'Body — Hanken Grotesk 400, 17px',
+      label: 'Label — Hanken Grotesk 600, uppercase',
+      bodyText:
+        'Frontend systems that scale across teams: shared tokens, accessible components and the pipelines that ship them.',
+    },
+    layoutRows: [
+      ['--maxw', '1080px', 'Content width'],
+      ['--pad', 'clamp(20px, 5vw, 64px)', 'Page gutter'],
+      ['radius', '6px · 7px · 999px', 'Chips and cards · images · pills and buttons'],
+    ],
+    motionRows: [
+      ['Hover', '0.2s ease', 'Color, opacity, arrow nudges'],
+      ['Reveal', '0.7s cubic-bezier(0.2, 0.7, 0.2, 1)', 'Sections fading up on scroll'],
+      ['Cascade', '35–120ms steps', 'Chips, hero intro, stat counters'],
+      ['Scroll-driven', 'animation-timeline: view()', 'Experience timeline rail'],
+      ['Page', 'View transitions', 'Shared titles between /work and case studies'],
+    ],
+    buttons: ['Get in touch', 'Download CV'],
+    highlight: 'Highlight pill',
+    link: 'Text link',
+  },
+  es: {
+    title: 'Sistema de diseño',
+    tag: 'Sistema',
+    intro:
+      'Los tokens y componentes con los que está hecho este sitio, renderizados en vivo desde el mismo CSS. Cambia la paleta de acento o el tema y todo lo de abajo —y el resto del sitio— lo sigue.',
+    accent: 'Paletas de acento',
+    accentSub:
+      'Un acento por paleta, con una variante de texto más oscura en modo claro y otra más clara en modo oscuro. Tu elección se guarda en este navegador.',
+    current: 'actual',
+    neutrals: 'Tokens de color',
+    neutralsSub: 'Neutros cálidos en OKLCH. Los valores cambian con el tema.',
+    type: 'Tipografía',
+    typeSub:
+      'Newsreader para títulos y lectura, Hanken Grotesk para la interfaz. Ambas alojadas en el sitio como fuentes variables recortadas.',
+    layout: 'Layout',
+    components: 'Componentes',
+    motion: 'Movimiento',
+    motionSub: 'Toda animación está detrás de prefers-reduced-motion: no-preference y vuelve al layout estático.',
+    colophon: 'Cómo está hecho el sitio',
+    roles: {
+      '--paper': 'Fondo de página',
+      '--paper-2': 'Superficies elevadas',
+      '--card': 'Tarjetas y chips',
+      '--ink': 'Texto principal',
+      '--ink-soft': 'Texto de lectura',
+      '--muted': 'Texto secundario',
+      '--faint': 'Decoración',
+      '--line': 'Bordes',
+      '--line-soft': 'Divisores',
+      '--accent': 'Acento',
+      '--accent-ink': 'Texto de acento',
+      '--accent-soft': 'Tinte de acento',
+    },
+    specimen: {
+      display: 'Display — Newsreader 400',
+      title: 'Título de sección — Newsreader 400',
+      heading: 'Encabezado — Newsreader 500',
+      body: 'Cuerpo — Hanken Grotesk 400, 17px',
+      label: 'Etiqueta — Hanken Grotesk 600, mayúsculas',
+      bodyText:
+        'Sistemas frontend que escalan entre equipos: tokens compartidos, componentes accesibles y los pipelines que los publican.',
+    },
+    layoutRows: [
+      ['--maxw', '1080px', 'Ancho del contenido'],
+      ['--pad', 'clamp(20px, 5vw, 64px)', 'Margen de página'],
+      ['radius', '6px · 7px · 999px', 'Chips y tarjetas · imágenes · píldoras y botones'],
+    ],
+    motionRows: [
+      ['Hover', '0.2s ease', 'Color, opacidad, flechas'],
+      ['Reveal', '0.7s cubic-bezier(0.2, 0.7, 0.2, 1)', 'Secciones que aparecen al hacer scroll'],
+      ['Cascada', 'pasos de 35–120ms', 'Chips, entrada del hero, contadores'],
+      ['Por scroll', 'animation-timeline: view()', 'Línea del timeline de experiencia'],
+      ['Página', 'View transitions', 'Títulos compartidos entre /work y los casos'],
+    ],
+    buttons: ['Contactar', 'Descargar CV'],
+    highlight: 'Píldora destacada',
+    link: 'Link de texto',
+  },
+} as const;
+
+const c = COPY[lang];
+const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
+---
+
+<PortfolioLayout
+  title={`${c.title} — Rodrigo Bustamante`}
+  description={c.intro}
+  lang={lang}
+  ogImage={`/og/system/${lang}.png`}
+  hasLocalizedSibling
+>
+  <SiteHeader lang={lang} variant="portfolio" />
+
+  <main class="sys">
+    <header class="sys-head">
+      <span class="sys-tag">{c.tag}</span>
+      <h1 class="sys-title">{c.title}</h1>
+      <p class="sys-intro">{c.intro}</p>
+    </header>
+
+    <section class="sys-section" aria-labelledby="sys-accent">
+      <h2 id="sys-accent" class="sys-h2">
+        {c.accent}
+      </h2>
+      <p class="sys-sub">{c.accentSub}</p>
+      <div class="palettes">
+        {Object.entries(PALETTES).map(([name, p]) => (
+          <button
+            class="palette"
+            type="button"
+            data-palette={name}
+            aria-pressed={name === DEFAULT_PALETTE ? 'true' : 'false'}
+          >
+            <span class="palette-dots" aria-hidden="true">
+              <span style={`background:${p.l}`} />
+              <span style={`background:${p.d}`} />
+            </span>
+            <span class="palette-name">{name}</span>
+            <span class="palette-current">{c.current}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <section class="sys-section" aria-labelledby="sys-color">
+      <h2 id="sys-color" class="sys-h2">
+        {c.neutrals}
+      </h2>
+      <p class="sys-sub">{c.neutralsSub}</p>
+      <ul class="swatches">
+        {tokens.map((token) => (
+          <li class="swatch">
+            <span class="swatch-chip" style={`background:var(${token})`} />
+            <code>{token}</code>
+            <span class="swatch-role">{c.roles[token]}</span>
+            <code class="swatch-value" data-token={token} />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="sys-section" aria-labelledby="sys-type">
+      <h2 id="sys-type" class="sys-h2">
+        {c.type}
+      </h2>
+      <p class="sys-sub">{c.typeSub}</p>
+      <div class="specimens">
+        <div class="specimen">
+          <span class="specimen-k">{c.specimen.display}</span>
+          <span class="hero-name specimen-display">Rodrigo</span>
+        </div>
+        <div class="specimen">
+          <span class="specimen-k">{c.specimen.title}</span>
+          <span class="section-title">{c.type}</span>
+        </div>
+        <div class="specimen">
+          <span class="specimen-k">{c.specimen.heading}</span>
+          <span class="entry-company">Hangar Design System</span>
+        </div>
+        <div class="specimen">
+          <span class="specimen-k">{c.specimen.body}</span>
+          <p class="specimen-body">{c.specimen.bodyText}</p>
+        </div>
+        <div class="specimen">
+          <span class="specimen-k">{c.specimen.label}</span>
+          <span class="sys-tag">Staff Frontend Engineer</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="sys-section" aria-labelledby="sys-layout">
+      <h2 id="sys-layout" class="sys-h2">
+        {c.layout}
+      </h2>
+      <dl class="rows">
+        {c.layoutRows.map(([k, v, note]) => (
+          <div class="row">
+            <dt>
+              <code>{k}</code>
+            </dt>
+            <dd>
+              <code>{v}</code>
+              <span>{note}</span>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="sys-section" aria-labelledby="sys-components">
+      <h2 id="sys-components" class="sys-h2">
+        {c.components}
+      </h2>
+      <div class="components">
+        <div class="component-row">
+          <span class="btn btn-primary">{c.buttons[0]}</span>
+          <span class="btn btn-ghost">{c.buttons[1]}</span>
+        </div>
+        <div class="component-row">
+          <span class="chip">React</span>
+          <span class="chip">TypeScript</span>
+          <span class="chip">Storybook</span>
+        </div>
+        <div class="component-row">
+          <span class="entry-highlight">
+            <span class="star">✦</span>
+            {c.highlight}
+          </span>
+        </div>
+        <div class="component-row">
+          <a class="cs-link" href={localizedPath('/work', lang)}>
+            {c.link}
+            <span class="arrow" aria-hidden="true">
+              →
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="sys-section" aria-labelledby="sys-motion">
+      <h2 id="sys-motion" class="sys-h2">
+        {c.motion}
+      </h2>
+      <p class="sys-sub">{c.motionSub}</p>
+      <dl class="rows">
+        {c.motionRows.map(([k, v, note]) => (
+          <div class="row">
+            <dt>{k}</dt>
+            <dd>
+              <code>{v}</code>
+              <span>{note}</span>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <a class="cs-link sys-next" href={localizedPath('/uses', lang)}>
+      {c.colophon}
+      <span class="arrow" aria-hidden="true">
+        →
+      </span>
+    </a>
+  </main>
+</PortfolioLayout>
+
+<script>
+  // Palette switcher + live token values. Re-binds after every ClientRouter
+  // navigation; the theme logic itself lives in PortfolioLayout.
+  type ThemeWindow = Window & { __applyTheme?: () => void };
+
+  function initSystem() {
+    const root = document.documentElement;
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.palette');
+    if (!buttons.length) return;
+
+    const readPalette = () => {
+      try {
+        return localStorage.getItem('palette') || 'Terracotta';
+      } catch {
+        return 'Terracotta';
+      }
+    };
+    const fillValues = () => {
+      const styles = getComputedStyle(root);
+      document.querySelectorAll<HTMLElement>('.swatch-value').forEach((el) => {
+        el.textContent = styles.getPropertyValue(el.dataset.token ?? '').trim();
+      });
+      const current = readPalette();
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.palette === current)));
+    };
+
+    buttons.forEach((button) =>
+      button.addEventListener('click', () => {
+        try {
+          localStorage.setItem('palette', button.dataset.palette ?? 'Terracotta');
+        } catch {
+          // Storage blocked: the palette applies only until the next page.
+        }
+        (window as ThemeWindow).__applyTheme?.();
+        fillValues();
+      })
+    );
+
+    fillValues();
+    // The header toggle changes data-theme and the inline --accent* styles.
+    const observer = new MutationObserver(fillValues);
+    observer.observe(root, { attributes: true, attributeFilter: ['data-theme', 'style'] });
+    document.addEventListener('astro:before-swap', () => observer.disconnect(), { once: true });
+  }
+
+  initSystem();
+  document.addEventListener('astro:page-load', initSystem);
+</script>
+
+<style>
+  .sys {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: clamp(48px, 8vh, 96px) var(--pad) clamp(64px, 10vh, 120px);
+  }
+  .sys-tag {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+  .sys-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 14px 0 20px;
+  }
+  .sys-intro {
+    font-size: 19px;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .sys-section {
+    margin-top: clamp(48px, 8vh, 80px);
+    padding-top: 28px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .sys-h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(26px, 3.4vw, 34px);
+    letter-spacing: -0.015em;
+    margin-bottom: 8px;
+  }
+  .sys-sub {
+    color: var(--muted);
+    max-width: 60ch;
+    margin-bottom: 24px;
+    text-wrap: pretty;
+  }
+  code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 13px;
+  }
+
+  /* Palettes */
+  .palettes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  .palette {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 4px 12px;
+    padding: 14px 16px;
+    text-align: left;
+    font: inherit;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .palette:hover {
+    border-color: var(--faint);
+  }
+  .palette[aria-pressed='true'] {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  .palette:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .palette-dots {
+    grid-row: span 2;
+    display: flex;
+  }
+  .palette-dots span {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--card);
+  }
+  .palette-dots span + span {
+    margin-left: -8px;
+  }
+  .palette-name {
+    font-weight: 500;
+    font-size: 15px;
+  }
+  .palette-current {
+    font-size: 12px;
+    color: var(--accent-ink);
+    visibility: hidden;
+  }
+  .palette[aria-pressed='true'] .palette-current {
+    visibility: visible;
+  }
+
+  /* Color tokens */
+  .swatches {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 20px 16px;
+  }
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+  .swatch-chip {
+    height: 56px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    margin-bottom: 8px;
+  }
+  .swatch-role {
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .swatch-value {
+    font-size: 12px;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
+
+  /* Typography */
+  .specimens {
+    display: flex;
+    flex-direction: column;
+  }
+  .specimen {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line-soft);
+    min-width: 0;
+  }
+  .specimen-k {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .specimen-display {
+    margin: 0;
+  }
+  .specimen .section-title {
+    margin: 0;
+  }
+  .specimen-body {
+    color: var(--ink-soft);
+    max-width: 60ch;
+  }
+
+  /* Layout and motion tables */
+  .rows {
+    display: flex;
+    flex-direction: column;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 15px;
+  }
+  .row dd {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .row dd code {
+    overflow-wrap: anywhere;
+  }
+  .row dd span {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  @media (max-width: 560px) {
+    .row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+
+  /* Components */
+  .components {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .component-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+  .component-row .cs-link {
+    margin-top: 0;
+  }
+
+  .sys-next {
+    margin-top: clamp(48px, 8vh, 80px);
+  }
+</style>

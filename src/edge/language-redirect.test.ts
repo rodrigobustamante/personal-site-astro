@@ -62,6 +62,12 @@ test('no redirect when the page already matches, when no preference exists, or f
   assert.equal(languageRedirect(req('/es')), undefined);
 });
 
+test('/system and /uses are localized pages', () => {
+  assert.equal(languageRedirect(req('/system', { 'accept-language': 'es' }))?.headers.get('location'), '/es/system');
+  assert.equal(languageRedirect(req('/es/uses', { 'accept-language': 'en' }))?.headers.get('location'), '/uses');
+  assert.equal(languageRedirect(req('/system-status', { 'accept-language': 'es' })), undefined);
+});
+
 test('the /work index and any case study are localized pages', () => {
   assert.equal(languageRedirect(req('/work', { 'accept-language': 'es' }))?.headers.get('location'), '/es/work');
   assert.equal(
