@@ -5,6 +5,7 @@ import SiteHeader from '~/components/portfolio/SiteHeader.astro';
 import { useTranslations, type Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 import { workSlug } from '~/utils/work';
+import HangarDiorama from '~/components/portfolio/dioramas/HangarDiorama.astro';
 
 interface Props {
   entry: CollectionEntry<'work'>;
@@ -16,6 +17,8 @@ const { t } = useTranslations(lang);
 const { Content } = await render(entry);
 const { data } = entry;
 const slug = workSlug(entry);
+// Decorative header scene, for the case studies that have one.
+const Diorama = ({ 'hangar-design-system': HangarDiorama } as Record<string, typeof HangarDiorama>)[slug];
 const meta = [
   ['work.meta.role', data.role],
   ['work.meta.period', data.period],
@@ -46,6 +49,8 @@ const meta = [
         </h1>
         <p class="cs-subtitle">{data.subtitle}</p>
       </header>
+
+      {Diorama && <Diorama />}
 
       <div class="cs-meta">
         {meta.map(([key, value]) => (
