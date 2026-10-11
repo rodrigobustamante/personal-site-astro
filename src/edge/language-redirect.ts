@@ -12,9 +12,13 @@
 import type { Lang } from '../i18n/ui.ts';
 import { LANGS, localizedPath, stripLocale } from '../i18n/paths.ts';
 
-/** English paths of the pages that exist in both languages: the home and everything under /work. */
+/** English paths of the pages that exist in both languages: the home, /system, /uses and everything under /work. */
 export const isLocalizedPage = (basePath: string) =>
-  basePath === '/' || basePath === '/work' || basePath.startsWith('/work/');
+  basePath === '/' ||
+  basePath === '/system' ||
+  basePath === '/uses' ||
+  basePath === '/work' ||
+  basePath.startsWith('/work/');
 
 const isLang = (value: string | undefined): value is Lang => LANGS.includes(value as Lang);
 
