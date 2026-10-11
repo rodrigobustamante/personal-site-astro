@@ -2,6 +2,8 @@
 /**
  * Two screenshots side by side (stacked on narrow screens). Images live in
  * public/images/work/ as `<name>.avif` + `<name>.webp`, 1200px wide.
+ * /images/* is served as immutable (public/_headers), so a replaced image
+ * needs a new file name.
  */
 interface Shot {
   name: string;
