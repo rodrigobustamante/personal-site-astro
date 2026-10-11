@@ -111,7 +111,8 @@ const nav =
   // header element and its listeners.
   function initHeader() {
     const header = document.getElementById('site-header');
-    if (!header || header.dataset.bound) return;
+    // `bound` is set to '', which is falsy, so test for presence.
+    if (!header || 'bound' in header.dataset) return;
     header.dataset.bound = '';
     bindScroll();
     requestAnimationFrame(() => header.classList.toggle('scrolled', window.scrollY > 10));
