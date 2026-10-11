@@ -1,0 +1,99 @@
+---
+title: 'Home de LATAM Airlines'
+subtitle: 'Reconstruir la puerta de entrada de la aerolínea más grande de América Latina, y que marketing publique sin deploy'
+tag: 'Caso de estudio'
+client: LATAM Airlines
+role: 'Web UI Developer → Senior Software Engineer'
+period: 'Aug 2020 — Sep 2024'
+scope: '~1M de visitas diarias · Home y promociones · Equipo de 10 personas'
+stack: [React, Next.js, TypeScript, Node.js, Express, Redis, Jenkins, GCP]
+order: 2
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+import BeforeAfter from '~/components/work/BeforeAfter.astro';
+
+<Section label="01 — Problema y contexto" title="Una home antigua para un millón de visitas al día">
+
+La home de latamairlines.com es la puerta de entrada de la aerolínea: cerca de un millón de visitas al día. Cuando entré al equipo de Digital Marketing Engage en 2020, todavía funcionaba con la experiencia anterior, una aplicación en Backbone renderizada en el cliente.
+
+LATAM decidió reconstruir el sitio desde cero con una nueva experiencia de usuario. Eso implicaba una nueva arquitectura de frontend, nuevos servicios entre el frontend y el backend transaccional, y una nueva forma de que marketing pusiera las promociones frente a los clientes.
+
+</Section>
+
+<Section label="02 — Arquitectura" title="Microfrontends renderizados en servidor sobre una capa de servicios">
+  <Pillars>
+    <Pillar title="Microfrontends en Next.js">
+
+La home se construyó como microfrontends en React y Next.js, renderizados en el servidor. Pasar de Backbone en el cliente a SSR puso contenido real en la primera respuesta, algo que importa tanto para la velocidad percibida como para el SEO.
+
+    </Pillar>
+    <Pillar title="BFFs en Node.js">
+
+Servicios backend-for-frontend en Node.js y Express concentraban la lógica de negocio que necesitaba la UI y se comunicaban con el backend: capas transaccionales en Java, desplegadas en GCP como microservicios.
+
+    </Pillar>
+    <Pillar title="Caché en Redis">
+
+Las promociones, las tarifas y la propia home se cacheaban en Redis, para que una página con un millón de visitas al día no llegara al backend transaccional en cada request.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Antes y después" title="De una cáscara renderizada en el cliente a una home centrada en la reserva">
+
+En la home de 2020 archivada sobreviven el carrusel y los bloques de promociones con mucho texto, pero el buscador de vuelos es un marco vacío: en el sitio antiguo lo dibujaba el JavaScript en el navegador. La home de hoy pone el buscador primero, sobre la imagen principal, y convierte las promociones en tarjetas de tarifas con imagen, fechas de viaje, precios y filtros por tipo de viaje, sobre la arquitectura que construimos.
+
+<BeforeAfter
+  items={[
+    {
+      name: 'latam-home-2020-06',
+      alt: 'La home de latam.com en junio de 2020 archivada: un carrusel, un buscador de vuelos vacío y bloques azules de promociones',
+      caption: 'latam.com (Chile) en junio de 2020, archivada por Wayback Machine.',
+      width: 1200,
+      height: 1113,
+    },
+    {
+      name: 'latam-home-2026',
+      alt: 'La home de latamairlines.com hoy: buscador de vuelos sobre una imagen, una promoción y tarifas desde Madrid con precios',
+      caption:
+        'latamairlines.com hoy (España, octubre de 2026). Algunas funcionalidades llegaron después de mi paso por el equipo.',
+      width: 1200,
+      height: 1156,
+    },
+  ]}
+/>
+
+</Section>
+
+<Section label="04 — Diferenciador" title="Promociones sin deploy" highlight>
+
+Los analistas de marketing creaban promociones en un backoffice que el equipo construía y mantenía, definiendo la fecha y hora de activación y los mercados donde debía aparecer cada una. Sin paso de aprobación y sin deploy: la promoción quedaba publicada en la home y en los minisitios de promoción y de mercado, gestionados en un CMS de Adobe, en unos cinco minutos.
+
+Cada promoción se cacheaba en Redis, y al editarla o eliminarla se purgaba ese caché, así lo que veían los clientes siempre coincidía con lo que marketing había publicado.
+
+</Section>
+
+<Section label="05 — Mi rol" title="De desarrollador a referente de la home">
+
+Entré en 2020 como Web UI Developer Semi-Senior Advanced a través de Globant, me promovieron a Senior en diciembre de 2021 y en julio de 2023 pasé a LATAM Airlines directamente como Senior Software Engineer, en el mismo producto.
+
+En esos cuatro años me convertí en el referente del equipo para la home. Fui parte del cambio de arquitectura de Backbone a Next.js, lideré al equipo de desarrollo de la home mientras el tech lead estaba de baja e impulsé el trabajo de performance, accesibilidad y SEO. El sitio nuevo salió con cero problemas de accesibilidad reportados por axe y PageSpeed.
+
+</Section>
+
+<Metrics
+  label="06 — Impacto"
+  title="Métricas y resultados"
+  items={[
+    { label: 'Tráfico', value: '~1M de visitas diarias en la home' },
+    { label: 'Promociones', value: 'Publicadas en ~5 minutos, programadas por fecha y mercado, sin deploy' },
+    { label: 'Accesibilidad', value: '0 problemas en axe y PageSpeed en el lanzamiento' },
+    { label: 'Entrega', value: 'Deploys diarios con un equipo de 10 personas' },
+  ]}
+/>

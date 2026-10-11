@@ -1,0 +1,71 @@
+---
+/**
+ * Two screenshots side by side (stacked on narrow screens). Images live in
+ * public/images/work/ as `<name>.avif` + `<name>.webp`, 1200px wide.
+ * /images/* is served as immutable (public/_headers), so a replaced image
+ * needs a new file name.
+ */
+interface Shot {
+  name: string;
+  alt: string;
+  caption: string;
+  width: number;
+  height: number;
+}
+interface Props {
+  items: Shot[];
+}
+const { items } = Astro.props;
+---
+
+<div class="cs-shots">
+  {items.map((shot) => (
+    <figure class="cs-shot">
+      <picture>
+        <source srcset={`/images/work/${shot.name}.avif`} type="image/avif" />
+        <img
+          src={`/images/work/${shot.name}.webp`}
+          alt={shot.alt}
+          width={shot.width}
+          height={shot.height}
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+      <figcaption>{shot.caption}</figcaption>
+    </figure>
+  ))}
+</div>
+
+<style>
+  .cs-shots {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+  }
+  @media (max-width: 640px) {
+    .cs-shots {
+      grid-template-columns: 1fr;
+    }
+  }
+  .cs-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* Same frame for both shots so the captions line up. */
+    aspect-ratio: 1200 / 1113;
+    object-fit: cover;
+    object-position: top;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--card);
+  }
+  .cs-shot figcaption {
+    margin-top: 10px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+</style>
