@@ -136,33 +136,43 @@ const ore = [0, 1, 2].map(
     )}</g>`
 );
 
-/** A truck along the x axis, cab towards -x; `cargo` is a box van or a dump body. */
-function truck(x: number, y: number, cargo: 'van' | 'dump') {
+/**
+ * A truck along the x axis, its cab towards -x or, with `back`, towards +x.
+ * `cargo` is a box van, or a dump body left open at the rear with a load of ore.
+ */
+function truck(x: number, y: number, cargo: 'van' | 'dump', back = false) {
   const [w, y0] = [1.2, y - 0.6];
-  const wheels = (yy: number) => [0.35, 2.55].flatMap((dx) => box(x + dx, yy, 0, 0.6, 0.25, 0.6, 'deep'));
-  const body =
+  // u runs from the cab end (0) to the rear (3.5); X maps it to a box's lowest x
+  const X = (u: number, len: number) => (back ? x + 3.5 - u - len : x + u);
+  const wheels = (yy: number) => [0.35, 2.55].flatMap((u) => box(X(u, 0.6), yy, 0, 0.6, 0.25, 0.6, 'deep'));
+  const cab = box(X(0, 1), y0, 0.55, 1, w, 1.05, cargo === 'van' ? 'roof' : 'body');
+  const load =
     cargo === 'van'
-      ? box(x + 1.15, y0, 0.55, 2.3, w, 1.5, 'body')
+      ? box(X(1.15, 2.3), y0, 0.55, 2.3, w, 1.5, 'body')
       : [
-          ...box(x + 1.1, y0 - 0.05, 0.55, 2.4, w + 0.1, 0.25, 'roof'),
-          ...box(x + 1.1, y0 - 0.05, 0.8, 2.4, 0.15, 0.7, 'roof'),
-          ...box(x + 1.1, y0 + w - 0.1, 0.8, 2.4, 0.15, 0.7, 'roof'),
-          ...box(x + 3.35, y0 - 0.05, 0.8, 0.15, w + 0.1, 0.7, 'roof'),
+          ...box(X(1.1, 2.4), y0 - 0.05, 0.55, 2.4, w + 0.1, 0.25, 'roof'),
+          ...box(X(1.1, 0.15), y0 - 0.05, 0.8, 0.15, w + 0.1, 0.7, 'roof'),
+          ...box(X(1.1, 2.4), y0 - 0.05, 0.8, 2.4, 0.15, 0.7, 'roof'),
+          ...[0, 1, 2].flatMap((i) =>
+            box(X(2.2 + (i % 2) * 0.5, 0.45), y0 + 0.2 + i * 0.25, 0.8, 0.45, 0.45, 0.45, 'soft')
+          ),
+          ...box(X(1.1, 2.4), y0 + w - 0.1, 0.8, 2.4, 0.15, 0.7, 'roof'),
         ];
+  // Painter's order: whichever end is further from the viewer (lower x) first
   const shapes = [
     ...wheels(y0),
     ...box(x, y0, 0.3, 3.5, w, 0.25, 'deep'),
-    ...box(x, y0, 0.55, 1, w, 1.05, cargo === 'van' ? 'roof' : 'body'),
-    ...body,
+    ...(back ? [...load, ...cab] : [...cab, ...load]),
     ...wheels(y0 + w - 0.25),
   ];
+  const gx = X(0.12, 0.73);
   const glass = mark(
     'dio-cockpit',
     poly([
-      [x + 0.12, y0 + w + 0.01, 1.05],
-      [x + 0.85, y0 + w + 0.01, 1.05],
-      [x + 0.85, y0 + w + 0.01, 1.45],
-      [x + 0.12, y0 + w + 0.01, 1.45],
+      [gx, y0 + w + 0.01, 1.05],
+      [gx + 0.73, y0 + w + 0.01, 1.05],
+      [gx + 0.73, y0 + w + 0.01, 1.45],
+      [gx, y0 + w + 0.01, 1.45],
     ])
   );
   const shadow = mark(
@@ -174,11 +184,11 @@ function truck(x: number, y: number, cargo: 'van' | 'dump') {
       [x - 0.1, y0 + w + 0.15, 0],
     ])
   );
-  return { markup: shadow + paths(shapes) + glass, top: [x + 0.5, y, 1.7] as V };
+  return { markup: shadow + paths(shapes) + glass, top: [X(0.5, 0), y, 1.7] as V };
 }
 
-// Haul truck parked by the hopper
-const haul = truck(BX + 1.1, 10.6, 'dump');
+// Haul truck backed up to the hopper, its open dump body over the conveyor's feed
+const haul = truck(BX + 0.8, 10.6, 'dump', true);
 
 // Supply road, gate and warehouse in front
 const RY = 15.6;
