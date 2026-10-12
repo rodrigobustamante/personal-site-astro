@@ -20,9 +20,13 @@ const { Content } = await render(entry);
 const { data } = entry;
 const slug = workSlug(entry);
 // Decorative header scene, for the case studies that have one.
-const scene = ({ 'hangar-design-system': 'hangar', 'latam-airlines-home': 'terminal' } as Record<string, SceneName>)[
-  slug
-];
+const scene = (
+  {
+    'hangar-design-system': 'hangar',
+    'latam-airlines-home': 'terminal',
+    'mining-supplier-platform': 'mine',
+  } as Record<string, SceneName>
+)[slug];
 const meta = [
   ['work.meta.role', data.role],
   ['work.meta.period', data.period],
