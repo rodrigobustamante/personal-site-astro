@@ -89,28 +89,10 @@ const fatigue = mark(
   plot((t) => 0.35 + 0.25 * Math.sin(t * 9) * (1 - t * 0.4))
 );
 
-// Runner in lane one: legs swap between two strides as it goes
+// Runner in lane one (drawn below, once the lap is measured)
 const RUN = T.kerb + T.lane / 2;
 const path = oval(RUN, 48);
 const [px, py] = path[0];
-const legs = (spread: number) => [-1, 1].map((k) => line([px, py, 1.25], [px + k * spread, py, 0])).join('');
-const runner = [
-  mark(
-    'dio-shadow',
-    poly([
-      [px - 0.45, py - 0.35, 0],
-      [px + 0.45, py - 0.35, 0],
-      [px + 0.45, py + 0.35, 0],
-      [px - 0.45, py + 0.35, 0],
-    ])
-  ),
-  mark('dio-stride dio-stride-a', legs(0.5)),
-  mark('dio-stride dio-stride-b', legs(0.15)),
-  paths([
-    ...box(px - 0.25, py - 0.25, 1.2, 0.5, 0.5, 1, 'roof'),
-    ...box(px - 0.2, py - 0.2, 2.3, 0.4, 0.4, 0.4, 'body'),
-  ]),
-].join('');
 
 // The lap as projected on screen, with cumulative length: the runner's
 // keyframes and the pacing lights' dash both measure along it, so they stay
@@ -128,12 +110,13 @@ function along(d: number) {
     acc.findIndex((a) => a >= d)
   );
   const t = (d - acc[i - 1]) / (acc[i] - acc[i - 1] || 1);
-  return [0, 1].map((j) => lap[i - 1][j] + t * (lap[i][j] - lap[i - 1][j]) - lap[0][j]);
+  const [dx, dy] = [0, 1].map((j) => lap[i - 1][j] + t * (lap[i][j] - lap[i - 1][j]) - lap[0][j]);
+  return { dx, dy, i };
 }
 const SAMPLES = 40;
 const runFrames =
   Array.from({ length: SAMPLES }, (_, k) => {
-    const [dx, dy] = along((LEN * k) / SAMPLES);
+    const { dx, dy } = along((LEN * k) / SAMPLES);
     return `${r1((100 * k) / SAMPLES)}%{transform:translate(${r1(dx)}px,${r1(dy)}px)}`;
   }).join('') + '100%{transform:none}';
 const lapPath = `M${lap
@@ -141,6 +124,125 @@ const lapPath = `M${lap
   .map((p) => p.map(r1).join(' '))
   .join('L')}Z`;
 const [dash, lead] = [r1(LEN * 0.035), r1(LEN * 0.012)];
+
+// The runner, after the PACE illustration: white tee, black shorts, yellow
+// shoes, dark hair and glasses, built from boxes. It comes in four headings,
+// one per stretch of the lap, each in two strides that swap as it runs.
+type Dir = [number, number];
+const HEADINGS: Dir[] = [
+  [-1, 0],
+  [0, -1],
+  [1, 0],
+  [0, 1],
+];
+const K = 1.3;
+type Part = { f: number; s: number; z: number; df: number; ds: number; dz: number; mat: string };
+const part = (f: number, s: number, z: number, df: number, ds: number, dz: number, mat: string): Part => ({
+  f,
+  s,
+  z,
+  df,
+  ds,
+  dz,
+  mat,
+});
+
+/** One pose: `k` is 1 or -1 and picks which leg (and opposite arm) is forward. */
+function pose(k: 1 | -1): Part[] {
+  const limbs = [1, -1].flatMap((side) => {
+    const swing = side * k * 0.2;
+    const lift = swing < 0 ? 0.12 : 0;
+    return [
+      part(swing + 0.07, side * 0.12, lift, 0.34, 0.17, 0.05, 'sole'),
+      part(swing + 0.07, side * 0.12, lift + 0.05, 0.34, 0.17, 0.12, 'shoe'),
+      part(swing, side * 0.12, lift + 0.17, 0.15, 0.15, 0.8 - lift, 'skin'),
+      // Arm: skin below, the tee's sleeve on top, swinging as one piece
+      part(-swing * 0.5, side * 0.3, 1.32, 0.13, 0.11, 0.46, 'skin'),
+      part(-swing * 0.5, side * 0.3, 1.78, 0.17, 0.13, 0.24, 'tee'),
+    ];
+  });
+  return [
+    ...limbs,
+    part(0, 0, 0.95, 0.34, 0.46, 0.36, 'shorts'),
+    part(0, 0, 1.3, 0.34, 0.48, 0.75, 'tee'),
+    part(0, 0, 2.05, 0.14, 0.14, 0.08, 'skin'),
+    part(0.01, 0, 2.12, 0.32, 0.3, 0.32, 'skin'),
+    // Hair: a full cap, a fringe over the forehead, sideburns and the back
+    part(-0.15, 0, 2.16, 0.08, 0.34, 0.3, 'hair'),
+    part(-0.02, 0, 2.38, 0.38, 0.34, 0.16, 'hair'),
+    part(0.155, 0, 2.36, 0.04, 0.3, 0.06, 'hair'),
+    part(0, 0.16, 2.26, 0.2, 0.03, 0.14, 'hair'),
+    part(0, -0.16, 2.26, 0.2, 0.03, 0.14, 'hair'),
+  ];
+}
+
+function figure([hx, hy]: Dir, k: 1 | -1) {
+  const [sx, sy] = [-hy, hx];
+  const at = (f: number, s: number, z: number): V => [px + K * (hx * f + sx * s), py + K * (hy * f + sy * s), K * z];
+  const boxes = pose(k)
+    .map((q) => {
+      const [cx, cy] = at(q.f, q.s, 0);
+      const wx = K * (Math.abs(hx) * q.df + Math.abs(sx) * q.ds);
+      const wy = K * (Math.abs(hy) * q.df + Math.abs(sy) * q.ds);
+      // Height counts as much as depth: of two stacked parts, the higher one is drawn later
+      return { depth: cx + cy + K * q.z, shapes: box(cx - wx / 2, cy - wy / 2, K * q.z, wx, wy, K * q.dz, q.mat) };
+    })
+    .sort((a, b) => a.depth - b.depth);
+  // Glasses: the front of the lenses when the face is towards the viewer,
+  // and the arm on whichever side shows.
+  const front = hx + hy > 0 ? line(at(0.18, -0.12, 2.29), at(0.18, 0.12, 2.29)) : '';
+  const side = sx + sy > 0 ? 0.16 : -0.16;
+  const arm = line(at(0.17, side, 2.29), at(-0.02, side, 2.29));
+  return paths(boxes.flatMap((b) => b.shapes)) + mark('dio-glasses', front + arm);
+}
+
+const runner = [
+  mark(
+    'dio-shadow',
+    poly([
+      [px - 0.45, py - 0.35, 0],
+      [px + 0.45, py - 0.35, 0],
+      [px + 0.45, py + 0.35, 0],
+      [px - 0.45, py + 0.35, 0],
+    ])
+  ),
+  ...HEADINGS.map(
+    (h, i) =>
+      `<g class="dio-heading dio-heading-${i}"><g class="dio-stride-a">${figure(h, 1)}</g><g class="dio-stride-b">${figure(h, -1)}</g></g>`
+  ),
+].join('');
+
+// Which heading shows at each sample: the one closest to the lap's direction there.
+const loop = [...path, path[0]];
+const headingAt = (k: number) => {
+  const { i } = along((LEN * k) / SAMPLES);
+  const [tx, ty] = [loop[i][0] - loop[i - 1][0], loop[i][1] - loop[i - 1][1]];
+  const dots = HEADINGS.map(([hx, hy]) => hx * tx + hy * ty);
+  return dots.indexOf(Math.max(...dots));
+};
+const headingFrames = HEADINGS.map((_, h) => {
+  let prev = -1;
+  const frames = Array.from({ length: SAMPLES }, (_, k) => {
+    const on = headingAt(k) === h ? 1 : 0;
+    if (on === prev) return '';
+    prev = on;
+    return `${r1((100 * k) / SAMPLES)}%{opacity:${on}}`;
+  }).join('');
+  return `@keyframes dio-heading-${h}{${frames}100%{opacity:${headingAt(0) === h ? 1 : 0}}}`;
+}).join('');
+
+// Fixed colours for the runner, shaded towards a warm black in both themes
+const SKIN: Record<string, string> = {
+  skin: '#e5ae86',
+  tee: '#f6f4f0',
+  shorts: '#242326',
+  shoe: '#f2c31f',
+  sole: '#fbfaf6',
+  hair: '#3a2a20',
+};
+const runnerCss = Object.entries(SKIN)
+  .flatMap(([m, c]) => [0, 8, 16, 26].map((k, t) => `.dio .${m}${t}{--f:color-mix(in oklab, ${c}, #1b130e ${k}%)}`))
+  .join('');
 
 const svg = [
   paths(slab(AX, AY)),
@@ -179,15 +281,19 @@ const css = `
 .dio .dio-chart-soft { stroke: var(--dio-body); stroke-width: 1; opacity: 0.6; }
 .dio .dio-pacer { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: ${dash} ${r1(LEN - dash)}; stroke-dashoffset: -${lead}; }
 .dio .dio-mow { fill: color-mix(in oklab, var(--paper-2), var(--ink) calc(var(--dio-k0) + 4%)); }
-.dio .dio-stride { fill: none; stroke: var(--ink); stroke-width: 1.3; stroke-linecap: round; }
-.dio .dio-stride-b { opacity: 0; }
+${runnerCss}
+.dio .dio-glasses { fill: none; stroke: #1b1b1b; stroke-width: 0.8; stroke-linecap: round; }
+.dio .dio-heading, .dio .dio-stride-b { opacity: 0; }
+.dio .dio-heading-${headingAt(0)} { opacity: 1; }
 @media (prefers-reduced-motion: no-preference) {
   .dio .dio-runner { animation: dio-run ${LAP} linear infinite both; }
   .dio .dio-pacer { animation: dio-pacer ${LAP} linear infinite both; }
   .dio .dio-stride-a { animation: dio-stride 0.5s steps(1) infinite both; }
+${HEADINGS.map((_, h) => `  .dio .dio-heading-${h} { animation: dio-heading-${h} ${LAP} steps(1) infinite both; }`).join('\n')}
   .dio .dio-stride-b { animation: dio-stride 0.5s steps(1) -0.25s infinite both; }
 }
 @keyframes dio-run {${runFrames}}
+${headingFrames}
 @keyframes dio-pacer {
   from { stroke-dashoffset: -${lead}; }
   to { stroke-dashoffset: -${r1(lead + LEN)}; }
