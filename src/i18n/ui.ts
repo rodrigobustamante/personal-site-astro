@@ -20,6 +20,11 @@ export const ui = {
 
     // work
     'nav.work': 'Work',
+    'header.nav': 'Main',
+    'header.menu': 'Menu',
+    'header.theme': 'Dark theme',
+    'header.lang': ': leer en español',
+    'a11y.skip': 'Skip to content',
     'work.index.title': 'Selected work',
     'work.index.intro':
       'Case studies of systems I have architected and shipped: the problem, the architecture, and what changed.',
@@ -198,6 +203,11 @@ export const ui = {
 
     // work
     'nav.work': 'Trabajos',
+    'header.nav': 'Principal',
+    'header.menu': 'Menú',
+    'header.theme': 'Tema oscuro',
+    'header.lang': ': read in English',
+    'a11y.skip': 'Saltar al contenido',
     'work.index.title': 'Trabajos seleccionados',
     'work.index.intro':
       'Casos de estudio de sistemas que he diseñado y entregado: el problema, la arquitectura y lo que cambió.',

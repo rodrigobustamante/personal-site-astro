@@ -4,6 +4,7 @@ import { SITE } from '~/utils/config';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 import { PALETTES } from '~/utils/palettes';
+import { useTranslations } from '~/i18n/ui';
 
 interface Props {
   title?: string;
@@ -37,6 +38,7 @@ const {
   noindex = false,
 } = Astro.props;
 
+const { t } = useTranslations(lang);
 const origin = Astro.site ?? Astro.url;
 // Cloudflare Web Analytics: cookie-less RUM. Only rendered when a manual token
 // is set (see SITE.analyticsToken); the beacon tracks ClientRouter navigations
@@ -191,8 +193,8 @@ const jsonLd = JSON.stringify({
         --faint: oklch(0.6 0.015 60);
         --line: oklch(0.88 0.014 72);
         --line-soft: oklch(0.92 0.012 75);
-        --accent: oklch(0.585 0.125 42);
-        --accent-soft: color-mix(in oklab, oklch(0.585 0.125 42) 12%, transparent);
+        --accent: oklch(0.565 0.125 42);
+        --accent-soft: color-mix(in oklab, oklch(0.565 0.125 42) 12%, transparent);
         --accent-ink: oklch(0.46 0.12 42);
         --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
         --sans: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
@@ -224,8 +226,12 @@ const jsonLd = JSON.stringify({
         padding: 0;
       }
       html {
-        scroll-behavior: smooth;
         -webkit-text-size-adjust: 100%;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
       }
       body {
         background: var(--paper);
@@ -253,6 +259,35 @@ const jsonLd = JSON.stringify({
       img {
         display: block;
         max-width: 100%;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent-ink);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      .skip-link {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        z-index: 50;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: var(--ink);
+        color: var(--paper);
+        font-size: 14px;
+        transform: translateY(-200%);
+      }
+      .skip-link:focus-visible {
+        transform: none;
       }
       ::selection {
         background: var(--accent-soft);
@@ -335,9 +370,38 @@ const jsonLd = JSON.stringify({
       .header-nav a:hover::after {
         right: 0;
       }
+      .header-tools .menu-btn {
+        display: none;
+      }
+      .mobile-nav {
+        inset: 70px var(--pad) auto auto;
+        margin: 0;
+        min-width: 200px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--card);
+        color: var(--ink);
+        box-shadow: 0 18px 40px -20px color-mix(in oklab, var(--ink) 40%, transparent);
+      }
+      .mobile-nav:popover-open {
+        display: flex;
+        flex-direction: column;
+      }
+      .mobile-nav a {
+        padding: 12px 14px;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+      .mobile-nav a:hover {
+        background: var(--paper-2);
+      }
       @media (max-width: 760px) {
         .header-nav {
           display: none;
+        }
+        .header-tools .menu-btn {
+          display: inline-flex;
         }
       }
       .header-tools {
@@ -523,8 +587,10 @@ const jsonLd = JSON.stringify({
         height: 17px;
         flex-shrink: 0;
       }
-      .btn:hover {
-        transform: translateY(-1px);
+      @media (prefers-reduced-motion: no-preference) {
+        .btn:hover {
+          transform: translateY(-1px);
+        }
       }
       .btn-primary {
         background: var(--accent);
@@ -556,7 +622,7 @@ const jsonLd = JSON.stringify({
         font-family: var(--serif);
         font-style: italic;
         font-size: 16px;
-        color: var(--accent);
+        color: var(--accent-ink);
         margin-bottom: 10px;
         display: inline-block;
       }
@@ -1310,6 +1376,9 @@ const jsonLd = JSON.stringify({
     </script>
   </head>
   <body>
+    <a class="skip-link" href="#main">
+      {t('a11y.skip')}
+    </a>
     <slot />
     <script>
       // Scroll reveal shared by every page using this layout. Re-runs after

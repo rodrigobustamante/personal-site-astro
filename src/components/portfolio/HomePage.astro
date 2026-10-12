@@ -22,7 +22,7 @@ const { t, tl } = useTranslations(lang);
   <link slot="head" rel="preload" as="image" href="/images/portrait-crop.avif" type="image/avif" fetchpriority="high" />
   <SiteHeader lang={lang} variant="portfolio" />
 
-  <main>
+  <main id="main">
     <!-- ——— Hero ——— -->
     <section id="top" class="hero">
       <div class="wrap hero-grid">
@@ -564,13 +564,21 @@ const { t, tl } = useTranslations(lang);
               <span class="chip">Strava API</span>
             </div>
             <div class="project-links">
-              <a class="project-link" href="https://github.com/rodrigobustamante/pace" aria-label="PACE repo">
+              <a
+                class="project-link"
+                href="https://github.com/rodrigobustamante/pace"
+                aria-label={`${t('projects.repo')} — PACE`}
+              >
                 {t('projects.repo')}
                 <span class="arrow" aria-hidden="true">
                   ↗
                 </span>
               </a>
-              <a class="project-link" href="https://pace.rodrigobustamante.cl/" aria-label="PACE demo">
+              <a
+                class="project-link"
+                href="https://pace.rodrigobustamante.cl/"
+                aria-label={`${t('projects.demo')} — PACE`}
+              >
                 {t('projects.demo')}
                 <span class="arrow" aria-hidden="true">
                   ↗
@@ -592,13 +600,21 @@ const { t, tl } = useTranslations(lang);
               <span class="chip">TypeScript</span>
             </div>
             <div class="project-links">
-              <a class="project-link" href="https://github.com/rodrigobustamante/intervalo" aria-label="Intervalo repo">
+              <a
+                class="project-link"
+                href="https://github.com/rodrigobustamante/intervalo"
+                aria-label={`${t('projects.repo')} — Intervalo`}
+              >
                 {t('projects.repo')}
                 <span class="arrow" aria-hidden="true">
                   ↗
                 </span>
               </a>
-              <a class="project-link" href="https://intervalo.rodrigobustamante.cl/" aria-label="Intervalo demo">
+              <a
+                class="project-link"
+                href="https://intervalo.rodrigobustamante.cl/"
+                aria-label={`${t('projects.demo')} — Intervalo`}
+              >
                 {t('projects.demo')}
                 <span class="arrow" aria-hidden="true">
                   ↗
