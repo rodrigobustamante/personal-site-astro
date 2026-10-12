@@ -174,7 +174,7 @@ export const ui = {
     'blog.category': 'Category',
 
     // footer
-    'footer.credit': 'Designed & built by Rodrigo Bustamante · Madrid · 2026',
+    'footer.credit': 'Designed & built by Rodrigo Bustamante · Madrid',
     'footer.more': 'More',
     'footer.system': 'Design system',
     'footer.uses': 'How it’s built',
@@ -358,7 +358,7 @@ export const ui = {
     'blog.category': 'Categoría',
 
     // footer
-    'footer.credit': 'Diseñado y construido por Rodrigo Bustamante · Madrid · 2026',
+    'footer.credit': 'Diseñado y construido por Rodrigo Bustamante · Madrid',
     'footer.more': 'Más',
     'footer.system': 'Sistema de diseño',
     'footer.uses': 'Cómo está hecho',

@@ -1,6 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { SITE } from '~/utils/config';
+import { SITE, SOCIALS } from '~/utils/config';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 import { PALETTES } from '~/utils/palettes';
@@ -73,7 +73,7 @@ const jsonLd = JSON.stringify({
     addressLocality: 'Madrid',
     addressCountry: 'ES',
   },
-  sameAs: ['https://www.linkedin.com/in/rod-bustamante/', 'https://github.com/rodrigobustamante'],
+  sameAs: [SOCIALS.linkedin, SOCIALS.github, SOCIALS.x],
 });
 ---
 

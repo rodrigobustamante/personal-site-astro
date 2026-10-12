@@ -18,6 +18,14 @@ export interface SiteConfig {
   analyticsToken: string;
 }
 
+/** Profiles linked from the footer and the Person JSON-LD. */
+export const SOCIALS = {
+  linkedin: 'https://www.linkedin.com/in/rod-bustamante/',
+  github: 'https://github.com/rodrigobustamante',
+  x: 'https://x.com/uhNxZ',
+  email: 'rbustamantejelvez@gmail.com',
+};
+
 export interface RobotsConfig {
   index: boolean;
   follow: boolean;
