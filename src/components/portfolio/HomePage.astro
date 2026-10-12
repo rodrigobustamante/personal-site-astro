@@ -610,7 +610,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
               <span class="chip">Next.js 14</span>
               <span class="chip">Expo</span>
               <span class="chip">TypeScript</span>
-              <span class="chip">Gemini 2.5 Flash</span>
+              <span class="chip">Vercel AI SDK</span>
               <span class="chip">Strava API</span>
             </div>
             <div class="project-links">
@@ -632,6 +632,16 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
                 {t('projects.demo')}
                 <span class="arrow" aria-hidden="true">
                   ↗
+                </span>
+              </a>
+              <a
+                class="project-link"
+                href={localizedPath('/work/pace', lang)}
+                aria-label={`${t('projects.more')} — PACE`}
+              >
+                {t('projects.more')}
+                <span class="arrow" aria-hidden="true">
+                  →
                 </span>
               </a>
             </div>

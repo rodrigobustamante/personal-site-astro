@@ -162,7 +162,7 @@ export const ui = {
     'projects.sub': 'Side projects built to explore ideas I care about.',
     'projects.pace.title': 'PACE',
     'projects.pace.desc':
-      'Running analytics app integrated with Strava. AI coaching powered by Gemini 2.5 Flash surfaces insights from your training history and helps you plan smarter weeks.',
+      'Running analytics app integrated with Strava. Computes fitness, fatigue and form from your full training history, and an AI coach — Gemini, GPT‑4o or Claude, your choice — turns them into weekly and daily guidance.',
     'projects.pace.status': 'In development',
     'projects.intervalo.title': 'Intervalo',
     'projects.intervalo.desc':
@@ -170,6 +170,7 @@ export const ui = {
     'projects.intervalo.status': 'In development',
     'projects.repo': 'Repo',
     'projects.demo': 'Demo',
+    'projects.more': 'Read more',
 
     // writing
     'writing.title': 'Writing',
@@ -359,7 +360,7 @@ export const ui = {
     'projects.sub': 'Proyectos personales para explorar ideas que me importan.',
     'projects.pace.title': 'PACE',
     'projects.pace.desc':
-      'App de analítica de running integrada con Strava. Coaching con IA via Gemini 2.5 Flash que extrae insights de tu historial de entrenamiento y te ayuda a planificar semanas más inteligentes.',
+      'App de analítica de running integrada con Strava. Calcula forma física, fatiga y estado de forma con todo tu historial, y un coach con IA — Gemini, GPT‑4o o Claude, a elección — los convierte en recomendaciones semanales y diarias.',
     'projects.pace.status': 'En desarrollo',
     'projects.intervalo.title': 'Intervalo',
     'projects.intervalo.desc':
@@ -367,6 +368,7 @@ export const ui = {
     'projects.intervalo.status': 'En desarrollo',
     'projects.repo': 'Repo',
     'projects.demo': 'Demo',
+    'projects.more': 'Leer más',
 
     // writing
     'writing.title': 'Blog',
