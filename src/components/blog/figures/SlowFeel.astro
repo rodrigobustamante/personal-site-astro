@@ -1,0 +1,263 @@
+---
+/**
+ * When does a page feel slow: the hero image arrives late (LCP), a tap on
+ * "Buy" spins (INP) and a late banner shoves everything down (CLS). Laid out
+ * on an 800-unit-wide canvas (--u) so it scales with the column.
+ */
+import Figure from './Figure.astro';
+import Photo from './Photo.astro';
+import { finalStep, type Lang } from './beats';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = {
+  es: {
+    summary: 'Una página de ejemplo cargando en el navegador.',
+    steps: [
+      'La página empieza a cargar',
+      'Lo importante tarda en aparecer',
+      'Haces clic y no responde',
+      'Todo se mueve mientras carga',
+      'Cada sensación tiene nombre: LCP, INP y CLS',
+    ],
+    url: 'tusitio.cl',
+    buy: 'Comprar',
+    banner: 'Banner que llega tarde',
+  },
+  en: {
+    summary: 'An example page loading in the browser.',
+    steps: [
+      'The page starts loading',
+      'The main content takes a while to show up',
+      'You click and nothing happens',
+      'Everything moves while it loads',
+      'Each feeling has a name: LCP, INP and CLS',
+    ],
+    url: 'yoursite.com',
+    buy: 'Buy now',
+    banner: 'A banner that arrives late',
+  },
+}[lang];
+---
+
+<Figure lang={lang} steps={t.steps} summary={t.summary}>
+  <div class={`slow ${finalStep(5)}`}>
+    <div class="chrome">
+      <b></b>
+      <b></b>
+      <b></b>
+      <span class="url">{t.url}</span>
+    </div>
+    <div class="page">
+      <div class="banner on" data-b="4">
+        {t.banner}
+      </div>
+      <div class="content">
+        <div class="sk nav"></div>
+        <div class="shot">
+          <Photo class="img" />
+        </div>
+        <div class="sk line" style="width:82%"></div>
+        <div class="sk line" style="width:64%"></div>
+        <div class="buy">
+          {t.buy}
+          <span class="spin" data-b="3" data-out="4"></span>
+          <svg class="cursor on" data-b="3" viewBox="0 0 24 24">
+            <path
+              d="M4 2l15 11-7 1.5 4 7-3 1.5-4-7L4 20z"
+              style="fill:var(--ink);stroke:var(--card)"
+              stroke-width="1.5"
+            ></path>
+          </svg>
+        </div>
+        <div class="outline on" data-b="5"></div>
+        <span class="mk mk-lcp on" data-b="5">
+          LCP
+        </span>
+        <span class="mk mk-inp on" data-b="5">
+          INP
+        </span>
+      </div>
+      <span class="mk mk-cls on" data-b="5">
+        CLS
+      </span>
+    </div>
+  </div>
+</Figure>
+
+<style>
+  .slow {
+    --u: calc(100cqi / 800);
+    position: relative;
+    aspect-ratio: 800 / 500;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .chrome {
+    height: calc(36 * var(--u));
+    display: flex;
+    align-items: center;
+    gap: calc(6 * var(--u));
+    padding: 0 calc(14 * var(--u));
+    border-bottom: 1px solid var(--line);
+  }
+  .chrome b {
+    width: calc(10 * var(--u));
+    height: calc(10 * var(--u));
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .url {
+    margin-left: calc(10 * var(--u));
+    flex: 1;
+    height: calc(22 * var(--u));
+    border-radius: 999px;
+    background: var(--skel);
+    display: flex;
+    align-items: center;
+    padding: 0 calc(12 * var(--u));
+    font-size: max(10px, calc(13 * var(--u)));
+    color: var(--muted);
+  }
+  .page {
+    position: relative;
+    height: calc(100% - 36 * var(--u));
+    overflow: hidden;
+  }
+  .content {
+    position: absolute;
+    inset: 0;
+    padding: calc(24 * var(--u));
+    transition: transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 1);
+  }
+  .at-4 .content {
+    transform: translateY(calc(70 * var(--u)));
+  }
+  .sk {
+    background: var(--skel);
+    border-radius: calc(5 * var(--u));
+  }
+  .nav {
+    height: calc(18 * var(--u));
+    width: 40%;
+    margin-bottom: calc(20 * var(--u));
+  }
+  /* Positioned so the LCP outline below can wrap it. */
+  .shot {
+    position: relative;
+    height: calc(170 * var(--u));
+    border-radius: calc(8 * var(--u));
+    background: var(--skel);
+    overflow: hidden;
+  }
+  .shot :global(.img) {
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .at-2 .shot :global(.img) {
+    opacity: 1;
+  }
+  .line {
+    height: calc(14 * var(--u));
+    margin-top: calc(14 * var(--u));
+  }
+  .buy {
+    position: relative;
+    margin-top: calc(22 * var(--u));
+    width: calc(160 * var(--u));
+    height: calc(46 * var(--u));
+    border-radius: calc(8 * var(--u));
+    background: var(--accent);
+    color: var(--paper);
+    font-size: max(10px, calc(17 * var(--u)));
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+  }
+  .spin {
+    position: absolute;
+    right: calc(-40 * var(--u));
+    top: calc(10 * var(--u));
+    width: calc(26 * var(--u));
+    height: calc(26 * var(--u));
+    border-radius: 50%;
+    border: calc(3 * var(--u)) solid var(--line);
+    border-top-color: var(--warn);
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .cursor {
+    position: absolute;
+    width: calc(28 * var(--u));
+    height: calc(28 * var(--u));
+    left: calc(118 * var(--u));
+    top: calc(24 * var(--u));
+  }
+  .banner {
+    position: absolute;
+    z-index: 2;
+    left: calc(24 * var(--u));
+    right: calc(24 * var(--u));
+    top: calc(14 * var(--u));
+    height: calc(52 * var(--u));
+    border-radius: calc(7 * var(--u));
+    background: var(--bad);
+    color: var(--paper);
+    font-size: max(10px, calc(16 * var(--u)));
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    padding: 0 calc(16 * var(--u));
+    transform: translateY(calc(-80 * var(--u)));
+    transition:
+      transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 1),
+      opacity 0.4s ease;
+  }
+  .banner.on {
+    transform: none;
+  }
+  .outline {
+    position: absolute;
+    z-index: 3;
+    left: calc(16 * var(--u));
+    right: calc(16 * var(--u));
+    top: calc(54 * var(--u));
+    height: calc(186 * var(--u));
+    border: calc(3 * var(--u)) solid var(--good);
+    border-radius: calc(12 * var(--u));
+  }
+  .mk {
+    position: absolute;
+    z-index: 4;
+    font-size: max(10px, calc(16 * var(--u)));
+    font-weight: 700;
+    line-height: 1.3;
+    padding: calc(2 * var(--u)) calc(10 * var(--u));
+    border-radius: calc(6 * var(--u));
+    background: var(--card);
+    border: calc(2 * var(--u)) solid currentColor;
+  }
+  .mk-lcp {
+    color: var(--good);
+    left: calc(36 * var(--u));
+    top: calc(40 * var(--u));
+  }
+  .mk-inp {
+    color: var(--warn);
+    left: calc(250 * var(--u));
+    top: calc(320 * var(--u));
+  }
+  .mk-cls {
+    color: var(--bad);
+    right: calc(36 * var(--u));
+    top: calc(52 * var(--u));
+  }
+</style>

@@ -1,0 +1,146 @@
+---
+/**
+ * A load filmstrip, one frame every half second. Each fix moves the frame
+ * where the hero image lands (the LCP) earlier. The times are illustrative.
+ */
+import Figure from './Figure.astro';
+import Photo from './Photo.astro';
+import { finalStep, type Lang } from './beats';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = {
+  es: {
+    summary: 'Una tira de cuadros de la carga de una página, uno cada medio segundo, con el momento del LCP marcado.',
+    steps: [
+      'Sin optimizar: la imagen principal llega a los 3,5 s',
+      'Imágenes más livianas: llega a los 2,5 s',
+      'Lazy loading en lo que no se ve: 2 s',
+      'Menos JavaScript y CSS bloqueante: 1 s',
+    ],
+    time: (s: number) => `${String(s).replace('.', ',')} s`,
+  },
+  en: {
+    summary: 'A filmstrip of a page load, one frame every half second, with the LCP moment marked.',
+    steps: [
+      'Unoptimized: the main image lands at 3.5 s',
+      'Lighter images: it lands at 2.5 s',
+      'Lazy loading what is off screen: 2 s',
+      'Less render-blocking JavaScript and CSS: 1 s',
+    ],
+    time: (s: number) => `${s} s`,
+  },
+}[lang];
+
+/** For each frame, the step from which its image has loaded, and the step range its LCP ring covers. */
+const frames: { img?: number; ring?: [number, number?] }[] = [
+  {},
+  {},
+  { img: 4, ring: [4] },
+  { img: 4 },
+  { img: 3, ring: [3, 4] },
+  { img: 2, ring: [2, 3] },
+  { img: 2 },
+  { img: 1, ring: [1, 2] },
+];
+---
+
+<Figure lang={lang} steps={t.steps} summary={t.summary}>
+  <div class={`film ${finalStep(4)}`}>
+    {frames.map((f, i) => (
+      <div class="frame">
+        <div class="shot">
+          <div class="fn" />
+          <div class="fh">{f.img && <Photo class="on" data-b={f.img > 1 ? f.img : undefined} />}</div>
+          <div class="fl" />
+          <div class="fl" style="width:70%" />
+        </div>
+        {f.ring && (
+          <div
+            class:list={['ring', { on: f.ring[1] === undefined, late: f.ring[0] === 1 }]}
+            data-b={f.ring[0]}
+            data-out={f.ring[1]}
+          >
+            <span>LCP</span>
+          </div>
+        )}
+        <span class="time">{t.time(i * 0.5)}</span>
+      </div>
+    ))}
+  </div>
+</Figure>
+
+<style>
+  .film {
+    --u: calc(100cqi / 800);
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: calc(12 * var(--u));
+    padding-top: max(22px, calc(34 * var(--u)));
+  }
+  .frame {
+    position: relative;
+  }
+  .shot {
+    aspect-ratio: 9 / 15;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: calc(8 * var(--u));
+    padding: calc(8 * var(--u));
+  }
+  .fn,
+  .fl {
+    height: calc(7 * var(--u));
+    border-radius: 2px;
+    background: var(--skel);
+  }
+  .fn {
+    width: 60%;
+  }
+  .fl {
+    margin-top: calc(7 * var(--u));
+  }
+  .fh {
+    position: relative;
+    height: 45%;
+    margin-top: calc(8 * var(--u));
+    border-radius: calc(4 * var(--u));
+    background: var(--skel);
+    overflow: hidden;
+  }
+  .ring {
+    position: absolute;
+    inset: calc(-5 * var(--u));
+    bottom: calc(max(16px, 26 * var(--u)) - 5 * var(--u));
+    border: calc(3 * var(--u)) solid var(--good);
+    border-radius: calc(11 * var(--u));
+  }
+  .ring.late {
+    border-color: var(--warn);
+  }
+  .ring span {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    margin-bottom: calc(4 * var(--u));
+    font-size: max(10px, calc(15 * var(--u)));
+    font-weight: 700;
+    color: var(--good);
+  }
+  .ring.late span {
+    color: var(--warn);
+  }
+  .time {
+    display: block;
+    height: max(16px, calc(26 * var(--u)));
+    padding-top: calc(6 * var(--u));
+    text-align: center;
+    font-size: max(10px, calc(13 * var(--u)));
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+</style>

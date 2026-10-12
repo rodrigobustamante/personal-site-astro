@@ -170,6 +170,7 @@ export const ui = {
     // blog
     'blog.description': 'Articles on web performance, frontend engineering, and software craftsmanship.',
     'blog.readingTime': 'min read',
+    'blog.updated': 'Updated',
     'blog.category': 'Category',
 
     // footer
@@ -353,6 +354,7 @@ export const ui = {
     // blog
     'blog.description': 'Artículos sobre rendimiento web, ingeniería frontend y oficio de software.',
     'blog.readingTime': 'min de lectura',
+    'blog.updated': 'Actualizado',
     'blog.category': 'Categoría',
 
     // footer

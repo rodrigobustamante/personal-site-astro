@@ -1,0 +1,51 @@
+---
+/**
+ * A dated correction inside a post. The original text stays in place, struck
+ * with <del> or wrapped in <Superseded>, and this note says what changed, so
+ * readers can see the post as it was and as it is.
+ */
+interface Props {
+  lang: 'en' | 'es';
+  /** YYYY-MM-DD */
+  date: string;
+}
+const { lang, date } = Astro.props;
+const label = lang === 'es' ? 'Actualización' : 'Update';
+const formatted = new Intl.DateTimeFormat(lang === 'es' ? 'es-CL' : 'en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+}).format(new Date(date));
+---
+
+<aside class="update">
+  <p class="update-label">
+    {label} · <time datetime={date}>{formatted}</time>
+  </p>
+  <slot />
+</aside>
+
+<style>
+  .update {
+    margin: 1.6em 0 2em;
+    padding: 16px 22px 2px;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+  }
+  .update .update-label {
+    margin-bottom: 0.5em;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+  }
+  .update :global(p) {
+    color: var(--ink);
+  }
+  .update :global(pre) {
+    background: var(--card);
+  }
+</style>

@@ -23,6 +23,15 @@ const { t } = useTranslations(lang);
   <header class="post-header reveal">
     <div class="post-header-meta">
       <time datetime={getDatetime(post.publishDate)}>{getFormattedDate(post.publishDate, lang)}</time>
+      {post.updateDate && (
+        <>
+          <span class="post-header-dot" />
+          <span>
+            {t('blog.updated')}{' '}
+            <time datetime={getDatetime(post.updateDate)}>{getFormattedDate(post.updateDate, lang)}</time>
+          </span>
+        </>
+      )}
       {post.category && (
         <>
           <span class="post-header-dot" />
@@ -66,3 +75,8 @@ const { t } = useTranslations(lang);
     <PostTags tags={post.tags} />
   </div>
 </div>
+
+<script>
+  // Animated diagrams some posts embed (see figures/Figure.astro).
+  import './figures/player';
+</script>

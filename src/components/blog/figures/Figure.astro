@@ -1,0 +1,253 @@
+---
+/**
+ * An animated diagram for blog posts, adapted from the "La web rápida se mide"
+ * talk. The slotted scene is a single root element; inside it, `data-b="N"`
+ * shows an element from step N on and `data-out="M"` hides it again from step
+ * M. The root gets `at-1 … at-N` up to the current step, for styles that
+ * change with it (see finalStep in beats.ts).
+ *
+ * Scenes ship at their last step, so without scripting, or with reduced
+ * motion, they read as a still diagram. Otherwise the figure rewinds and plays
+ * once when it scrolls into view; the step bar replays it or pins any step.
+ * That behaviour lives in player.ts, which SinglePost loads: a <script> here
+ * would not reach the page, since posts render their MDX through render().
+ */
+import type { Lang } from './beats';
+
+interface Props {
+  lang: Lang;
+  /** One short label per step, shown under the scene as it plays. */
+  steps: string[];
+  /** What the scene shows, for screen readers (the scene is aria-hidden). */
+  summary: string;
+  /** Milliseconds each step holds while playing. */
+  interval?: number;
+}
+
+const { lang, steps, summary, interval = 1900 } = Astro.props;
+const t = {
+  es: { replay: 'Repetir', step: 'Paso' },
+  en: { replay: 'Replay', step: 'Step' },
+}[lang];
+const last = steps.length;
+---
+
+<figure class="fig" data-fig data-interval={interval} data-labels={JSON.stringify(steps)}>
+  <div class="fig-scene" aria-hidden="true">
+    <slot />
+  </div>
+  <div class="fig-bar">
+    <ol class="fig-segs">
+      {steps.map((label, i) => (
+        <li>
+          <button
+            type="button"
+            class="fig-seg"
+            data-step={i + 1}
+            data-state="done"
+            aria-label={`${t.step} ${i + 1}: ${label}`}
+            aria-current={i + 1 === last ? 'step' : undefined}
+          >
+            <i />
+          </button>
+        </li>
+      ))}
+    </ol>
+    <button type="button" class="fig-replay">
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+        <path
+          d="M13 8a5 5 0 1 1-1.5-3.6M13 2.5V5h-2.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+      </svg>
+      {t.replay}
+    </button>
+  </div>
+  <figcaption>
+    <span class="fig-now" aria-hidden="true">
+      <b>
+        {last}/{last}
+      </b>
+      <span data-now>{steps[last - 1]}</span>
+    </span>
+    <span class="fig-sr">
+      {summary}
+      {steps.map((label, i) => ` ${i + 1}. ${label}.`).join('')}
+    </span>
+  </figcaption>
+</figure>
+
+<style is:global>
+  .fig {
+    /* Status colours for good / needs-improvement / poor, as Lighthouse uses them. */
+    --good: oklch(0.56 0.13 152);
+    --warn: oklch(0.64 0.14 68);
+    --bad: oklch(0.56 0.18 25);
+    --photo-sky: oklch(0.86 0.05 230);
+    --photo-sun: oklch(0.87 0.13 88);
+    --photo-hill: oklch(0.62 0.09 160);
+    --photo-hill-2: oklch(0.52 0.08 168);
+    /* Placeholder blocks inside the mock pages, on --card in both themes. */
+    --skel: color-mix(in oklab, var(--ink) 8%, var(--card));
+    margin: 2.2em 0 2.4em;
+  }
+  :root[data-theme='dark'] .fig {
+    --good: oklch(0.76 0.15 152);
+    --warn: oklch(0.8 0.14 75);
+    --bad: oklch(0.7 0.17 25);
+    --photo-sky: oklch(0.55 0.06 235);
+    --photo-sun: oklch(0.8 0.12 85);
+    --photo-hill: oklch(0.47 0.07 160);
+    --photo-hill-2: oklch(0.4 0.06 168);
+  }
+  .fig-scene {
+    container-type: inline-size;
+    font-family: var(--sans);
+    color: var(--ink);
+  }
+
+  /* Beats */
+  .fig-scene [data-b] {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.4s ease,
+      visibility 0s 0.4s;
+  }
+  .fig-scene [data-b].on {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease;
+  }
+  .fig-instant,
+  .fig-instant *,
+  .fig-instant *::before,
+  .fig-instant *::after {
+    transition: none !important;
+  }
+
+  /* Step bar */
+  .fig-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  /* .fig doubles the class so these beat the .prose list rules. */
+  .fig .fig-segs {
+    flex: 1;
+    display: flex;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .fig .fig-segs li {
+    flex: 1;
+    margin: 0;
+  }
+  .fig-seg {
+    display: block;
+    width: 100%;
+    padding: 9px 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .fig-seg i {
+    display: block;
+    position: relative;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    overflow: hidden;
+    transition: height 0.2s;
+  }
+  .fig-seg:hover i,
+  .fig-seg[aria-current] i {
+    height: 6px;
+  }
+  .fig-seg i::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  .fig-seg[data-state='done'] i::after {
+    transform: none;
+  }
+  .fig-seg[data-state='run'] i::after {
+    animation: fig-fill var(--fig-interval, 1.9s) linear forwards;
+  }
+  @keyframes fig-fill {
+    to {
+      transform: none;
+    }
+  }
+  .fig-seg:focus-visible,
+  .fig-replay:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .fig-replay {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font: 500 13px/1 var(--sans);
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 12px;
+    cursor: pointer;
+    transition:
+      color 0.2s,
+      border-color 0.2s;
+  }
+  .fig-replay:hover {
+    color: var(--accent-ink);
+    border-color: var(--accent);
+  }
+  .fig figcaption {
+    margin-top: 4px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .fig-now b {
+    font-weight: 600;
+    color: var(--accent-ink);
+    font-variant-numeric: tabular-nums;
+    margin-right: 8px;
+  }
+  .fig-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* The step bar needs the script; without it the scene stays at its last step. */
+  @media (scripting: none) {
+    .fig-bar {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fig *,
+    .fig *::before,
+    .fig *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+</style>

@@ -1,0 +1,270 @@
+---
+/**
+ * Hovering a link starts loading its page in the background, so the click
+ * shows a page that is already there.
+ */
+import Figure from './Figure.astro';
+import { finalStep, type Lang } from './beats';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = {
+  es: {
+    summary: 'Un navegador con un sitio de ejemplo y una barra de precarga debajo.',
+    steps: [
+      'El usuario está en la página de inicio',
+      'Pasa el cursor sobre «Precios»: la página se precarga en segundo plano',
+      'Hace clic: la página ya estaba lista',
+    ],
+    host: 'tusitio.cl',
+    path: '/precios',
+    nav: ['Inicio', 'Precios', 'Blog', 'Contacto'],
+    loading: 'Precargando /precios',
+    ready: 'Lista antes del clic',
+  },
+  en: {
+    summary: 'A browser with an example site and a preload bar under it.',
+    steps: [
+      'The user is on the home page',
+      'They hover "Pricing": the page preloads in the background',
+      'They click: the page was already ready',
+    ],
+    host: 'yoursite.com',
+    path: '/pricing',
+    nav: ['Home', 'Pricing', 'Blog', 'Contact'],
+    loading: 'Preloading /pricing',
+    ready: 'Ready before the click',
+  },
+}[lang];
+---
+
+<Figure lang={lang} steps={t.steps} summary={t.summary} interval={2300}>
+  <div class={`spec ${finalStep(3)}`}>
+    <div class="browser">
+      <div class="chrome">
+        <b></b>
+        <b></b>
+        <b></b>
+        <span class="url">
+          {t.host}
+          <span class="path on" data-b="3">
+            {t.path}
+          </span>
+        </span>
+      </div>
+      <div class="page">
+        <div class="nav">
+          {t.nav.map((item, i) => (
+            <span class:list={{ hov: i === 1 }}>{item}</span>
+          ))}
+        </div>
+        <div class="home">
+          <div class="sk" style="height:calc(160 * var(--u));border-radius:calc(8 * var(--u))"></div>
+          <div class="sk" style="height:calc(14 * var(--u));width:80%;margin-top:calc(18 * var(--u))"></div>
+          <div class="sk" style="height:calc(14 * var(--u));width:60%;margin-top:calc(12 * var(--u))"></div>
+        </div>
+        <div class="pricing on" data-b="3">
+          <span class="h">{t.nav[1]}</span>
+          <div class="plans">
+            {[0, 1, 2].map(() => (
+              <div class="plan">
+                <i class="p1" />
+                <i class="p2" />
+                <i class="p3" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <svg class="cursor" data-b="2" data-out="3" viewBox="0 0 24 24">
+          <path
+            d="M4 2l15 11-7 1.5 4 7-3 1.5-4-7L4 20z"
+            style="fill:var(--ink);stroke:var(--card)"
+            stroke-width="1.5"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <div class="prog on" data-b="2">
+      <div class="bar">
+        <i></i>
+      </div>
+      <span class="state" data-b="2" data-out="3">
+        {t.loading}
+      </span>
+      <span class="state done on" data-b="3">
+        {t.ready}
+      </span>
+    </div>
+  </div>
+</Figure>
+
+<style>
+  .spec {
+    --u: calc(100cqi / 800);
+    position: relative;
+    aspect-ratio: 800 / 470;
+    font-size: max(10px, calc(16 * var(--u)));
+  }
+  .browser {
+    position: absolute;
+    inset: 0 0 auto;
+    height: calc(410 * var(--u));
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .chrome {
+    height: calc(36 * var(--u));
+    display: flex;
+    align-items: center;
+    gap: calc(6 * var(--u));
+    padding: 0 calc(14 * var(--u));
+    border-bottom: 1px solid var(--line);
+  }
+  .chrome b {
+    width: calc(10 * var(--u));
+    height: calc(10 * var(--u));
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .url {
+    margin-left: calc(10 * var(--u));
+    flex: 1;
+    height: calc(22 * var(--u));
+    border-radius: 999px;
+    background: var(--skel);
+    display: flex;
+    align-items: center;
+    padding: 0 calc(12 * var(--u));
+    font-size: max(10px, calc(13 * var(--u)));
+    color: var(--muted);
+  }
+  .path {
+    color: var(--ink);
+  }
+  .page {
+    position: relative;
+    height: calc(100% - 36 * var(--u));
+  }
+  .nav {
+    display: flex;
+    gap: calc(24 * var(--u));
+    padding: calc(16 * var(--u)) calc(24 * var(--u));
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+    line-height: 1.2;
+  }
+  .hov {
+    color: var(--accent-ink);
+    text-decoration: underline transparent;
+    text-decoration-thickness: calc(3 * var(--u));
+    text-underline-offset: calc(6 * var(--u));
+    transition: text-decoration-color 0.3s;
+  }
+  .at-2 .hov {
+    text-decoration-color: currentColor;
+  }
+  .home,
+  .pricing {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(54 * var(--u));
+    bottom: 0;
+    padding: calc(24 * var(--u));
+  }
+  .pricing {
+    background: var(--card);
+  }
+  .sk {
+    background: var(--skel);
+    border-radius: calc(5 * var(--u));
+  }
+  .h {
+    display: block;
+    font-family: var(--serif);
+    font-size: max(14px, calc(28 * var(--u)));
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: calc(14 * var(--u));
+    margin-top: calc(18 * var(--u));
+  }
+  .plan {
+    height: calc(220 * var(--u));
+    border: 1px solid var(--line);
+    border-radius: calc(8 * var(--u));
+    padding: calc(14 * var(--u));
+    display: flex;
+    flex-direction: column;
+  }
+  .plan i {
+    display: block;
+    border-radius: calc(4 * var(--u));
+    background: var(--skel);
+  }
+  .p1 {
+    height: calc(12 * var(--u));
+    width: 50%;
+  }
+  .p2 {
+    height: calc(30 * var(--u));
+    width: 70%;
+    margin-top: calc(14 * var(--u));
+  }
+  .plan .p3 {
+    height: calc(36 * var(--u));
+    margin-top: auto;
+    background: var(--accent);
+    opacity: 0.85;
+  }
+  .cursor {
+    position: absolute;
+    left: calc(118 * var(--u));
+    top: calc(26 * var(--u));
+    width: calc(26 * var(--u));
+    height: calc(26 * var(--u));
+    z-index: 2;
+  }
+  .prog {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(40 * var(--u));
+  }
+  .bar {
+    height: calc(8 * var(--u));
+    border-radius: 999px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .bar i {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  .prog.on .bar i {
+    transform: none;
+    transition: transform 1.5s ease 0.2s;
+  }
+  .state {
+    position: absolute;
+    left: 0;
+    top: calc(16 * var(--u));
+    font-size: max(10px, calc(14 * var(--u)));
+    color: var(--muted);
+  }
+  .state.done {
+    color: var(--good);
+    font-weight: 700;
+  }
+</style>
