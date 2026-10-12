@@ -51,6 +51,12 @@ const meta = (html: string, attr: 'property' | 'name', key: string) => {
   return m ? decode(m[1]) : undefined;
 };
 
+/** The tag a /work entry shows above its title. */
+const workTag = (html: string) => {
+  const m = html.match(/<span class="cs-tag"[^>]*>([^<]+)<\/span>/);
+  return m ? decode(m[1].trim()) : undefined;
+};
+
 export function cardFromHtml(html: string): { key: string; card: OgCard } | undefined {
   const image = meta(html, 'property', 'og:image');
   const key = image?.match(/\/og\/(.+)\.png$/)?.[1];
@@ -77,9 +83,8 @@ export function cardFromHtml(html: string): { key: string; card: OgCard } | unde
       ? 'Trabajos'
       : 'Work'
     : key.startsWith('work/')
-      ? es
-        ? 'Caso de estudio'
-        : 'Case study'
+      ? // Each entry says what it is in its own tag ("Case Study", "Side project"…).
+        (workTag(html) ?? (es ? 'Trabajo' : 'Work'))
       : key.startsWith('system/')
         ? es
           ? 'Sistema de diseño'
