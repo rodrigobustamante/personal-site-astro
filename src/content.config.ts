@@ -75,7 +75,8 @@ const workCollection = defineCollection({
     /** Small label above the title, e.g. "Case Study". */
     tag: z.string(),
     client: z.string().optional(),
-    role: z.string(),
+    /** Optional: side projects leave it out. */
+    role: z.string().optional(),
     period: z.string(),
     scope: z.string(),
     stack: z.array(z.string()),
