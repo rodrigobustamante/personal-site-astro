@@ -1,0 +1,91 @@
+---
+title: 'PACE'
+subtitle: 'Una app de analítica de running sobre Strava: carga de entrenamiento con todo el historial y un coach con IA de costo acotado'
+tag: 'Proyecto personal'
+period: 'Abr 2026 — Presente'
+scope: 'App web + cliente iOS · Sincronización con Strava · Coach con IA'
+stack:
+  [Next.js, React, Expo, React Native, TypeScript, Prisma, PostgreSQL, Redis, Vercel AI SDK, Turborepo, Vitest, Vercel]
+order: 3
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problema y contexto" title="De una lista de salidas a una imagen del entrenamiento">
+
+Strava registra cada salida, pero una lista de actividades no dice qué tan en forma estás, cuánta fatiga llevas ni qué hacer esta semana. PACE toma el historial de Strava, lo convierte en métricas de carga de entrenamiento y le suma un coach: un análisis semanal, una recomendación diaria, feedback de cada actividad, un chat y planes de entrenamiento armados en torno a carreras objetivo.
+
+Es un proyecto personal que construí solo, desde el primer commit, y que traté como un producto: un único backend, una app web y un cliente iOS, tests con umbrales de cobertura en CI y despliegue en Vercel.
+
+</Section>
+
+<Section label="02 — Arquitectura" title="Un backend, dos clientes">
+  <Pillars>
+    <Pillar title="Un monorepo con la lógica en un solo lugar">
+
+Un monorepo con Turborepo reúne una app web en Next.js, una app Expo para iOS y paquetes compartidos: el esquema y el cliente de Prisma, los tipos del dominio y funciones puras para la carga de entrenamiento, las zonas de frecuencia cardíaca y la predicción de tiempos de carrera. La app Next.js concentra todas las rutas de la API y toda la lógica de servidor. La app iOS no calcula nada por su cuenta: llama a la misma API que la web, así que los dos clientes siempre muestran los mismos números.
+
+La web inicia sesión con una cookie httpOnly. La app móvil usa JWT con un token de refresco que se rota en cada uso y se guarda en Redis solo como hash, para poder revocarlo.
+
+    </Pillar>
+    <Pillar title="Strava: primero el webhook, el polling de respaldo">
+
+En la primera conexión, PACE trae en segundo plano todo el historial del atleta, página por página. Desde ahí, el canal principal es el webhook de Strava: el endpoint responde el handshake de la suscripción y, con cada actividad nueva o modificada, contesta de inmediato y sincroniza solo esa actividad.
+
+El polling cubre lo que el webhook pierda. Al abrir el dashboard se revisa si corresponde sincronizar y, si es así, se lanza una sincronización; el servidor permite una por hora por usuario, con un cooldown en Redis. Los dos caminos escriben con un upsert por el id de actividad de Strava, así que una salida que llega por ambos se guarda una sola vez. Los tokens de Strava se guardan cifrados con AES-256-GCM y se renuevan antes de que expiren.
+
+    </Pillar>
+    <Pillar title="Postgres para los datos, Redis para el tiempo">
+
+Las actividades, los objetivos, los planes y el historial del chat viven en PostgreSQL a través de Prisma, con migraciones aplicadas en cada despliegue y row-level security cerrando el acceso directo a las tablas. Redis guarda lo que tiene vencimiento: las respuestas de la IA, los cooldowns de sincronización y los códigos de un solo uso del inicio de sesión móvil.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Carga de entrenamiento" title="Forma física, fatiga y estado de forma sobre todo el historial">
+
+PACE usa el modelo de Banister: la forma física (CTL) es un promedio exponencial de 42 días del estrés de entrenamiento diario, la fatiga (ATL) uno de 7 días, y el estado de forma (TSB) la diferencia entre ambos. El estrés de cada salida se estima a partir de la frecuencia cardíaca, con el umbral derivado de la frecuencia cardíaca máxima del atleta.
+
+La serie recorre todo el historial, desde la primera actividad, un paso por día de calendario: los días de descanso cuentan como carga cero, así que la forma y la fatiga decaen durante las pausas, y la serie llega hasta hoy. Partiendo de cero, un promedio de 42 días tarda meses en estabilizarse, así que una ventana más corta subestimaría la forma física. La carga se calcula en cada petición en vez de guardarse, así que cambiar la frecuencia cardíaca máxima recalcula todo el historial.
+
+Sobre esos números hay dos reglas sin IA: una señal de riesgo de sobreentrenamiento basada en el estado de forma, la relación entre fatiga y forma física y los días seguidos de entrenamiento, y una proyección de tiempos de carrera con la fórmula de Riegel.
+
+</Section>
+
+<Section label="04 — Diferenciador" title="Un coach con IA de costo acotado" highlight>
+
+Cada llamada a un modelo de lenguaje cuesta dinero, así que cada tipo de análisis queda en caché en Redis mientras siga siendo válido. El análisis semanal se indexa por usuario y por el lunes de la semana local del atleta, y vence a la medianoche del lunes siguiente en su zona horaria: se genera una vez por semana, salvo que el atleta pida uno nuevo. La recomendación diaria dura hasta la medianoche local, y el análisis de una actividad, 24 horas.
+
+El modelo recibe los números ya calculados — carga, estado de forma, volumen semanal, distribución por zonas, señales de riesgo, el objetivo y su plan — y su trabajo es interpretarlos, no calcularlos. El análisis semanal llega al navegador por streaming con server-sent events, y la respuesta es una estructura JSON fija que la interfaz renderiza.
+
+El coach funciona con el Vercel AI SDK, que pone Gemini 2.5 Flash, GPT-4o, GPT-4o mini, Claude 3.5 Sonnet y Claude 3 Haiku detrás de una sola interfaz. El atleta elige el modelo en la configuración y la elección se guarda por usuario. Solo se ofrecen los modelos cuyo proveedor tiene una clave configurada, y si el elegido no está disponible el coach usa el primero que sí lo esté.
+
+</Section>
+
+<Section label="05 — Entrega" title="Tests donde nacen los números">
+
+Las funciones compartidas de carga de entrenamiento y las rutas de la API tienen suites de Vitest, con umbrales de cobertura sobre el código testeado: 90% de las líneas y al menos 80% de las ramas. Un workflow de GitHub Actions corre los tests y la cobertura en cada pull request. La web está desplegada en Vercel, donde el build aplica las migraciones de la base de datos, y su interfaz está en español e inglés.
+
+</Section>
+
+<Metrics
+  label="06 — Resultados"
+  title="Lo que está funcionando"
+  items={[
+    { label: 'Plataformas', value: 'Una app web en Next.js y un cliente iOS en Expo sobre una misma API' },
+    {
+      label: 'Sincronización',
+      value: 'Webhook de Strava con polling horario de respaldo, idempotente por id de actividad',
+    },
+    {
+      label: 'Coach',
+      value: 'Análisis semanal, diario y por actividad, más un chat, con cinco modelos de tres proveedores',
+    },
+    { label: 'Calidad', value: '95 tests automatizados con umbrales de cobertura, en cada pull request' },
+  ]}
+/>

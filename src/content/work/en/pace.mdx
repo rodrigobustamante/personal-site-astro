@@ -1,0 +1,88 @@
+---
+title: 'PACE'
+subtitle: 'A running analytics app on top of Strava: training load from the full history, and an AI coach whose cost stays under control'
+tag: 'Side project'
+period: 'Apr 2026 — Present'
+scope: 'Web app + iOS client · Strava sync · AI coach'
+stack:
+  [Next.js, React, Expo, React Native, TypeScript, Prisma, PostgreSQL, Redis, Vercel AI SDK, Turborepo, Vitest, Vercel]
+order: 3
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problem & Context" title="From a list of runs to a picture of the training">
+
+Strava records every run, but a list of activities doesn't say how fit you are, how tired you are, or what to do this week. PACE takes the Strava history, turns it into training load metrics, and adds a coach on top: a weekly analysis, a daily recommendation, feedback on each activity, a chat, and training plans built around race goals.
+
+It's a side project I built on my own, from the first commit, and treated as a product: one backend, a web app and an iOS client, tests with coverage thresholds in CI, and a deployment on Vercel.
+
+</Section>
+
+<Section label="02 — Architecture" title="One backend, two clients">
+  <Pillars>
+    <Pillar title="A monorepo with the logic in one place">
+
+A Turborepo monorepo holds a Next.js web app, an Expo app for iOS and shared packages: the Prisma schema and client, domain types, and pure functions for training load, heart rate zones and race prediction. The Next.js app owns every API route and all the server logic. The iOS app computes nothing on its own: it calls the same API as the web, so both clients always show the same numbers.
+
+The web signs in with an httpOnly cookie. The mobile app uses JWTs with a refresh token that is rotated on every use and stored only as a hash in Redis, so it can be revoked.
+
+    </Pillar>
+    <Pillar title="Strava: the webhook first, polling as a backup">
+
+On first connection, PACE pulls the athlete's whole history in the background, page by page. After that, Strava's webhook is the main channel: the endpoint answers the subscription handshake, and on each new or updated activity it responds at once and syncs that single activity.
+
+Polling is the backup for anything the webhook misses. Opening the dashboard checks whether a sync is due and, if so, runs one; the server allows one per hour per user, enforced with a cooldown in Redis. Both paths write through an upsert keyed on Strava's activity id, so a run that arrives through both is stored once. Strava tokens are encrypted at rest with AES-256-GCM and refreshed before they expire.
+
+    </Pillar>
+    <Pillar title="Postgres for data, Redis for time">
+
+Activities, goals, plans and chat history live in PostgreSQL through Prisma, with migrations applied on every deploy and row-level security closing direct access to the tables. Redis holds what has an expiry: AI responses, sync cooldowns, and one-time codes for the mobile sign-in.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Training load" title="Fitness, fatigue and form over the full history">
+
+PACE uses the Banister model: fitness (CTL) is a 42-day exponentially weighted average of daily training stress, fatigue (ATL) a 7-day one, and form (TSB) the difference. Each run's stress is estimated from heart rate, with the threshold derived from the athlete's maximum heart rate.
+
+The series runs over the whole history, from the first activity, one step per calendar day: rest days count as zero load, so fitness and fatigue decay through breaks, and the series continues to today. Starting from zero, a 42-day average takes months to settle, so a shorter window would understate fitness. Load is computed on each request instead of being stored, so changing the maximum heart rate recalculates the entire history.
+
+On top of those numbers sit two rules with no AI involved: an overtraining risk signal based on form, the fatigue-to-fitness ratio and consecutive training days, and a race time projection with Riegel's formula.
+
+</Section>
+
+<Section label="04 — Differentiator" title="An AI coach with a bounded cost" highlight>
+
+Every call to a language model costs money, so each kind of analysis is cached in Redis for as long as it stays valid. The weekly analysis is keyed by user and by the Monday of the athlete's local week, and it expires at midnight on the next Monday in their time zone: it is generated once per week unless the athlete asks for a new one. The daily recommendation lasts until local midnight, and the analysis of an activity, 24 hours.
+
+The model gets the numbers already computed — load, form, weekly volume, zone distribution, risk signals, the goal and its plan — and its job is to interpret them, not to calculate them. The weekly analysis is streamed to the browser as server-sent events, and the reply is a fixed JSON structure that the interface renders.
+
+The coach runs on the Vercel AI SDK, which puts Gemini 2.5 Flash, GPT-4o, GPT-4o mini, Claude 3.5 Sonnet and Claude 3 Haiku behind a single interface. The athlete picks a model in settings and the choice is saved per user. Only models whose provider key is configured are offered, and if the chosen one is unavailable the coach falls back to the first one that is.
+
+</Section>
+
+<Section label="05 — Delivery" title="Tested where the numbers come from">
+
+The shared training load functions and the API routes have Vitest suites, with coverage thresholds on the tested code: 90% of lines, and at least 80% of branches. A GitHub Actions workflow runs the tests and the coverage check on every pull request. The web is deployed on Vercel, where the build applies the database migrations, and its interface is available in Spanish and English.
+
+</Section>
+
+<Metrics
+  label="06 — Outcomes"
+  title="What is in place"
+  items={[
+    { label: 'Platforms', value: 'A Next.js web app and an Expo iOS client on one API' },
+    { label: 'Sync', value: 'Strava webhook with an hourly polling backup, idempotent by activity id' },
+    {
+      label: 'Coach',
+      value: 'Weekly, daily and per-activity analysis, plus a chat, on five models from three providers',
+    },
+    { label: 'Quality', value: '95 automated tests with coverage thresholds, run on every pull request' },
+  ]}
+/>

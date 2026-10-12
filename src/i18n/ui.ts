@@ -27,14 +27,14 @@ export const ui = {
     'a11y.skip': 'Skip to content',
     'work.index.title': 'Selected work',
     'work.index.intro':
-      'Case studies of systems I have architected and shipped: the problem, the architecture, and what changed.',
+      'Systems I have architected and shipped, for clients and on my own: the problem, the architecture, and what changed.',
     'work.back': '← Back to work',
     'work.meta.client': 'Client',
     'work.meta.role': 'Role',
     'work.meta.period': 'Period',
     'work.meta.scope': 'Scope',
     'work.meta.stack': 'Stack',
-    'work.read': 'Read the case study',
+    'work.read': 'Read more',
 
     // <meta name="description"> of the home page
     'meta.home.description':
@@ -68,6 +68,7 @@ export const ui = {
       'Designed and built CI/CD pipelines, application deployment workflows, and created MCPs and Skills for use by teams and agents.',
       'Automated processes and built data collection and metrics tools to support decision-making.',
     ],
+    'exp.vantaz.cs': 'Read about the project',
     'exp.hangar.cs': 'Read case study',
     'exp.dme.cs': 'Read case study',
 
@@ -161,7 +162,7 @@ export const ui = {
     'projects.sub': 'Side projects built to explore ideas I care about.',
     'projects.pace.title': 'PACE',
     'projects.pace.desc':
-      'Running analytics app integrated with Strava. AI coaching powered by Gemini 2.5 Flash surfaces insights from your training history and helps you plan smarter weeks.',
+      'Running analytics app integrated with Strava. Computes fitness, fatigue and form from your full training history, and an AI coach — Gemini, GPT‑4o or Claude, your choice — turns them into weekly and daily guidance.',
     'projects.pace.status': 'In development',
     'projects.intervalo.title': 'Intervalo',
     'projects.intervalo.desc':
@@ -169,6 +170,7 @@ export const ui = {
     'projects.intervalo.status': 'In development',
     'projects.repo': 'Repo',
     'projects.demo': 'Demo',
+    'projects.more': 'Read more',
 
     // writing
     'writing.title': 'Writing',
@@ -222,14 +224,14 @@ export const ui = {
     'a11y.skip': 'Saltar al contenido',
     'work.index.title': 'Trabajos seleccionados',
     'work.index.intro':
-      'Casos de estudio de sistemas que he diseñado y entregado: el problema, la arquitectura y lo que cambió.',
+      'Sistemas que he diseñado y entregado, para clientes y por mi cuenta: el problema, la arquitectura y lo que cambió.',
     'work.back': '← Volver a trabajos',
     'work.meta.client': 'Cliente',
     'work.meta.role': 'Rol',
     'work.meta.period': 'Período',
     'work.meta.scope': 'Alcance',
     'work.meta.stack': 'Stack',
-    'work.read': 'Leer el caso de estudio',
+    'work.read': 'Leer más',
 
     // <meta name="description"> de la home
     'meta.home.description':
@@ -264,6 +266,7 @@ export const ui = {
       'Diseñé y construí los distintos pipelines de CI/CD, el despliegue de aplicaciones y la creación de MCPs y Skills para uso de equipos y agentes.',
       'Automaticé procesos y construí herramientas de recopilación de datos y métricas para la toma de decisiones.',
     ],
+    'exp.vantaz.cs': 'Ver el proyecto',
     'exp.hangar.cs': 'Ver caso de estudio',
     'exp.dme.cs': 'Ver caso de estudio',
 
@@ -357,7 +360,7 @@ export const ui = {
     'projects.sub': 'Proyectos personales para explorar ideas que me importan.',
     'projects.pace.title': 'PACE',
     'projects.pace.desc':
-      'App de analítica de running integrada con Strava. Coaching con IA via Gemini 2.5 Flash que extrae insights de tu historial de entrenamiento y te ayuda a planificar semanas más inteligentes.',
+      'App de analítica de running integrada con Strava. Calcula forma física, fatiga y estado de forma con todo tu historial, y un coach con IA — Gemini, GPT‑4o o Claude, a elección — los convierte en recomendaciones semanales y diarias.',
     'projects.pace.status': 'En desarrollo',
     'projects.intervalo.title': 'Intervalo',
     'projects.intervalo.desc':
@@ -365,6 +368,7 @@ export const ui = {
     'projects.intervalo.status': 'En desarrollo',
     'projects.repo': 'Repo',
     'projects.demo': 'Demo',
+    'projects.more': 'Leer más',
 
     // writing
     'writing.title': 'Blog',

@@ -25,6 +25,7 @@ const scene = (
     'hangar-design-system': 'hangar',
     'latam-airlines-home': 'terminal',
     'mining-supplier-platform': 'mine',
+    pace: 'pace',
   } as Record<string, SceneName>
 )[slug];
 const meta = [
@@ -61,12 +62,15 @@ const meta = [
       {scene && <Diorama scene={scene} />}
 
       <div class="cs-meta">
-        {meta.map(([key, value]) => (
-          <div class="cs-meta-item">
-            <span class="cs-meta-k">{t(key)}</span>
-            <span class="cs-meta-v">{value}</span>
-          </div>
-        ))}
+        {meta.map(
+          ([key, value]) =>
+            value && (
+              <div class="cs-meta-item">
+                <span class="cs-meta-k">{t(key)}</span>
+                <span class="cs-meta-v">{value}</span>
+              </div>
+            )
+        )}
       </div>
 
       <Content />
