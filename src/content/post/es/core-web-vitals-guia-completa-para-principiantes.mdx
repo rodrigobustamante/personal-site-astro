@@ -5,6 +5,7 @@ excerpt: Descubre todo sobre Core Web Vitals.
 image: ~/assets/images/posts/core-web-vitals.jpg
 # Photo from Unsplash (https://unsplash.com/photos/photo-1498084393753-b411b2d26b34), self-hosted and optimized at build
 category: Tutoriales
+updateDate: 2026-10-12T00:00:00Z
 draft: false
 translation: /blog/en/core-web-vitals-complete-guide-for-beginners
 metadata:
@@ -17,6 +18,12 @@ tags:
   - performance
 ---
 
+import Update from '~/components/blog/Update.astro';
+import SlowFeel from '~/components/blog/figures/SlowFeel.astro';
+import LcpFilmstrip from '~/components/blog/figures/LcpFilmstrip.astro';
+import InpLanes from '~/components/blog/figures/InpLanes.astro';
+import ClsShift from '~/components/blog/figures/ClsShift.astro';
+
 # Core Web Vitals
 
 ## ¿Qué son los Core Web Vitals?
@@ -25,9 +32,19 @@ Los **Core Web Vitals** son un conjunto de métricas esenciales introducidas por
 
 Google ha identificado tres métricas principales dentro de los Core Web Vitals:
 
+{/* prettier-ignore */}
 - **Largest Contentful Paint (LCP)**: Mide el tiempo que tarda en cargarse el contenido más grande visible en la pantalla.
-- **First Input Delay (FID)**: Evalúa la capacidad de respuesta de un sitio web al medir el tiempo que tarda en responder a la primera interacción del usuario.
+- <del>**First Input Delay (FID)**: Evalúa la capacidad de respuesta de un sitio web al medir el tiempo que tarda en responder a la primera interacción del usuario.</del>
+- <ins>**Interaction to Next Paint (INP)**: Evalúa la capacidad de respuesta de un sitio web al medir cuánto tarda la página en reaccionar visualmente a las interacciones del usuario, no solo a la primera.</ins>
 - **Cumulative Layout Shift (CLS)**: Mide la estabilidad visual al calcular cuánto se mueven los elementos de la página durante la carga.
+
+<Update lang="es" date="2026-10-12">
+
+En marzo de 2024, **INP reemplazó a FID** como Core Web Vital. FID solo medía la espera antes de procesar la primera interacción; INP observa todas las interacciones de la visita (clics, toques y teclas) hasta que la página pinta la respuesta, y reporta una de las más lentas. Los umbrales para considerar una página "buena" son: **LCP** de 2,5 s o menos, **INP** de 200 ms o menos y **CLS** de 0,1 o menos.
+
+</Update>
+
+<SlowFeel lang="es" />
 
 Estas métricas son fundamentales para entender cómo los usuarios perciben la calidad de un sitio web y cómo impactan en el **SEO**.
 
@@ -50,7 +67,7 @@ En resumen, optimizar los Core Web Vitals no solo beneficia a los usuarios, sino
 Medir los Core Web Vitals es más fácil de lo que parece. Google ofrece varias herramientas gratuitas para ayudarte a evaluar el rendimiento de tu sitio web:
 
 1. **Google PageSpeed Insights**: Proporciona un análisis detallado del rendimiento de tu sitio web, incluyendo las métricas de Core Web Vitals.
-2. **Google Search Console**: Incluye un informe específico de Core Web Vitals que muestra cómo tu sitio web está rindiendo en términos de LCP, FID y CLS.
+2. **Google Search Console**: Incluye un informe específico de Core Web Vitals que muestra cómo tu sitio web está rindiendo en términos de LCP, <del>FID</del> <ins>INP</ins> y CLS.
 3. **Lighthouse**: Una herramienta de auditoría integrada en Chrome DevTools que te permite realizar pruebas en tiempo real.
 
 Estas herramientas te darán una visión clara de las áreas que necesitan mejora para optimizar tu **SEO**.
@@ -65,17 +82,29 @@ El **Largest Contentful Paint (LCP)** es una de las métricas más importantes, 
 2. **Usa carga diferida (lazy loading)**: Retrasa la carga de imágenes y videos que no son visibles inicialmente en la pantalla.
 3. **Minimiza el bloqueo de recursos**: Reduce el tiempo de ejecución de JavaScript y CSS que bloquean la renderización.
 
+<LcpFilmstrip lang="es" />
+
 Siguiendo estas prácticas, puedes asegurarte de que tu sitio web cargue rápidamente y ofrezca una buena experiencia al usuario, lo que también beneficia tu **SEO**.
 
 ---
 
-## Cómo reducir el FID
+## Cómo reducir el <del>FID</del> <ins>INP</ins>
 
-El **First Input Delay (FID)** mide la capacidad de respuesta de tu sitio web. Un FID bajo es crucial para garantizar que los usuarios puedan interactuar con tu sitio sin demoras. Aquí tienes algunos consejos:
+El <del>**First Input Delay (FID)**</del> <ins>**Interaction to Next Paint (INP)**</ins> mide la capacidad de respuesta de tu sitio web. Un <del>FID</del> <ins>INP</ins> bajo es crucial para garantizar que los usuarios puedan interactuar con tu sitio sin demoras. Aquí tienes algunos consejos:
 
+{/* prettier-ignore */}
 1. **Reduce el código JavaScript**: Elimina scripts innecesarios y optimiza los que son esenciales.
 2. **Usa Web Workers**: Descarga tareas pesadas a subprocesos en segundo plano para no bloquear el hilo principal.
 3. **Prioriza la carga de recursos**: Carga primero los recursos críticos para que el sitio sea interactivo lo antes posible.
+4. <ins>**Divide las tareas largas**: Parte el trabajo pesado en tareas más cortas y cede el hilo principal entre ellas (por ejemplo, con `scheduler.yield()` o `setTimeout`), así el navegador puede atender un clic en medio.</ins>
+
+<Update lang="es" date="2026-10-12">
+
+Los consejos originales siguen sirviendo para INP, pero ahora cuentan todas las interacciones de la visita, no solo la primera. Por eso se agrega un cuarto: una tarea larga que bloquea el hilo principal retrasa cualquier clic que llegue mientras corre.
+
+</Update>
+
+<InpLanes lang="es" />
 
 Estas acciones ayudarán a que tu sitio web responda rápidamente a las interacciones del usuario, mejorando tanto la experiencia del usuario como tu **SEO**.
 
@@ -88,6 +117,8 @@ El **Cumulative Layout Shift (CLS)** mide cuánto se mueven los elementos de la 
 1. **Define dimensiones para imágenes y videos**: Especifica el ancho y alto de los elementos multimedia para evitar cambios de diseño.
 2. **Evita insertar contenido dinámico encima del existente**: Si es necesario, reserva espacio para evitar movimientos inesperados.
 3. **Usa fuentes web con precarga**: Esto evita que el texto cambie de tamaño durante la carga.
+
+<ClsShift lang="es" />
 
 Con estas prácticas, tu sitio web será visualmente estable y más agradable para los usuarios, lo que también contribuye a un mejor **SEO**.
 
