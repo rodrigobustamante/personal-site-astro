@@ -31,6 +31,7 @@
     "@fontsource/newsreader": "^5.3.0",
     "@lhci/cli": "^0.15.1",
     "astro-compress": "^2.4.3",
+    "esbuild": "0.28.2",
     "eslint": "^10.11.0",
     "eslint-plugin-astro": "^3.2.1",
     "globals": "^17.12.0",

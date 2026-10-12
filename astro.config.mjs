@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import compress from 'astro-compress';
 import ogImages from './src/integrations/og-images';
+import minifyInlineScripts from './src/integrations/minify-inline-scripts';
 import { readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter.mjs';
 import { unified } from '@astrojs/markdown-remark';
 import { SITE } from './src/utils/config.ts';
@@ -33,6 +34,7 @@ export default defineConfig({
     }),
     mdx(),
     ogImages(),
+    minifyInlineScripts(),
     compress({
       CSS: true,
       HTML: false,

@@ -45,6 +45,9 @@ importers:
       astro-compress:
         specifier: ^2.4.3
         version: 2.4.3(@astrojs/markdown-remark@7.3.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@26.6.2)(jiti@1.21.7)(yaml@2.9.0)
+      esbuild:
+        specifier: 0.28.2
+        version: 0.28.2
       eslint:
         specifier: ^10.11.0
         version: 10.11.0(jiti@1.21.7)

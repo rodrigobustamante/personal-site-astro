@@ -6,8 +6,23 @@
  * which this static server bypasses, so every localized page can be audited
  * directly regardless of the browser language.
  */
-const PORTFOLIO = ['/', '/es/', '/work/', '/work/hangar-design-system/', '/system/', '/uses/'];
-const BLOG = ['/blog/en/', '/blog/es/', '/blog/en/core-web-vitals-complete-guide-for-beginners/'];
+// Both case studies: each carries a different diorama below the header.
+const PORTFOLIO = [
+  '/',
+  '/es/',
+  '/work/',
+  '/work/hangar-design-system/',
+  '/work/latam-airlines-home/',
+  '/system/',
+  '/uses/',
+];
+// The Spanish speculative-rendering post is the heaviest HTML on the site.
+const BLOG = [
+  '/blog/en/',
+  '/blog/es/',
+  '/blog/en/core-web-vitals-complete-guide-for-beginners/',
+  '/blog/es/rendimiento-web-rendimiento-especulativo-guia/',
+];
 
 /** @type {import('@lhci/cli').LighthouseCiConfig} */
 module.exports = {
