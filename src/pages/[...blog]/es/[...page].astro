@@ -20,7 +20,11 @@ const currentPage = page.currentPage ?? 1;
 const lang = 'es';
 ---
 
-<BlogLayout title={`Blog${currentPage > 1 ? ` — Página ${currentPage}` : ''}`} lang={lang}>
+<BlogLayout
+  title={`Blog${currentPage > 1 ? ` — Página ${currentPage}` : ''}`}
+  lang={lang}
+  translationUrl={currentPage === 1 ? '/blog/en' : undefined}
+>
   <div class="blog-wrap">
     <div class="blog-headline reveal">
       <h1>El Blog</h1>

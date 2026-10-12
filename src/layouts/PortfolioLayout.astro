@@ -18,6 +18,13 @@ interface Props {
    * to their preferred language at the edge (src/edge/language-redirect.ts).
    */
   hasLocalizedSibling?: boolean;
+  /**
+   * Path of this page's translation when it lives at a different slug (blog
+   * posts and listings). Ignored when `hasLocalizedSibling` is set.
+   */
+  translationUrl?: string;
+  /** Emits `robots: noindex, follow` and drops the hreflang alternates. */
+  noindex?: boolean;
 }
 const {
   title = 'Rodrigo Bustamante — Staff Frontend Engineer · Design Systems Architect',
@@ -26,6 +33,8 @@ const {
   ogImage = `/og/home/${Astro.props.lang ?? 'en'}.png`,
   canonicalURL = Astro.url.href,
   hasLocalizedSibling = false,
+  translationUrl,
+  noindex = false,
 } = Astro.props;
 
 const origin = Astro.site ?? Astro.url;
@@ -35,15 +44,20 @@ const origin = Astro.site ?? Astro.url;
 const beaconConfig = SITE.analyticsToken ? JSON.stringify({ token: SITE.analyticsToken, spa: true }) : undefined;
 const ogImageAbs = new URL(ogImage, origin).href;
 
-// hreflang alternates. Portfolio pages have a real sibling per language;
-// blog pages point both alternates at themselves (their translation is a
-// different slug, handled by the header's translationUrl).
+// hreflang alternates. Portfolio pages have a sibling at the localized path;
+// blog pages name their translation, which lives at a different slug. Pages
+// without a translation get no alternates.
 const alternates = hasLocalizedSibling
   ? {
       en: new URL(localizedPath(Astro.url.pathname, 'en'), origin).href,
       es: new URL(localizedPath(Astro.url.pathname, 'es'), origin).href,
     }
-  : { en: canonicalURL, es: canonicalURL };
+  : translationUrl && !noindex
+    ? ({ [lang]: canonicalURL, [lang === 'es' ? 'en' : 'es']: new URL(translationUrl, origin).href } as Record<
+        Lang,
+        string
+      >)
+    : undefined;
 
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
@@ -68,10 +82,14 @@ const jsonLd = JSON.stringify({
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" hreflang="en" href={alternates.en} />
-    <link rel="alternate" hreflang="es" href={alternates.es} />
-    <link rel="alternate" hreflang="x-default" href={alternates.en} />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonicalURL} />}
+    {alternates && (
+      <>
+        <link rel="alternate" hreflang="en" href={alternates.en} />
+        <link rel="alternate" hreflang="es" href={alternates.es} />
+        <link rel="alternate" hreflang="x-default" href={alternates.en} />
+      </>
+    )}
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />

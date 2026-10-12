@@ -19,16 +19,10 @@ const { page, tag } = Astro.props as Props;
 
 const currentPage = page.currentPage ?? 1;
 
-const metadata = {
-  title: `Posts by tag '${tag}'${currentPage > 1 ? ` — Page ${currentPage} ` : ''}`,
-  robots: {
-    index: blogTagRobots?.index,
-    follow: blogTagRobots?.follow,
-  },
-};
+const title = `Posts by tag '${tag}'${currentPage > 1 ? ` — Page ${currentPage}` : ''}`;
 ---
 
-<BlogLayout title={metadata.title}>
+<BlogLayout title={title} noindex={!blogTagRobots.index}>
   <div class="blog-wrap">
     <Headline>Tag: {tag}</Headline>
     <BlogList posts={page.data} />

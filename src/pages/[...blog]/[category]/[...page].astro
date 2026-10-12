@@ -19,16 +19,10 @@ const { page, category } = Astro.props as Props;
 
 const currentPage = page.currentPage ?? 1;
 
-const metadata = {
-  title: `Category '${category}' ${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,
-  robots: {
-    index: blogCategoryRobots?.index,
-    follow: blogCategoryRobots?.follow,
-  },
-};
+const title = `Category '${category}'${currentPage > 1 ? ` — Page ${currentPage}` : ''}`;
 ---
 
-<BlogLayout title={metadata.title}>
+<BlogLayout title={title} noindex={!blogCategoryRobots.index}>
   <div class="blog-wrap">
     <Headline>
       <span style="text-transform: capitalize">{category.replaceAll('-', ' ')}</span>

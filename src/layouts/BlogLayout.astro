@@ -9,6 +9,8 @@ interface Props {
   lang?: 'en' | 'es';
   /** 1200x630 Open Graph card. Defaults to the blog card for the resolved language. */
   ogImage?: string;
+  /** Keeps the page out of search results (tag listings, the mixed-language /blog, 404). */
+  noindex?: boolean;
 }
 
 const {
@@ -17,13 +19,21 @@ const {
   translationUrl,
   lang,
   ogImage,
+  noindex,
 } = Astro.props;
 
 const resolvedLang = (lang ?? 'en') as 'en' | 'es';
 const resolvedOgImage = ogImage ?? `/og/blog/${resolvedLang}.png`;
 ---
 
-<PortfolioLayout title={title} description={description} lang={resolvedLang} ogImage={resolvedOgImage}>
+<PortfolioLayout
+  title={title}
+  description={description}
+  lang={resolvedLang}
+  ogImage={resolvedOgImage}
+  translationUrl={translationUrl}
+  noindex={noindex}
+>
   <Fragment slot="head">
     <style is:global>
       /* Footer (blog pages) */
@@ -451,21 +461,6 @@ const resolvedOgImage = ogImage ?? `/og/blog/${resolvedLang}.png`;
         transform: translateY(-1px);
         border-color: var(--ink-soft);
         background: var(--card);
-      }
-
-      /* Markdown page */
-      .md-wrap {
-        max-width: 720px;
-        margin: 0 auto;
-        padding: clamp(40px, 7vh, 80px) var(--pad);
-      }
-      .md-title {
-        font-family: var(--serif);
-        font-weight: 400;
-        font-size: clamp(32px, 5vw, 48px);
-        line-height: 1.06;
-        letter-spacing: -0.02em;
-        margin-bottom: clamp(28px, 4vh, 44px);
       }
 
       /* 404 */

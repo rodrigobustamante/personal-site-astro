@@ -27,7 +27,10 @@ export default defineConfig({
     inlineStylesheets: 'always',
   },
   integrations: [
-    sitemap(),
+    sitemap({
+      // Tag listings and the mixed-language /blog are noindex (see their pages).
+      filter: (page) => !page.includes('/blog/tag/') && page.replace(/\/$/, '') !== `${SITE.site}/blog`,
+    }),
     mdx(),
     ogImages(),
     compress({
