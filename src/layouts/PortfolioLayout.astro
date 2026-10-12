@@ -28,8 +28,8 @@ interface Props {
   noindex?: boolean;
 }
 const {
-  title = 'Rodrigo Bustamante — Staff Frontend Engineer · Design Systems Architect',
-  description = 'Rodrigo Bustamante — Staff Frontend Engineer & Design Systems Architect. 9 years building scalable frontend systems and design systems for global brands.',
+  title = 'Rodrigo Bustamante — Senior Software Engineer · Design Engineer & Senior FrontEnd Engineer',
+  description = 'Rodrigo Bustamante — Senior Software Engineer, Design Engineer & Senior FrontEnd Engineer. 9 years building scalable frontend systems and design systems for global brands.',
   lang = 'en',
   ogImage = `/og/home/${Astro.props.lang ?? 'en'}.png`,
   canonicalURL = Astro.url.href,
@@ -65,7 +65,7 @@ const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Rodrigo Bustamante',
-  jobTitle: 'Staff Frontend Engineer · Design Systems Architect',
+  jobTitle: 'Senior Software Engineer · Design Engineer & Senior FrontEnd Engineer',
   url: 'https://rodrigobustamante.cl',
   image: ogImageAbs,
   address: {
