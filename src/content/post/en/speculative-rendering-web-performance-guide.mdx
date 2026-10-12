@@ -5,6 +5,7 @@ excerpt: Learn what speculative rendering is, how it improves web performance, a
 image: ~/assets/images/posts/speculative-rendering.jpg
 # Photo from Unsplash (https://unsplash.com/photos/photo-1622737133809-d95047b9e673), self-hosted and optimized at build
 category: Tutorials
+updateDate: 2026-10-12T00:00:00Z
 draft: false
 translation: /blog/es/rendimiento-web-rendimiento-especulativo-guia
 metadata:
@@ -16,6 +17,12 @@ tags:
   - performance
 ---
 
+import Update from '~/components/blog/Update.astro';
+import Superseded from '~/components/blog/Superseded.astro';
+import SpecPrefetch from '~/components/blog/figures/SpecPrefetch.astro';
+import SpecSpectrum from '~/components/blog/figures/SpecSpectrum.astro';
+import SpecWaste from '~/components/blog/figures/SpecWaste.astro';
+
 # Speculative Rendering: Enhancing Web Performance
 
 ## What is Speculative Rendering?
@@ -23,6 +30,8 @@ tags:
 **Speculative rendering** is an advanced technique used in web development to enhance performance and user experience. It involves predicting user actions and preloading or rendering content in advance, before the user explicitly requests it. This reduces load times and makes navigation smoother.
 
 For example, when a user hovers over a link, the browser can start loading the target page in the background. If the user clicks the link, the page will already be partially or fully loaded, resulting in an almost instant transition.
+
+<SpecPrefetch lang="en" />
 
 ---
 
@@ -49,6 +58,8 @@ There are several techniques for implementing speculative rendering. Some of the
 
 These techniques can be implemented using HTML, JavaScript, and modern browser APIs.
 
+<SpecSpectrum lang="en" />
+
 ---
 
 ## Benefits of Speculative Rendering
@@ -71,6 +82,8 @@ Although speculative rendering is very useful, it also presents some challenges:
 1. **Bandwidth usage**: Preloading content can increase data consumption, which may be an issue for users with limited connections.
 2. **Server overload**: If not implemented correctly, it can generate additional load on the server.
 3. **Incorrect predictions**: If the browser preloads content that the user does not need, resources are wasted.
+
+<SpecWaste lang="en" />
 
 To mitigate these challenges, it is important to use speculative rendering strategically and measure its impact on performance.
 
@@ -147,6 +160,8 @@ By following these practices, you can implement speculative rendering efficientl
 **What it does**: Fully renders a page in the background before the user navigates to it.  
 **Example**:
 
+<Superseded lang="en">
+
 ```html
 <!-- Prerender a page using the "prerender" link type -->
 <link rel="prerender" href="/next-page" />
@@ -159,6 +174,29 @@ By following these practices, you can implement speculative rendering efficientl
   document.head.appendChild(prerenderLink);
 </script>
 ```
+
+</Superseded>
+
+<Update lang="en" date="2026-10-12">
+
+`<link rel="prerender">` no longer prerenders: Chrome treats it as a lighter prefetch (NoState Prefetch) and other browsers ignore it. The current way is the **Speculation Rules API**, available in Chromium-based browsers. Rules are declared in JSON and the browser decides when to fire them: with `"eagerness": "moderate"`, the page is prerendered when the user rests the pointer on the link or starts pressing it, which is exactly the example at the start of this post.
+
+```html
+<script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/next-page" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+</script>
+```
+
+Browsers without support ignore the script, so it can be added without breaking anything.
+
+</Update>
 
 **Use case**: Ideal for pages that users are highly likely to visit next, such as a checkout page in an e-commerce site.
 

@@ -1,0 +1,39 @@
+---
+/**
+ * Original content that no longer holds, kept in the post for the record and
+ * dimmed under a label. The <Update> that follows it has the current version.
+ */
+interface Props {
+  lang: 'en' | 'es';
+}
+const { lang } = Astro.props;
+const label = lang === 'es' ? 'Obsoleto · ver la actualización' : 'Outdated · see the update';
+---
+
+<div class="superseded">
+  <p class="superseded-label">{label}</p>
+  <div class="superseded-body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .superseded {
+    margin-bottom: 1.5em;
+  }
+  .superseded .superseded-label {
+    margin-bottom: 0.4em;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .superseded-body {
+    opacity: 0.6;
+  }
+  .superseded-body :global(pre) {
+    margin-bottom: 0;
+    border-style: dashed;
+  }
+</style>

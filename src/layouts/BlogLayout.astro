@@ -165,6 +165,7 @@ const resolvedOgImage = ogImage ?? `/og/blog/${resolvedLang}.png`;
       }
       .post-header-meta {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         gap: 10px;
         font-size: 13px;
@@ -255,6 +256,20 @@ const resolvedOgImage = ogImage ?? `/og/blog/${resolvedLang}.png`;
       }
       .prose em {
         font-style: italic;
+      }
+      /* Edits kept in the text: what was replaced, and what replaced it (see Update.astro). */
+      .prose del {
+        color: var(--muted);
+        text-decoration-color: var(--muted);
+      }
+      .prose del strong {
+        color: inherit;
+      }
+      .prose ins {
+        text-decoration: none;
+        background: var(--accent-soft);
+        border-radius: 3px;
+        padding: 0 3px;
       }
       .prose ul,
       .prose ol {

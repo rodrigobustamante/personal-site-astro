@@ -1,0 +1,220 @@
+---
+/**
+ * The main thread over time: a click lands during a long task and has to wait
+ * for it. Each fix shortens that wait (the bar under the lane) until the
+ * interaction is handled right away.
+ */
+import Figure from './Figure.astro';
+import { finalStep, type Lang } from './beats';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = {
+  es: {
+    summary: 'Una línea de tiempo del hilo principal del navegador, con un clic que llega mientras está ocupado.',
+    steps: [
+      'Haces clic durante una tarea larga y tienes que esperar a que termine',
+      'Menos JavaScript: la tarea es más corta y la espera también',
+      'Parte del trabajo se va a un Web Worker y libera el hilo principal',
+      'Lo crítico primero: el clic se atiende y lo pesado viene después',
+    ],
+    main: 'Hilo principal',
+    worker: 'Web Worker',
+    click: 'clic',
+    wait: 'espera',
+  },
+  en: {
+    summary: "A timeline of the browser's main thread, with a click that arrives while it is busy.",
+    steps: [
+      'You click during a long task and have to wait for it to finish',
+      'Less JavaScript: a shorter task, a shorter wait',
+      'Part of the work moves to a Web Worker and frees the main thread',
+      'Critical work first: the click is handled and the heavy work comes after',
+    ],
+    main: 'Main thread',
+    worker: 'Web Worker',
+    click: 'click',
+    wait: 'wait',
+  },
+}[lang];
+---
+
+<Figure lang={lang} steps={t.steps} summary={t.summary}>
+  <div class={`lanes ${finalStep(4)}`}>
+    <div class="lane lane-main">
+      <span class="name">{t.main}</span>
+      <div class="area">
+        <i class="task" style="left:0;width:calc(50 * var(--u))"></i>
+        <i class="task long"></i>
+        <i class="task after"></i>
+        <span class="click">{t.click}</span>
+        <i class="resp"></i>
+        <div class="wait">
+          <span>{t.wait}</span>
+        </div>
+      </div>
+    </div>
+    <div class="lane lane-worker on" data-b="3">
+      <span class="name">{t.worker}</span>
+      <div class="area">
+        <i class="task worker"></i>
+      </div>
+    </div>
+  </div>
+</Figure>
+
+<style>
+  .lanes {
+    --u: calc(100cqi / 800);
+    position: relative;
+    aspect-ratio: 800 / 260;
+    font-size: max(10px, calc(15 * var(--u)));
+  }
+  .lane {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+  .lane-main {
+    top: calc(44 * var(--u));
+    height: calc(118 * var(--u));
+    border-bottom: 1px solid var(--line);
+  }
+  .lane-worker {
+    top: calc(190 * var(--u));
+    height: calc(56 * var(--u));
+  }
+  .name {
+    position: absolute;
+    left: 0;
+    top: calc(10 * var(--u));
+    width: calc(120 * var(--u));
+    font-weight: 600;
+    color: var(--muted);
+    line-height: 1.2;
+  }
+  .area {
+    position: absolute;
+    left: calc(130 * var(--u));
+    right: 0;
+    top: 0;
+    height: calc(40 * var(--u));
+  }
+  .task {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: calc(5 * var(--u));
+    background: var(--line);
+  }
+  .long {
+    left: calc(72 * var(--u));
+    width: calc(442 * var(--u));
+    background: var(--bad);
+    opacity: 0.85;
+    transition:
+      left 0.6s ease,
+      width 0.6s ease,
+      background 0.4s;
+  }
+  .at-2 .long {
+    width: calc(287 * var(--u));
+    background: var(--warn);
+  }
+  .at-3 .long {
+    width: calc(166 * var(--u));
+  }
+  .at-4 .long {
+    left: calc(221 * var(--u));
+    background: var(--line);
+    opacity: 1;
+  }
+  .after {
+    left: calc(531 * var(--u));
+    width: calc(61 * var(--u));
+    transition: left 0.6s ease;
+  }
+  .at-2 .after {
+    left: calc(376 * var(--u));
+  }
+  .at-3 .after {
+    left: calc(254 * var(--u));
+  }
+  .at-4 .after {
+    left: calc(404 * var(--u));
+  }
+  .worker {
+    left: calc(72 * var(--u));
+    width: calc(199 * var(--u));
+    background: var(--accent);
+    opacity: 0.75;
+  }
+  .click {
+    position: absolute;
+    left: calc(176 * var(--u));
+    bottom: 100%;
+    margin-bottom: calc(10 * var(--u));
+    font-weight: 700;
+    color: var(--accent-ink);
+  }
+  .click::after {
+    content: '';
+    position: absolute;
+    left: calc(8 * var(--u));
+    top: 100%;
+    width: 2px;
+    height: calc(64 * var(--u));
+    background: var(--accent);
+  }
+  .resp {
+    position: absolute;
+    top: calc(-6 * var(--u));
+    height: calc(52 * var(--u));
+    width: calc(3 * var(--u));
+    background: var(--ink);
+    left: calc(514 * var(--u));
+    transition: left 0.6s ease;
+  }
+  .at-2 .resp {
+    left: calc(359 * var(--u));
+  }
+  .at-3 .resp {
+    left: calc(238 * var(--u));
+  }
+  .at-4 .resp {
+    left: calc(199 * var(--u));
+  }
+  .wait {
+    position: absolute;
+    top: calc(54 * var(--u));
+    left: calc(184 * var(--u));
+    height: calc(5 * var(--u));
+    width: calc(330 * var(--u));
+    background: var(--bad);
+    border-radius: 3px;
+    transition:
+      width 0.6s ease,
+      background 0.4s;
+  }
+  .wait span {
+    position: absolute;
+    top: calc(10 * var(--u));
+    left: 0;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .at-2 .wait {
+    width: calc(175 * var(--u));
+    background: var(--warn);
+  }
+  .at-3 .wait {
+    width: calc(54 * var(--u));
+  }
+  .at-4 .wait {
+    width: calc(15 * var(--u));
+    background: var(--good);
+  }
+</style>

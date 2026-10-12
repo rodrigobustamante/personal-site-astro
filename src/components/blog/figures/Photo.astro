@@ -1,0 +1,26 @@
+---
+/** The stand-in "hero image" the figures load: sky, sun and two hills. */
+interface Props {
+  class?: string;
+  [key: `data-${string}`]: string | number | undefined;
+}
+const { class: className, ...attrs } = Astro.props;
+---
+
+<svg class:list={['fig-photo', className]} viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" {...attrs}>
+  <rect width="160" height="90" style="fill:var(--photo-sky)"></rect>
+  <circle cx="122" cy="26" r="11" style="fill:var(--photo-sun)"></circle>
+  <path d="M0 62 L52 36 L104 66 L160 46 V90 H0Z" style="fill:var(--photo-hill)"></path>
+  <path d="M0 78 L70 56 L160 82 V90 H0Z" style="fill:var(--photo-hill-2)"></path>
+</svg>
+
+<style>
+  /* Fills its box, which must be positioned. */
+  .fig-photo {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

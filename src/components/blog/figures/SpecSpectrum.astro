@@ -1,0 +1,207 @@
+---
+/**
+ * The seven techniques from the examples, placed along how far ahead of the
+ * user each one gets the browser. A horizontal axis when there is room, a
+ * vertical list on narrow columns.
+ */
+import Figure from './Figure.astro';
+import { finalStep, type Lang } from './beats';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = {
+  es: {
+    summary: 'Un eje con siete técnicas de renderizado especulativo, de la que menos se adelanta a la que más.',
+    intro: 'Siete técnicas, ordenadas por cuánto se adelanta el navegador',
+    low: 'Se adelanta poco',
+    high: 'Se adelanta todo',
+    techs: [
+      ['DNS prefetching', 'Resuelve dominios externos antes de necesitarlos.'],
+      ['Link prefetching', 'Al pasar el cursor, carga los recursos de la página enlazada.'],
+      ['Image preloading', 'Carga primero las imágenes críticas.'],
+      ['Carga diferida inteligente', 'Combina lazy loading con precarga.'],
+      ['Service workers', 'Precachean recursos para cargas rápidas y uso offline.'],
+      ['Prerendering', 'Renderiza la página completa en segundo plano.'],
+      ['Prefetching predictivo', 'Machine learning para predecir la próxima página.'],
+    ],
+  },
+  en: {
+    summary:
+      'An axis with seven speculative rendering techniques, from the one that gets least ahead to the one that gets most.',
+    intro: 'Seven techniques, ordered by how far ahead the browser gets',
+    low: 'Gets a little ahead',
+    high: 'Gets all the way ahead',
+    techs: [
+      ['DNS prefetching', 'Resolves external domains before they are needed.'],
+      ['Link prefetching', 'On hover, loads the resources of the linked page.'],
+      ['Image preloading', 'Loads the critical images first.'],
+      ['Smart lazy loading', 'Combines lazy loading with preloading.'],
+      ['Service workers', 'Precache resources for fast loads and offline use.'],
+      ['Prerendering', 'Renders the whole page in the background.'],
+      ['Predictive prefetching', 'Machine learning to predict the next page.'],
+    ],
+  },
+}[lang];
+const xs = [0.08, 0.21, 0.34, 0.47, 0.61, 0.76, 0.91];
+const steps = [t.intro, ...t.techs.map(([name]) => name)];
+---
+
+<Figure lang={lang} steps={steps} summary={t.summary} interval={1500}>
+  <div class={`range ${finalStep(steps.length)}`}>
+    <span class="end low">{t.low}</span>
+    <ol class="techs">
+      {t.techs.map(([name, desc], i) => (
+        <li class:list={['tech on', i % 2 ? 'dn' : 'up']} style={`--x:${xs[i]}`} data-b={i + 2}>
+          <i class="dot" />
+          <b>{name}</b>
+          <span>{desc}</span>
+        </li>
+      ))}
+    </ol>
+    <span class="end high">{t.high}</span>
+  </div>
+</Figure>
+
+<style>
+  /* Narrow: a vertical list hanging from a line. */
+  .range {
+    --line-x: 7px;
+    position: relative;
+    padding: 4px 0 4px 30px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .range::before {
+    content: '';
+    position: absolute;
+    left: var(--line-x);
+    top: 26px;
+    bottom: 26px;
+    width: 2px;
+    background: var(--line);
+  }
+  .end {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .range .techs {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .range .tech {
+    position: relative;
+    margin: 0;
+    line-height: 1.4;
+  }
+  .tech b {
+    display: block;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .tech span {
+    display: block;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  .dot {
+    position: absolute;
+    left: calc(var(--line-x) - 30px - 6px + 1px);
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Wide: the deck's horizontal axis, labels alternating above and below. */
+  @container (min-width: 620px) {
+    .range {
+      --axis: 50%;
+      height: 360px;
+      padding: 0;
+    }
+    .range::before {
+      left: 0;
+      right: 8px;
+      top: var(--axis);
+      bottom: auto;
+      width: auto;
+      height: 2px;
+    }
+    .range::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: calc(var(--axis) - 6px);
+      border: 7px solid transparent;
+      border-left: 10px solid var(--line);
+      border-right: 0;
+    }
+    .end {
+      position: absolute;
+      top: calc(var(--axis) + 12px);
+    }
+    .end.low {
+      left: 0;
+    }
+    .end.high {
+      right: 0;
+    }
+    /* Inset so the outer labels stay inside the figure. */
+    .range .techs {
+      position: absolute;
+      inset: 0 56px;
+      margin: 0;
+      display: block;
+    }
+    .range .tech {
+      position: absolute;
+      width: 124px;
+      left: calc(var(--x) * 100% - 62px);
+      text-align: center;
+    }
+    .tech span {
+      font-size: 13px;
+    }
+    .tech::before {
+      content: '';
+      position: absolute;
+      left: calc(50% - 1px);
+      width: 2px;
+      background: var(--line);
+    }
+    .tech.up {
+      bottom: calc(100% - var(--axis) + 28px);
+    }
+    .tech.up::before {
+      top: 100%;
+      height: 28px;
+    }
+    .tech.dn {
+      top: calc(var(--axis) + 56px);
+    }
+    .tech.dn::before {
+      bottom: 100%;
+      height: 56px;
+    }
+    .dot {
+      left: calc(50% - 6px);
+    }
+    .tech.up .dot {
+      top: calc(100% + 28px - 5px);
+    }
+    .tech.dn .dot {
+      top: -61px;
+    }
+  }
+</style>
