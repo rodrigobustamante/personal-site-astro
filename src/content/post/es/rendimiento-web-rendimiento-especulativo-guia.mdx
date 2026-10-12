@@ -5,6 +5,7 @@ excerpt: Aprende qué es el renderizado especulativo, cómo mejora el rendimient
 image: ~/assets/images/posts/speculative-rendering.jpg
 # Photo from Unsplash (https://unsplash.com/photos/photo-1622737133809-d95047b9e673), self-hosted and optimized at build
 category: Tutoriales
+updateDate: 2026-10-12T00:00:00Z
 draft: false
 translation: /blog/en/speculative-rendering-web-performance-guide
 metadata:
@@ -16,6 +17,12 @@ tags:
   - performance
 ---
 
+import Update from '~/components/blog/Update.astro';
+import Superseded from '~/components/blog/Superseded.astro';
+import SpecPrefetch from '~/components/blog/figures/SpecPrefetch.astro';
+import SpecSpectrum from '~/components/blog/figures/SpecSpectrum.astro';
+import SpecWaste from '~/components/blog/figures/SpecWaste.astro';
+
 # Renderizado Especulativo: Mejorando el Rendimiento Web
 
 ## ¿Qué es el Renderizado Especulativo?
@@ -23,6 +30,8 @@ tags:
 **El renderizado especulativo** es una técnica avanzada utilizada en el desarrollo web para mejorar el rendimiento y la experiencia del usuario. Consiste en predecir las acciones del usuario y precargar o renderizar contenido con anticipación, antes de que el usuario lo solicite explícitamente. Esto reduce los tiempos de carga y hace que la navegación sea más fluida.
 
 Por ejemplo, cuando un usuario pasa el cursor sobre un enlace, el navegador puede comenzar a cargar la página de destino en segundo plano. Si el usuario hace clic en el enlace, la página ya estará parcial o completamente cargada, lo que resultará en una transición casi instantánea.
+
+<SpecPrefetch lang="es" />
 
 ---
 
@@ -49,6 +58,8 @@ Existen varias técnicas para implementar el renderizado especulativo. Algunas d
 
 Estas técnicas pueden implementarse utilizando HTML, JavaScript y APIs modernas de los navegadores.
 
+<SpecSpectrum lang="es" />
+
 ---
 
 ## Beneficios del Renderizado Especulativo
@@ -71,6 +82,8 @@ Aunque el renderizado especulativo es muy útil, también presenta algunos desaf
 1. **Uso de ancho de banda**: La precarga de contenido puede aumentar el consumo de datos, lo que puede ser un problema para usuarios con conexiones limitadas.
 2. **Sobrecarga del servidor**: Si no se implementa correctamente, puede generar una carga adicional en el servidor.
 3. **Predicciones incorrectas**: Si el navegador precarga contenido que el usuario no necesita, se desperdician recursos.
+
+<SpecWaste lang="es" />
 
 Para mitigar estos desafíos, es importante utilizar el renderizado especulativo de manera estratégica y medir su impacto en el rendimiento.
 
@@ -147,6 +160,8 @@ Siguiendo estas prácticas, puedes implementar el renderizado especulativo de ma
 **Qué hace**: Renderiza completamente una página en segundo plano antes de que el usuario navegue a ella.  
 **Ejemplo**:
 
+<Superseded lang="es">
+
 ```html
 <!-- Prerenderiza una página usando el tipo de enlace "prerender" -->
 <link rel="prerender" href="/next-page" />
@@ -159,6 +174,29 @@ Siguiendo estas prácticas, puedes implementar el renderizado especulativo de ma
   document.head.appendChild(prerenderLink);
 </script>
 ```
+
+</Superseded>
+
+<Update lang="es" date="2026-10-12">
+
+`<link rel="prerender">` ya no prerenderiza: Chrome lo trata como un prefetch más liviano (NoState Prefetch) y otros navegadores lo ignoran. La forma actual es la **Speculation Rules API**, disponible en los navegadores basados en Chromium. Las reglas se declaran en JSON y el navegador decide cuándo dispararlas: con `"eagerness": "moderate"`, la página se prerenderiza cuando el usuario deja el cursor sobre el enlace o empieza a pulsarlo, que es justo el ejemplo del principio de este post.
+
+```html
+<script type="speculationrules">
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/next-page" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
+</script>
+```
+
+Los navegadores sin soporte ignoran el script, así que se puede agregar sin romper nada.
+
+</Update>
 
 **Caso de uso**: Ideal para páginas que es muy probable que el usuario visite a continuación, como una página de pago en un sitio de un eCommerce.
 
