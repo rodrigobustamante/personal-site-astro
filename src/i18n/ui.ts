@@ -20,6 +20,11 @@ export const ui = {
 
     // work
     'nav.work': 'Work',
+    'header.nav': 'Main',
+    'header.menu': 'Menu',
+    'header.theme': 'Dark theme',
+    'header.lang': ': leer en español',
+    'a11y.skip': 'Skip to content',
     'work.index.title': 'Selected work',
     'work.index.intro':
       'Case studies of systems I have architected and shipped: the problem, the architecture, and what changed.',
@@ -33,7 +38,7 @@ export const ui = {
 
     // <meta name="description"> of the home page
     'meta.home.description':
-      'Rodrigo Bustamante — Staff Frontend Engineer & Design Systems Architect. 9 years building scalable frontend systems and design systems for global brands.',
+      'Rodrigo Bustamante — Senior Software Engineer, Design Engineer & Senior FrontEnd Engineer. 9 years building scalable frontend systems and design systems for global brands.',
     'hero.remote': 'Remote-friendly',
     'hero.cta.contact': 'Get in touch',
     'hero.cta.cv': 'Download CV',
@@ -160,11 +165,15 @@ export const ui = {
 
     // contact
     'contact.title': "Let's talk.",
-    'contact.sub':
-      'Open to Staff Frontend Engineer and Design System Lead roles. The fastest way to reach me is email.',
+    'contact.sub': 'Open to Senior Frontend Engineer roles. The fastest way to reach me is email.',
+
+    // blog
+    'blog.description': 'Articles on web performance, frontend engineering, and software craftsmanship.',
+    'blog.readingTime': 'min read',
+    'blog.category': 'Category',
 
     // footer
-    'footer.credit': 'Designed & built by Rodrigo Bustamante · Madrid · 2026',
+    'footer.credit': 'Designed & built by Rodrigo Bustamante · Madrid',
     'footer.more': 'More',
     'footer.system': 'Design system',
     'footer.uses': 'How it’s built',
@@ -193,6 +202,11 @@ export const ui = {
 
     // work
     'nav.work': 'Trabajos',
+    'header.nav': 'Principal',
+    'header.menu': 'Menú',
+    'header.theme': 'Tema oscuro',
+    'header.lang': ': read in English',
+    'a11y.skip': 'Saltar al contenido',
     'work.index.title': 'Trabajos seleccionados',
     'work.index.intro':
       'Casos de estudio de sistemas que he diseñado y entregado: el problema, la arquitectura y lo que cambió.',
@@ -206,7 +220,7 @@ export const ui = {
 
     // <meta name="description"> de la home
     'meta.home.description':
-      'Rodrigo Bustamante — Staff Frontend Engineer y Design Systems Architect. 9 años construyendo sistemas frontend y design systems escalables para marcas globales.',
+      'Rodrigo Bustamante — Senior Software Engineer, Design Engineer y Senior FrontEnd Engineer. 9 años construyendo sistemas frontend y design systems escalables para marcas globales.',
     'hero.remote': 'Disponible en remoto',
     'hero.cta.contact': 'Hablemos',
     'hero.cta.cv': 'Descargar CV',
@@ -334,11 +348,15 @@ export const ui = {
 
     // contact
     'contact.title': 'Hablemos.',
-    'contact.sub':
-      'Abierto a roles de Staff Frontend Engineer y Design System Lead. La forma más rápida de contactarme es por email.',
+    'contact.sub': 'Abierto a roles de Senior Frontend Engineer. La forma más rápida de contactarme es por email.',
+
+    // blog
+    'blog.description': 'Artículos sobre rendimiento web, ingeniería frontend y oficio de software.',
+    'blog.readingTime': 'min de lectura',
+    'blog.category': 'Categoría',
 
     // footer
-    'footer.credit': 'Diseñado y construido por Rodrigo Bustamante · Madrid · 2026',
+    'footer.credit': 'Diseñado y construido por Rodrigo Bustamante · Madrid',
     'footer.more': 'Más',
     'footer.system': 'Sistema de diseño',
     'footer.uses': 'Cómo está hecho',

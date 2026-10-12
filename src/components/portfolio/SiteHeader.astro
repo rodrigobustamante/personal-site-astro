@@ -45,18 +45,34 @@ const nav =
         ●
       </span>
     </a>
-    <nav class="header-nav" aria-label="Primary">
+    <nav class="header-nav" aria-label={t('header.nav')}>
       {nav.map((item) => (
         <a href={item.href}>{item.label}</a>
       ))}
     </nav>
     <div class="header-tools">
-      <button class="tool-btn lang-btn" id="lang-toggle" type="button" aria-label="Toggle language">
+      {/* A real link so it works without JS and crawlers see the translation.
+          Full reload and no prefetch: the click sets the `lang` cookie the edge
+          redirect reads, and a prefetch sent with the old cookie would be
+          redirected back to this page. */}
+      <a
+        class="tool-btn lang-btn"
+        id="lang-toggle"
+        href={altUrl}
+        hreflang={otherLang}
+        data-astro-reload
+        data-astro-prefetch="false"
+      >
         <span class="on">{lang === 'es' ? 'ES' : 'EN'}</span>
-        <span class="slash">/</span>
+        <span class="slash" aria-hidden="true">
+          /
+        </span>
         <span class="off">{lang === 'es' ? 'EN' : 'ES'}</span>
-      </button>
-      <button class="tool-btn" id="theme-toggle" type="button" aria-label="Toggle theme">
+        <span class="sr-only" lang={otherLang}>
+          {t('header.lang')}
+        </span>
+      </a>
+      <button class="tool-btn" id="theme-toggle" type="button" aria-label={t('header.theme')} aria-pressed="false">
         <svg
           id="icon-sun"
           width="16"
@@ -87,8 +103,29 @@ const nav =
           <path d="M21 12.8A8.5 8.5 0 1111.2 3a6.8 6.8 0 009.8 9.8z"></path>
         </svg>
       </button>
+      <button class="tool-btn menu-btn" type="button" popovertarget="mobile-nav" aria-label={t('header.menu')}>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+      </button>
     </div>
   </div>
+  {/* Below 900px the inline nav is hidden; the same links open from the menu
+      button as a popover (top layer, light dismiss, no JS needed). */}
+  <nav class="mobile-nav" id="mobile-nav" popover aria-label={t('header.nav')}>
+    {nav.map((item) => (
+      <a href={item.href}>{item.label}</a>
+    ))}
+  </nav>
 </header>
 
 <script>
@@ -119,28 +156,35 @@ const nav =
 
     const iconSun = document.getElementById('icon-sun') as HTMLElement | null;
     const iconMoon = document.getElementById('icon-moon') as HTMLElement | null;
+    const themeToggle = document.getElementById('theme-toggle');
     const applyThemeIcons = (theme: string) => {
       if (iconSun) iconSun.style.display = theme === 'dark' ? 'block' : 'none';
       if (iconMoon) iconMoon.style.display = theme === 'dark' ? 'none' : 'block';
+      themeToggle?.setAttribute('aria-pressed', String(theme === 'dark'));
     };
     applyThemeIcons(document.documentElement.dataset.theme || 'light');
 
-    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    themeToggle?.addEventListener('click', () => {
       const next = (document.documentElement.dataset.theme || 'light') === 'light' ? 'dark' : 'light';
       localStorage.setItem('theme', next);
       applyTheme();
       applyThemeIcons(next);
     });
 
-    document.getElementById('lang-toggle')?.addEventListener('click', () => {
+    const langToggle = document.getElementById('lang-toggle') as HTMLAnchorElement | null;
+    langToggle?.addEventListener('click', () => {
       const next = (document.documentElement.dataset.lang || 'en') === 'en' ? 'es' : 'en';
       localStorage.setItem('lang', next);
       // The edge redirect (src/edge/language-redirect.ts) honours this cookie
       // over Accept-Language, so an explicit choice sticks across visits.
       document.cookie = `lang=${next};path=/;max-age=31536000;samesite=lax`;
-      const altUrl = header.dataset.altUrl;
-      if (altUrl) window.location.href = altUrl + window.location.hash;
+      // Keep the section the visitor is reading.
+      langToggle.href = (header.dataset.altUrl ?? langToggle.href) + window.location.hash;
     });
+
+    // Section links on the home page don't navigate, so close the menu by hand.
+    const mobileNav = document.getElementById('mobile-nav');
+    mobileNav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => mobileNav.hidePopover?.()));
   }
 
   initHeader();

@@ -1,7 +1,6 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
-import merge from 'lodash.merge';
 import type { ImageMetadata } from 'astro';
 import BlogLayout from '~/layouts/BlogLayout.astro';
 import SinglePost from '~/components/blog/SinglePost.astro';
@@ -10,7 +9,6 @@ import ToBlogLink from '~/components/blog/ToBlogLink.astro';
 import { getCanonical, getPermalink } from '~/utils/permalinks';
 import { getStaticPathsBlogPost, blogPostRobots } from '~/utils/blog';
 import { findImage } from '~/utils/images';
-import type { MetaData } from '~/types';
 
 export const prerender = true;
 
@@ -25,32 +23,15 @@ const lang: 'en' | 'es' = post.slug.startsWith('es/') ? 'es' : 'en';
 
 const url = getCanonical(getPermalink(post.permalink, 'post'));
 const image = (await findImage(post.image)) as ImageMetadata | string | undefined;
-
-const metadata = merge(
-  {
-    title: post.title,
-    description: post.excerpt,
-    robots: {
-      index: blogPostRobots?.index,
-      follow: blogPostRobots?.follow,
-    },
-    openGraph: {
-      type: 'article',
-      ...(image
-        ? { images: [{ url: image, width: (image as ImageMetadata)?.width, height: (image as ImageMetadata)?.height }] }
-        : {}),
-    },
-  },
-  { ...(post?.metadata ? { ...post.metadata, canonical: post.metadata?.canonical || url } : {}) }
-) as MetaData;
 ---
 
 <BlogLayout
-  title={metadata.title}
-  description={metadata.description as string | undefined}
+  title={post.title}
+  description={post.excerpt}
   translationUrl={post.translation}
   lang={lang}
   ogImage={`/og/post/${post.slug}.png`}
+  noindex={!blogPostRobots.index}
 >
   <ToBlogLink lang={lang} />
   <SinglePost post={{ ...post, image: image }} url={url}>

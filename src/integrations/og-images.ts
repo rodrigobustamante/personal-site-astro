@@ -10,10 +10,10 @@
  * Cloudflare adapter, prerendered routes run inside workerd instead.
  */
 import type { AstroIntegration } from 'astro';
-import { readdir, readFile, mkdir, writeFile } from 'node:fs/promises';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { renderOgCard, type OgCard } from '../utils/og';
+import { clientDirOf, walkHtml } from './html-files';
 
 const SITE_NAME = 'Rodrigo Bustamante';
 
@@ -22,8 +22,7 @@ export default function ogImages(): AstroIntegration {
     name: 'og-images',
     hooks: {
       'astro:build:done': async ({ dir, logger }) => {
-        const outDir = fileURLToPath(dir);
-        const clientDir = (await exists(path.join(outDir, 'client'))) ? path.join(outDir, 'client') : outDir;
+        const clientDir = await clientDirOf(dir);
 
         const cards = new Map<string, OgCard>();
         for (const file of await walkHtml(clientDir)) {
@@ -63,7 +62,7 @@ export function cardFromHtml(html: string): { key: string; card: OgCard } | unde
   const es = lang === 'es';
 
   if (key.startsWith('home/')) {
-    // "Rodrigo Bustamante — Staff Frontend Engineer · Design Systems Architect"
+    // "Rodrigo Bustamante — Senior Software Engineer · Design Engineer & Senior FrontEnd Engineer"
     const [name, ...rest] = rawTitle.split(' — ');
     return {
       key,
@@ -117,22 +116,3 @@ function decode(s: string) {
 }
 
 // ---- fs helpers -----------------------------------------------------------
-
-async function exists(p: string) {
-  try {
-    await readdir(p);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-async function walkHtml(dir: string): Promise<string[]> {
-  const out: string[] = [];
-  for (const entry of await readdir(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...(await walkHtml(full)));
-    else if (entry.name.endsWith('.html')) out.push(full);
-  }
-  return out;
-}

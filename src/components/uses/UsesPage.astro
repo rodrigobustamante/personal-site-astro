@@ -1,6 +1,7 @@
 ---
 import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
 import SiteHeader from '~/components/portfolio/SiteHeader.astro';
+import SiteFooter from '~/components/portfolio/SiteFooter.astro';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 
@@ -163,7 +164,7 @@ const c = COPY[lang];
 >
   <SiteHeader lang={lang} variant="portfolio" />
 
-  <main class="uses">
+  <main id="main" class="uses">
     <header>
       <span class="uses-tag">{c.tag}</span>
       <h1 class="uses-title">{c.title}</h1>
@@ -191,6 +192,7 @@ const c = COPY[lang];
       </span>
     </a>
   </main>
+  <SiteFooter lang={lang} />
 </PortfolioLayout>
 
 <style>

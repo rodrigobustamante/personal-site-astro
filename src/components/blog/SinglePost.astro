@@ -3,7 +3,8 @@ import Image from '~/components/common/Image.astro';
 import PostTags from '~/components/blog/Tags.astro';
 
 import { getPermalink } from '~/utils/permalinks';
-import { getFormattedDate } from '~/utils/utils';
+import { getDatetime, getFormattedDate, getPostLang } from '~/utils/utils';
+import { useTranslations } from '~/i18n/ui';
 
 import type { Post } from '~/types';
 
@@ -14,12 +15,14 @@ export interface Props {
 
 const { post } = Astro.props;
 const { Content } = post;
+const lang = getPostLang(post.slug);
+const { t } = useTranslations(lang);
 ---
 
 <div class="blog-wrap">
   <header class="post-header reveal">
     <div class="post-header-meta">
-      <time datetime={String(post.publishDate)}>{getFormattedDate(post.publishDate)}</time>
+      <time datetime={getDatetime(post.publishDate)}>{getFormattedDate(post.publishDate, lang)}</time>
       {post.category && (
         <>
           <span class="post-header-dot" />
@@ -31,7 +34,9 @@ const { Content } = post;
       {post.readingTime && (
         <>
           <span class="post-header-dot" />
-          <span>{post.readingTime} min read</span>
+          <span>
+            {post.readingTime} {t('blog.readingTime')}
+          </span>
         </>
       )}
     </div>
@@ -45,7 +50,7 @@ const { Content } = post;
       class="post-hero-img"
       widths={[480, 720, 860, 1290, 1720]}
       sizes="(max-width: 860px) 100vw, 860px"
-      alt={post.excerpt || post.title}
+      alt=""
       width={860}
       height={484}
       loading="eager"

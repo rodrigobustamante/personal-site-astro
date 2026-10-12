@@ -5,7 +5,7 @@ import { getHomePermalink } from '~/utils/permalinks';
 export const prerender = true;
 ---
 
-<BlogLayout title="404 — Page Not Found">
+<BlogLayout title="404 — Page Not Found" noindex>
   <div class="not-found">
     <div class="not-found-inner">
       <div class="not-found-num" aria-hidden="true">
@@ -13,7 +13,7 @@ export const prerender = true;
       </div>
       <h2>Page not found</h2>
       <p>The page you're looking for doesn't exist or has been moved.</p>
-      <a href={getHomePermalink()} class="btn">
+      <a href={getHomePermalink()} class="btn btn-ghost">
         Back to homepage
       </a>
     </div>

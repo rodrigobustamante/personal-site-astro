@@ -18,6 +18,14 @@ export interface SiteConfig {
   analyticsToken: string;
 }
 
+/** Profiles linked from the footer and the Person JSON-LD. */
+export const SOCIALS = {
+  linkedin: 'https://www.linkedin.com/in/rod-bustamante/',
+  github: 'https://github.com/rodrigobustamante',
+  x: 'https://x.com/uhNxZ',
+  email: 'rbustamantejelvez@gmail.com',
+};
+
 export interface RobotsConfig {
   index: boolean;
   follow: boolean;
@@ -49,16 +57,6 @@ export const SITE: SiteConfig = {
 /** Only `description` is read today (RSS feed). Kept in sync with BlogLayout's default description. */
 export const METADATA = {
   description: 'Articles on web performance, frontend engineering, and software craftsmanship.',
-};
-
-export const I18N = {
-  language: 'en',
-  dateFormatter: new Intl.DateTimeFormat('en', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  }),
 };
 
 export const APP_BLOG: AppBlogConfig = {

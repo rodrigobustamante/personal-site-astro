@@ -1,6 +1,8 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 import { blogCategoryRobots, getStaticPathsBlogCategory } from '~/utils/blog';
+import { getPostLang } from '~/utils/utils';
+import { useTranslations } from '~/i18n/ui';
 
 import BlogLayout from '~/layouts/BlogLayout.astro';
 import BlogList from '~/components/blog/List.astro';
@@ -19,21 +21,18 @@ const { page, category } = Astro.props as Props;
 
 const currentPage = page.currentPage ?? 1;
 
-const metadata = {
-  title: `Category '${category}' ${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,
-  robots: {
-    index: blogCategoryRobots?.index,
-    follow: blogCategoryRobots?.follow,
-  },
-};
+// Categories are per language (tutorials / tutoriales): take it from the posts.
+const lang = getPostLang(page.data[0]?.slug ?? '');
+const { t } = useTranslations(lang);
+const title = `${t('blog.category')} '${category}'${currentPage > 1 ? ` — Page ${currentPage}` : ''}`;
 ---
 
-<BlogLayout title={metadata.title}>
+<BlogLayout title={title} lang={lang} noindex={!blogCategoryRobots.index}>
   <div class="blog-wrap">
     <Headline>
       <span style="text-transform: capitalize">{category.replaceAll('-', ' ')}</span>
     </Headline>
     <BlogList posts={page.data} />
-    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} lang={lang} />
   </div>
 </BlogLayout>

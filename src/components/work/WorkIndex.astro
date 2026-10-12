@@ -1,6 +1,7 @@
 ---
 import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
 import SiteHeader from '~/components/portfolio/SiteHeader.astro';
+import SiteFooter from '~/components/portfolio/SiteFooter.astro';
 import { useTranslations, type Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 import { getWork, workSlug } from '~/utils/work';
@@ -23,7 +24,7 @@ const entries = await getWork(lang);
 >
   <SiteHeader lang={lang} variant="portfolio" />
 
-  <main>
+  <main id="main">
     <div class="cs-wrap">
       <header class="cs-header">
         <span class="cs-tag">{t('nav.work')}</span>
@@ -55,6 +56,7 @@ const entries = await getWork(lang);
       </ul>
     </div>
   </main>
+  <SiteFooter lang={lang} />
 </PortfolioLayout>
 
 <style is:global>
@@ -273,7 +275,7 @@ const entries = await getWork(lang);
   .work-card-cta {
     display: inline-block;
     margin-top: 18px;
-    color: var(--accent);
+    color: var(--accent-ink);
     font-weight: 500;
   }
   @media (prefers-reduced-motion: no-preference) {

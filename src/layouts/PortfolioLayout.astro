@@ -1,9 +1,10 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { SITE } from '~/utils/config';
+import { SITE, SOCIALS } from '~/utils/config';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 import { PALETTES } from '~/utils/palettes';
+import { useTranslations } from '~/i18n/ui';
 
 interface Props {
   title?: string;
@@ -18,16 +19,26 @@ interface Props {
    * to their preferred language at the edge (src/edge/language-redirect.ts).
    */
   hasLocalizedSibling?: boolean;
+  /**
+   * Path of this page's translation when it lives at a different slug (blog
+   * posts and listings). Ignored when `hasLocalizedSibling` is set.
+   */
+  translationUrl?: string;
+  /** Emits `robots: noindex, follow` and drops the hreflang alternates. */
+  noindex?: boolean;
 }
 const {
-  title = 'Rodrigo Bustamante — Staff Frontend Engineer · Design Systems Architect',
-  description = 'Rodrigo Bustamante — Staff Frontend Engineer & Design Systems Architect. 9 years building scalable frontend systems and design systems for global brands.',
+  title = 'Rodrigo Bustamante — Senior Software Engineer · Design Engineer & Senior FrontEnd Engineer',
+  description = 'Rodrigo Bustamante — Senior Software Engineer, Design Engineer & Senior FrontEnd Engineer. 9 years building scalable frontend systems and design systems for global brands.',
   lang = 'en',
   ogImage = `/og/home/${Astro.props.lang ?? 'en'}.png`,
   canonicalURL = Astro.url.href,
   hasLocalizedSibling = false,
+  translationUrl,
+  noindex = false,
 } = Astro.props;
 
+const { t } = useTranslations(lang);
 const origin = Astro.site ?? Astro.url;
 // Cloudflare Web Analytics: cookie-less RUM. Only rendered when a manual token
 // is set (see SITE.analyticsToken); the beacon tracks ClientRouter navigations
@@ -35,21 +46,26 @@ const origin = Astro.site ?? Astro.url;
 const beaconConfig = SITE.analyticsToken ? JSON.stringify({ token: SITE.analyticsToken, spa: true }) : undefined;
 const ogImageAbs = new URL(ogImage, origin).href;
 
-// hreflang alternates. Portfolio pages have a real sibling per language;
-// blog pages point both alternates at themselves (their translation is a
-// different slug, handled by the header's translationUrl).
+// hreflang alternates. Portfolio pages have a sibling at the localized path;
+// blog pages name their translation, which lives at a different slug. Pages
+// without a translation get no alternates.
 const alternates = hasLocalizedSibling
   ? {
       en: new URL(localizedPath(Astro.url.pathname, 'en'), origin).href,
       es: new URL(localizedPath(Astro.url.pathname, 'es'), origin).href,
     }
-  : { en: canonicalURL, es: canonicalURL };
+  : translationUrl && !noindex
+    ? ({ [lang]: canonicalURL, [lang === 'es' ? 'en' : 'es']: new URL(translationUrl, origin).href } as Record<
+        Lang,
+        string
+      >)
+    : undefined;
 
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Rodrigo Bustamante',
-  jobTitle: 'Staff Frontend Engineer · Design Systems Architect',
+  jobTitle: 'Senior Software Engineer · Design Engineer & Senior FrontEnd Engineer',
   url: 'https://rodrigobustamante.cl',
   image: ogImageAbs,
   address: {
@@ -57,7 +73,7 @@ const jsonLd = JSON.stringify({
     addressLocality: 'Madrid',
     addressCountry: 'ES',
   },
-  sameAs: ['https://www.linkedin.com/in/rod-bustamante/', 'https://github.com/rodrigobustamante'],
+  sameAs: [SOCIALS.linkedin, SOCIALS.github, SOCIALS.x],
 });
 ---
 
@@ -68,10 +84,14 @@ const jsonLd = JSON.stringify({
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" hreflang="en" href={alternates.en} />
-    <link rel="alternate" hreflang="es" href={alternates.es} />
-    <link rel="alternate" hreflang="x-default" href={alternates.en} />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonicalURL} />}
+    {alternates && (
+      <>
+        <link rel="alternate" hreflang="en" href={alternates.en} />
+        <link rel="alternate" hreflang="es" href={alternates.es} />
+        <link rel="alternate" hreflang="x-default" href={alternates.en} />
+      </>
+    )}
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
@@ -173,8 +193,8 @@ const jsonLd = JSON.stringify({
         --faint: oklch(0.6 0.015 60);
         --line: oklch(0.88 0.014 72);
         --line-soft: oklch(0.92 0.012 75);
-        --accent: oklch(0.585 0.125 42);
-        --accent-soft: color-mix(in oklab, oklch(0.585 0.125 42) 12%, transparent);
+        --accent: oklch(0.565 0.125 42);
+        --accent-soft: color-mix(in oklab, oklch(0.565 0.125 42) 12%, transparent);
         --accent-ink: oklch(0.46 0.12 42);
         --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
         --sans: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
@@ -206,8 +226,12 @@ const jsonLd = JSON.stringify({
         padding: 0;
       }
       html {
-        scroll-behavior: smooth;
         -webkit-text-size-adjust: 100%;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
       }
       body {
         background: var(--paper);
@@ -235,6 +259,35 @@ const jsonLd = JSON.stringify({
       img {
         display: block;
         max-width: 100%;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent-ink);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      .skip-link {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        z-index: 50;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: var(--ink);
+        color: var(--paper);
+        font-size: 14px;
+        transform: translateY(-200%);
+      }
+      .skip-link:focus-visible {
+        transform: none;
       }
       ::selection {
         background: var(--accent-soft);
@@ -317,9 +370,57 @@ const jsonLd = JSON.stringify({
       .header-nav a:hover::after {
         right: 0;
       }
-      @media (max-width: 760px) {
+      .header-tools .menu-btn {
+        display: none;
+      }
+      .mobile-nav {
+        inset: 70px var(--pad) auto auto;
+        margin: 0;
+        min-width: 200px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--card);
+        color: var(--ink);
+        box-shadow: 0 18px 40px -20px color-mix(in oklab, var(--ink) 40%, transparent);
+      }
+      .mobile-nav:popover-open {
+        display: flex;
+        flex-direction: column;
+      }
+      .mobile-nav a {
+        padding: 12px 14px;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+      .mobile-nav a:hover {
+        background: var(--paper-2);
+      }
+      @media (max-width: 900px) {
         .header-nav {
           display: none;
+        }
+        .header-tools .menu-btn {
+          display: inline-flex;
+        }
+      }
+      /* Phones: name, language, theme and menu share one row. */
+      @media (max-width: 480px) {
+        .header-inner {
+          gap: 12px;
+        }
+        .wordmark-name {
+          font-size: 18px;
+          white-space: nowrap;
+        }
+        .wordmark-dot {
+          display: none;
+        }
+        .header-tools {
+          gap: 6px;
+        }
+        .lang-btn {
+          padding: 0 10px;
         }
       }
       .header-tools {
@@ -357,59 +458,6 @@ const jsonLd = JSON.stringify({
         margin: 0 1px;
       }
 
-      /* ——— Hero ——— */
-      .hero {
-        padding: clamp(56px, 11vh, 130px) 0 clamp(40px, 7vh, 80px);
-      }
-      .hero-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-        gap: clamp(32px, 5vw, 72px);
-        align-items: center;
-      }
-      .hero-portrait {
-        display: block;
-        width: 100%;
-        height: auto;
-        aspect-ratio: 4 / 5;
-        object-fit: cover;
-        border: 1px solid var(--line);
-        border-radius: 7px;
-      }
-      @media (max-width: 860px) {
-        .hero-grid {
-          grid-template-columns: 1fr;
-        }
-        .hero-right {
-          order: -1;
-          max-width: 320px;
-        }
-      }
-      .hero-avail {
-        display: inline-flex;
-        align-items: center;
-        gap: 9px;
-        font-size: 13px;
-        letter-spacing: 0.02em;
-        color: var(--ink-soft);
-        margin-bottom: 30px;
-      }
-      .hero-avail .pip {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: oklch(0.7 0.15 150);
-        box-shadow: 0 0 0 4px color-mix(in oklab, oklch(0.7 0.15 150) 22%, transparent);
-        flex-shrink: 0;
-      }
-      .hero-role {
-        font-size: 15px;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: var(--accent-ink);
-        font-weight: 600;
-        margin-bottom: 18px;
-      }
       .hero-name {
         font-family: var(--serif);
         font-weight: 400;
@@ -417,73 +465,6 @@ const jsonLd = JSON.stringify({
         line-height: 0.96;
         letter-spacing: -0.025em;
         margin-bottom: 30px;
-      }
-      .hero-pitch {
-        font-family: var(--serif);
-        font-size: clamp(20px, 2.6vw, 28px);
-        line-height: 1.42;
-        color: var(--ink-soft);
-        max-width: 24ch;
-        font-weight: 300;
-        text-wrap: pretty;
-        margin-bottom: 34px;
-      }
-      .hero-pitch em {
-        color: var(--ink);
-        font-style: italic;
-      }
-      .hero-stats {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: 8px 18px;
-        margin-bottom: 30px;
-        font-size: 14px;
-        color: var(--muted);
-      }
-      .hero-stat {
-        display: inline-flex;
-        align-items: baseline;
-        gap: 7px;
-      }
-      .hero-stat:not(:last-child)::after {
-        content: '';
-        width: 3px;
-        height: 3px;
-        border-radius: 50%;
-        background: var(--faint);
-        margin-left: 18px;
-        align-self: center;
-      }
-      .hero-stat b {
-        font-family: var(--serif);
-        font-weight: 500;
-        font-size: 19px;
-        letter-spacing: -0.01em;
-        color: var(--ink);
-      }
-      .hero-stat b[data-count] {
-        font-variant-numeric: tabular-nums;
-      }
-      .hero-meta {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        flex-wrap: wrap;
-        font-size: 14px;
-        color: var(--muted);
-        margin-bottom: 36px;
-      }
-      .hero-meta .dot {
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background: var(--faint);
-      }
-      .hero-cta {
-        display: flex;
-        gap: 14px;
-        flex-wrap: wrap;
       }
 
       /* ——— Buttons ——— */
@@ -505,8 +486,10 @@ const jsonLd = JSON.stringify({
         height: 17px;
         flex-shrink: 0;
       }
-      .btn:hover {
-        transform: translateY(-1px);
+      @media (prefers-reduced-motion: no-preference) {
+        .btn:hover {
+          transform: translateY(-1px);
+        }
       }
       .btn-primary {
         background: var(--accent);
@@ -538,7 +521,7 @@ const jsonLd = JSON.stringify({
         font-family: var(--serif);
         font-style: italic;
         font-size: 16px;
-        color: var(--accent);
+        color: var(--accent-ink);
         margin-bottom: 10px;
         display: inline-block;
       }
@@ -557,80 +540,8 @@ const jsonLd = JSON.stringify({
         text-wrap: pretty;
       }
 
-      /* ——— Experience timeline ——— */
-      .timeline {
-        --tl-aside: 132px;
-        --tl-gap: clamp(20px, 4vw, 52px);
-        --tl-pad: clamp(28px, 4vh, 44px);
-        /* x of the rail, measured from each entry's left edge */
-        --tl-x: calc(var(--tl-aside) + var(--tl-gap) / 2);
-        /* y of each entry's dot, centred on the first line of .entry-years */
-        --tl-dot-y: calc(var(--tl-pad) + 12px);
-        --tl-dot: var(--accent);
-        position: relative;
-      }
-      /* Rail: a faint track (::before) and an accent fill (::after) that is
-         drawn by scroll where scroll-driven animations are supported. */
-      .timeline::before,
-      .timeline::after {
-        content: '';
-        position: absolute;
-        top: var(--tl-dot-y);
-        bottom: 0;
-        left: var(--tl-x);
-        width: 1px;
-        background: var(--line-soft);
-        pointer-events: none;
-      }
-      .timeline::after {
-        display: none;
-        background: var(--accent);
-        transform-origin: top;
-      }
-      .entry {
-        position: relative;
-        display: grid;
-        grid-template-columns: var(--tl-aside) 1fr;
-        gap: var(--tl-gap);
-        padding: var(--tl-pad) 0;
-      }
-      .entry::before {
-        content: '';
-        position: absolute;
-        top: var(--tl-dot-y);
-        left: calc(var(--tl-x) - 4px);
-        width: 9px;
-        height: 9px;
-        margin-top: -4px;
-        border-radius: 50%;
-        background: var(--tl-dot);
-        box-shadow: 0 0 0 4px var(--paper);
-      }
-      .entry + .entry {
-        border-top: 1px solid var(--line-soft);
-      }
-      .entry-years {
-        font-family: var(--serif);
-        font-size: 19px;
-        color: var(--ink);
-        letter-spacing: -0.01em;
-      }
-      .entry-sector {
-        font-size: 12px;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-top: 6px;
-      }
-      .entry-loc {
-        font-size: 13px;
-        color: var(--muted);
-        margin-top: 14px;
-        line-height: 1.4;
-      }
-      .entry-main {
-        min-width: 0;
-      }
+      /* ——— Pieces the home shares with the /system specimens ———
+         The rest of the home's CSS lives in HomePage.astro. */
       .entry-company {
         font-family: var(--serif);
         font-size: clamp(24px, 3.2vw, 32px);
@@ -654,57 +565,6 @@ const jsonLd = JSON.stringify({
         display: inline-block;
         font-size: 12px;
       }
-      .role {
-        margin-top: 26px;
-      }
-      .role-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        gap: 16px;
-        flex-wrap: wrap;
-        margin-bottom: 12px;
-      }
-      .role-title {
-        font-size: 17px;
-        font-weight: 600;
-        color: var(--ink);
-      }
-      .role-period {
-        font-size: 13px;
-        color: var(--muted);
-        white-space: nowrap;
-        font-variant-numeric: tabular-nums;
-      }
-      .role-bullets {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .role-bullets li {
-        position: relative;
-        padding-left: 22px;
-        font-size: 15.5px;
-        color: var(--ink-soft);
-        line-height: 1.55;
-        text-wrap: pretty;
-      }
-      .role-bullets li::before {
-        content: '';
-        position: absolute;
-        left: 2px;
-        top: 11px;
-        width: 7px;
-        height: 1px;
-        background: var(--accent);
-      }
-      .entry-stack {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 22px;
-      }
       .chip {
         font-size: 12.5px;
         color: var(--ink-soft);
@@ -714,267 +574,6 @@ const jsonLd = JSON.stringify({
         border-radius: 6px;
         background: var(--card);
       }
-      @media (max-width: 680px) {
-        /* Single column: the rail moves to a gutter on the left. */
-        .timeline {
-          --tl-x: -20px;
-          padding-left: 28px;
-        }
-        .timeline::before,
-        .timeline::after {
-          left: calc(28px + var(--tl-x));
-        }
-        .entry {
-          grid-template-columns: 1fr;
-          gap: 14px;
-        }
-        .entry-aside {
-          display: flex;
-          align-items: baseline;
-          gap: 14px;
-          flex-wrap: wrap;
-        }
-        .entry-loc {
-          margin-top: 0;
-        }
-        .role-head {
-          gap: 4px;
-        }
-      }
-
-      /* ——— Skills ——— */
-      .skills-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2px;
-        background: var(--line-soft);
-        border: 1px solid var(--line-soft);
-        border-radius: 14px;
-        overflow: hidden;
-      }
-      .skill-col {
-        background: var(--paper);
-        padding: 26px 24px;
-      }
-      .skill-label {
-        font-family: var(--serif);
-        font-size: 18px;
-        color: var(--ink);
-        margin-bottom: 16px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid var(--line-soft);
-      }
-      .skill-items {
-        display: flex;
-        flex-direction: column;
-        gap: 9px;
-      }
-      .skill-items span {
-        font-size: 15px;
-        color: var(--ink-soft);
-      }
-
-      /* ——— Education ——— */
-      .edu-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: clamp(28px, 5vw, 60px);
-      }
-      @media (max-width: 720px) {
-        .edu-layout {
-          grid-template-columns: 1fr;
-          gap: 40px;
-        }
-      }
-      .edu-school {
-        font-family: var(--serif);
-        font-size: 24px;
-        font-weight: 500;
-        letter-spacing: -0.01em;
-      }
-      .edu-degree {
-        font-size: 16px;
-        color: var(--ink-soft);
-        margin-top: 4px;
-      }
-      .edu-line {
-        display: flex;
-        gap: 12px;
-        font-size: 13px;
-        color: var(--muted);
-        margin-top: 8px;
-      }
-      .edu-notes {
-        font-size: 15px;
-        color: var(--ink-soft);
-        margin-top: 14px;
-        line-height: 1.55;
-        font-style: italic;
-        font-family: var(--serif);
-      }
-      .sub-h {
-        font-size: 12px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-bottom: 20px;
-      }
-      .facts-list {
-        display: flex;
-        flex-direction: column;
-      }
-      .facts-list .row {
-        display: grid;
-        grid-template-columns: 130px 1fr;
-        gap: 18px;
-        padding: 16px 0;
-        border-top: 1px solid var(--line-soft);
-      }
-      .facts-list .row:first-child {
-        border-top: 0;
-        padding-top: 0;
-      }
-      .facts-list .k {
-        font-size: 14px;
-        color: var(--ink);
-        font-weight: 600;
-      }
-      .facts-list .v {
-        font-size: 15px;
-        color: var(--ink-soft);
-        line-height: 1.5;
-      }
-      @media (max-width: 460px) {
-        .facts-list .row {
-          grid-template-columns: 1fr;
-          gap: 4px;
-        }
-      }
-
-      /* ——— Writing ——— */
-      .posts {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2px;
-        background: var(--line-soft);
-        border: 1px solid var(--line-soft);
-        border-radius: 14px;
-        overflow: hidden;
-      }
-      @media (max-width: 680px) {
-        .posts {
-          grid-template-columns: 1fr;
-        }
-      }
-      .post {
-        background: var(--paper);
-        padding: 30px;
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        transition: background 0.2s;
-        min-height: 230px;
-      }
-      .post:hover {
-        background: var(--card);
-      }
-      .post-meta {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 12.5px;
-        color: var(--muted);
-      }
-      .post-cat {
-        color: var(--accent-ink);
-        font-weight: 600;
-      }
-      .post-meta .dot {
-        width: 3px;
-        height: 3px;
-        border-radius: 50%;
-        background: var(--faint);
-      }
-      .post-title {
-        font-family: var(--serif);
-        font-size: 23px;
-        font-weight: 500;
-        line-height: 1.22;
-        letter-spacing: -0.01em;
-        text-wrap: pretty;
-      }
-      .post-excerpt {
-        font-size: 15px;
-        color: var(--ink-soft);
-        line-height: 1.55;
-        text-wrap: pretty;
-      }
-      .post-foot {
-        margin-top: auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .post-tags {
-        display: flex;
-        gap: 7px;
-        flex-wrap: wrap;
-      }
-      .post-tags span {
-        font-size: 12px;
-        color: var(--muted);
-      }
-      .post-arrow {
-        color: var(--accent);
-        transition: transform 0.2s;
-      }
-      .post:hover .post-arrow {
-        transform: translate(3px, -3px);
-      }
-      .writing-more {
-        margin-top: 28px;
-      }
-      .more-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 15px;
-        color: var(--ink);
-        border-bottom: 1px solid var(--accent);
-        padding-bottom: 3px;
-        transition: gap 0.2s;
-      }
-      .more-link:hover {
-        gap: 13px;
-      }
-
-      /* ——— Contact ——— */
-      .contact-card {
-        text-align: center;
-        padding: clamp(20px, 4vh, 30px) 0;
-      }
-      .contact-title {
-        font-family: var(--serif);
-        font-weight: 400;
-        font-size: clamp(40px, 8vw, 80px);
-        line-height: 1;
-        letter-spacing: -0.025em;
-        margin-bottom: 22px;
-      }
-      .contact-sub {
-        font-size: 18px;
-        color: var(--muted);
-        max-width: 50ch;
-        margin: 0 auto 36px;
-        text-wrap: pretty;
-      }
-      .contact-links {
-        display: flex;
-        gap: 14px;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-
       /* ——— Footer ——— */
       .footer {
         border-top: 1px solid var(--line);
@@ -1024,79 +623,6 @@ const jsonLd = JSON.stringify({
         color: var(--accent-ink);
         border-bottom: 1px solid var(--accent);
         padding-bottom: 2px;
-      }
-
-      /* ——— Projects grid ——— */
-      .projects-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2px;
-        background: var(--line-soft);
-        border: 1px solid var(--line-soft);
-        border-radius: 14px;
-        overflow: hidden;
-      }
-      @media (max-width: 680px) {
-        .projects-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-      .project-card {
-        background: var(--paper);
-        padding: 30px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-      .project-head {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-      .project-name {
-        font-family: var(--serif);
-        font-size: 24px;
-        font-weight: 500;
-        letter-spacing: -0.01em;
-      }
-      .project-status {
-        font-size: 12px;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-      .project-desc {
-        font-size: 15px;
-        color: var(--ink-soft);
-        line-height: 1.6;
-        text-wrap: pretty;
-        flex: 1;
-      }
-      .project-stack {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .project-links {
-        display: flex;
-        gap: 14px;
-        margin-top: 4px;
-      }
-      .project-link {
-        font-size: 13.5px;
-        font-weight: 500;
-        color: var(--accent-ink);
-        border-bottom: 1px solid var(--accent);
-        padding-bottom: 2px;
-        transition: opacity 0.2s;
-      }
-      .project-link:hover {
-        opacity: 0.75;
-      }
-      .project-link .arrow {
-        margin-left: 3px;
       }
 
       /* ——— Scroll reveal ——— */
@@ -1206,51 +732,6 @@ const jsonLd = JSON.stringify({
           transform: translateY(12px);
         }
       }
-
-      /* ——— Timeline drawn by scroll ———
-         The rail's tip follows the middle of the viewport: the fill starts when
-         the timeline's top reaches 50vh and completes when its bottom does.
-         Each dot lights up as the tip passes it. Browsers without scroll-driven
-         animations keep the static rail with lit dots. */
-      @property --tl-dot {
-        syntax: '<color>';
-        inherits: true;
-        initial-value: transparent;
-      }
-      @supports (animation-timeline: view()) {
-        @media (prefers-reduced-motion: no-preference) {
-          .timeline::after {
-            display: block;
-            animation: tl-draw linear both;
-            animation-timeline: --timeline;
-            animation-range: cover 50vh cover calc(100% - 50vh);
-          }
-          .timeline {
-            view-timeline: --timeline;
-          }
-          .entry {
-            animation: tl-dot linear both;
-            animation-timeline: view();
-            animation-range: cover calc(50vh + var(--tl-dot-y) - 8px) cover calc(50vh + var(--tl-dot-y) + 8px);
-          }
-        }
-      }
-      @keyframes tl-draw {
-        from {
-          transform: scaleY(0);
-        }
-        to {
-          transform: scaleY(1);
-        }
-      }
-      @keyframes tl-dot {
-        from {
-          --tl-dot: var(--line);
-        }
-        to {
-          --tl-dot: var(--accent);
-        }
-      }
     </style>
     <!-- Anti-FOUC: set theme + lang before first paint -->
     <script is:inline define:vars={{ PALETTES }}>
@@ -1292,6 +773,9 @@ const jsonLd = JSON.stringify({
     </script>
   </head>
   <body>
+    <a class="skip-link" href="#main">
+      {t('a11y.skip')}
+    </a>
     <slot />
     <script>
       // Scroll reveal shared by every page using this layout. Re-runs after

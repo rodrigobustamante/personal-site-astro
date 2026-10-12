@@ -1,8 +1,12 @@
 ---
 import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
 import SiteHeader from '~/components/portfolio/SiteHeader.astro';
+import SiteFooter from '~/components/portfolio/SiteFooter.astro';
 import { useTranslations, type Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
+import { fetchPosts } from '~/utils/blog';
+import { getPermalink } from '~/utils/permalinks';
+import { getDatetime, getFormattedDate, getPostLang } from '~/utils/utils';
 
 interface Props {
   lang: Lang;
@@ -10,10 +14,12 @@ interface Props {
 
 const { lang } = Astro.props;
 const { t, tl } = useTranslations(lang);
+// The two latest posts in this language.
+const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === lang).slice(0, 2);
 ---
 
 <PortfolioLayout
-  title="Rodrigo Bustamante — Staff Frontend Engineer · Design Systems Architect"
+  title="Rodrigo Bustamante — Senior Software Engineer · Design Engineer & Senior FrontEnd Engineer"
   description={t('meta.home.description')}
   lang={lang}
   ogImage={`/og/home/${lang}.png`}
@@ -22,12 +28,12 @@ const { t, tl } = useTranslations(lang);
   <link slot="head" rel="preload" as="image" href="/images/portrait-crop.avif" type="image/avif" fetchpriority="high" />
   <SiteHeader lang={lang} variant="portfolio" />
 
-  <main>
+  <main id="main">
     <!-- ——— Hero ——— -->
     <section id="top" class="hero">
       <div class="wrap hero-grid">
         <div class="hero-left">
-          <div class="hero-role">Staff Frontend Engineer &amp; Design Systems Architect</div>
+          <div class="hero-role">Senior Software Engineer | Design Engineer &amp; Senior FrontEnd Engineer</div>
           <h1 class="hero-name">
             Rodrigo
             <br />
@@ -564,13 +570,21 @@ const { t, tl } = useTranslations(lang);
               <span class="chip">Strava API</span>
             </div>
             <div class="project-links">
-              <a class="project-link" href="https://github.com/rodrigobustamante/pace" aria-label="PACE repo">
+              <a
+                class="project-link"
+                href="https://github.com/rodrigobustamante/pace"
+                aria-label={`${t('projects.repo')} — PACE`}
+              >
                 {t('projects.repo')}
                 <span class="arrow" aria-hidden="true">
                   ↗
                 </span>
               </a>
-              <a class="project-link" href="https://pace.rodrigobustamante.cl/" aria-label="PACE demo">
+              <a
+                class="project-link"
+                href="https://pace.rodrigobustamante.cl/"
+                aria-label={`${t('projects.demo')} — PACE`}
+              >
                 {t('projects.demo')}
                 <span class="arrow" aria-hidden="true">
                   ↗
@@ -592,13 +606,21 @@ const { t, tl } = useTranslations(lang);
               <span class="chip">TypeScript</span>
             </div>
             <div class="project-links">
-              <a class="project-link" href="https://github.com/rodrigobustamante/intervalo" aria-label="Intervalo repo">
+              <a
+                class="project-link"
+                href="https://github.com/rodrigobustamante/intervalo"
+                aria-label={`${t('projects.repo')} — Intervalo`}
+              >
                 {t('projects.repo')}
                 <span class="arrow" aria-hidden="true">
                   ↗
                 </span>
               </a>
-              <a class="project-link" href="https://intervalo.rodrigobustamante.cl/" aria-label="Intervalo demo">
+              <a
+                class="project-link"
+                href="https://intervalo.rodrigobustamante.cl/"
+                aria-label={`${t('projects.demo')} — Intervalo`}
+              >
                 {t('projects.demo')}
                 <span class="arrow" aria-hidden="true">
                   ↗
@@ -662,163 +684,47 @@ const { t, tl } = useTranslations(lang);
           <p class="section-sub">{t('writing.sub')}</p>
         </div>
         <div class="posts reveal">
-          {lang === 'es' ? (
-            <>
-              <a class="post" href="/blog/es/rendimiento-web-rendimiento-especulativo-guia">
-                <div class="post-meta">
-                  <span class="post-cat">Performance</span>
-                  <span class="dot" />
-                  <span>12 Mar 2025</span>
-                  <span class="dot" />
-                  <span>8 min de lectura</span>
+          {posts.map((post) => (
+            <a class="post" href={getPermalink(post.permalink, 'post')}>
+              <div class="post-meta">
+                {post.category && <span class="post-cat">{post.category.replaceAll('-', ' ')}</span>}
+                <span class="dot" />
+                <time datetime={getDatetime(post.publishDate)}>{getFormattedDate(post.publishDate, lang)}</time>
+                {post.readingTime && (
+                  <>
+                    <span class="dot" />
+                    <span>
+                      {post.readingTime} {t('blog.readingTime')}
+                    </span>
+                  </>
+                )}
+              </div>
+              <h3 class="post-title">{post.title}</h3>
+              {post.excerpt && <p class="post-excerpt">{post.excerpt}</p>}
+              <div class="post-foot">
+                <div class="post-tags">
+                  {post.tags?.map((tag) => (
+                    <span>#{tag}</span>
+                  ))}
                 </div>
-                <h3 class="post-title">Speculative Rendering — Mejorando el performance web</h3>
-                <p class="post-excerpt">
-                  Qué es el speculative rendering, cómo mejora el performance y buenas prácticas para implementarlo en
-                  tu sitio.
-                </p>
-                <div class="post-foot">
-                  <div class="post-tags">
-                    <>
-                      <span>#performance</span>
-                      <span>#seo</span>
-                    </>
-                  </div>
-                  <span class="post-arrow">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M6 18L18 6M9 6h9v9" />
-                    </svg>
-                  </span>
-                </div>
-              </a>
-              <a class="post" href="/blog/es/core-web-vitals-guia-completa-para-principiantes">
-                <div class="post-meta">
-                  <span class="post-cat">Tutoriales</span>
-                  <span class="dot" />
-                  <span>6 Mar 2025</span>
-                  <span class="dot" />
-                  <span>12 min de lectura</span>
-                </div>
-                <h3 class="post-title">Core Web Vitals — Guía completa para principiantes</h3>
-                <p class="post-excerpt">
-                  Todo sobre Core Web Vitals — qué son, por qué importan y cómo mejorar performance, accesibilidad y
-                  SEO.
-                </p>
-                <div class="post-foot">
-                  <div class="post-tags">
-                    <>
-                      <span>#performance</span>
-                      <span>#a11y</span>
-                      <span>#seo</span>
-                    </>
-                  </div>
-                  <span class="post-arrow">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M6 18L18 6M9 6h9v9" />
-                    </svg>
-                  </span>
-                </div>
-              </a>
-            </>
-          ) : (
-            <>
-              <a class="post" href="/blog/en/speculative-rendering-web-performance-guide">
-                <div class="post-meta">
-                  <span class="post-cat">Performance</span>
-                  <span class="dot" />
-                  <span>Mar 12, 2025</span>
-                  <span class="dot" />
-                  <span>8 min read</span>
-                </div>
-                <h3 class="post-title">Speculative Rendering — Enhancing Web Performance</h3>
-                <p class="post-excerpt">
-                  What speculative rendering is, how it improves performance, and best practices for implementing it on
-                  your site.
-                </p>
-                <div class="post-foot">
-                  <div class="post-tags">
-                    <>
-                      <span>#performance</span>
-                      <span>#seo</span>
-                    </>
-                  </div>
-                  <span class="post-arrow">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M6 18L18 6M9 6h9v9" />
-                    </svg>
-                  </span>
-                </div>
-              </a>
-              <a class="post" href="/blog/en/core-web-vitals-complete-guide-for-beginners">
-                <div class="post-meta">
-                  <span class="post-cat">Tutorials</span>
-                  <span class="dot" />
-                  <span>Mar 6, 2025</span>
-                  <span class="dot" />
-                  <span>12 min read</span>
-                </div>
-                <h3 class="post-title">Core Web Vitals — A Complete Guide for Beginners</h3>
-                <p class="post-excerpt">
-                  Everything about Core Web Vitals — what they are, why they matter, and how to improve performance,
-                  accessibility and SEO.
-                </p>
-                <div class="post-foot">
-                  <div class="post-tags">
-                    <>
-                      <span>#performance</span>
-                      <span>#a11y</span>
-                      <span>#seo</span>
-                    </>
-                  </div>
-                  <span class="post-arrow">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M6 18L18 6M9 6h9v9" />
-                    </svg>
-                  </span>
-                </div>
-              </a>
-            </>
-          )}
+                <span class="post-arrow">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 18L18 6M9 6h9v9" />
+                  </svg>
+                </span>
+              </div>
+            </a>
+          ))}
         </div>
         <div class="writing-more reveal">
           <a class="more-link" href={`/blog/${lang}`}>
@@ -879,43 +785,639 @@ const { t, tl } = useTranslations(lang);
           </div>
         </div>
       </div>
-
-      <footer class="footer">
-        <div class="footer-inner">
-          <span>{t('footer.credit')}</span>
-          <nav class="footer-links" aria-label={t('footer.more')}>
-            <a href={localizedPath('/system', lang)}>{t('footer.system')}</a>
-            <a href={localizedPath('/uses', lang)}>{t('footer.uses')}</a>
-          </nav>
-          <div class="footer-socials">
-            <a href="https://www.linkedin.com/in/rod-bustamante/" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
-                <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zm1.78 13.02H3.56V9h3.56v11.45z"></path>
-              </svg>
-            </a>
-            <a href="https://github.com/rodrigobustamante" target="_blank" rel="noopener" aria-label="GitHub">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
-                <path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0012 2z"></path>
-              </svg>
-            </a>
-            <a href="mailto:rbustamantejelvez@gmail.com" aria-label="Email">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M3 5.5h18v13H3zM3 6l9 6.5L21 6"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </footer>
     </section>
   </main>
+  <SiteFooter lang={lang} />
 </PortfolioLayout>
+
+<!-- Home-only styles: the shared layout ships just what other pages use. -->
+<style is:global>
+  /* ——— Hero ——— */
+  .hero {
+    padding: clamp(56px, 11vh, 130px) 0 clamp(40px, 7vh, 80px);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .hero-portrait {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+  }
+  @media (max-width: 860px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-right {
+      order: -1;
+      max-width: 320px;
+    }
+  }
+  .hero-avail {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    margin-bottom: 30px;
+  }
+  .hero-avail .pip {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: oklch(0.7 0.15 150);
+    box-shadow: 0 0 0 4px color-mix(in oklab, oklch(0.7 0.15 150) 22%, transparent);
+    flex-shrink: 0;
+  }
+  .hero-role {
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+
+  .hero-pitch {
+    font-family: var(--serif);
+    font-size: clamp(20px, 2.6vw, 28px);
+    line-height: 1.42;
+    color: var(--ink-soft);
+    max-width: 24ch;
+    font-weight: 300;
+    text-wrap: pretty;
+    margin-bottom: 34px;
+  }
+  .hero-pitch em {
+    color: var(--ink);
+    font-style: italic;
+  }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 18px;
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .hero-stat {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+  }
+  .hero-stat:not(:last-child)::after {
+    content: '';
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--faint);
+    margin-left: 18px;
+    align-self: center;
+  }
+  .hero-stat b {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .hero-stat b[data-count] {
+    font-variant-numeric: tabular-nums;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 36px;
+  }
+  .hero-meta .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--faint);
+  }
+  .hero-cta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  /* ——— Experience timeline ——— */
+  .timeline {
+    --tl-aside: 132px;
+    --tl-gap: clamp(20px, 4vw, 52px);
+    --tl-pad: clamp(28px, 4vh, 44px);
+    /* x of the rail, measured from each entry's left edge */
+    --tl-x: calc(var(--tl-aside) + var(--tl-gap) / 2);
+    /* y of each entry's dot, centred on the first line of .entry-years */
+    --tl-dot-y: calc(var(--tl-pad) + 12px);
+    --tl-dot: var(--accent);
+    position: relative;
+  }
+  /* Rail: a faint track (::before) and an accent fill (::after) that is
+     drawn by scroll where scroll-driven animations are supported. */
+  .timeline::before,
+  .timeline::after {
+    content: '';
+    position: absolute;
+    top: var(--tl-dot-y);
+    bottom: 0;
+    left: var(--tl-x);
+    width: 1px;
+    background: var(--line-soft);
+    pointer-events: none;
+  }
+  .timeline::after {
+    display: none;
+    background: var(--accent);
+    transform-origin: top;
+  }
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--tl-aside) 1fr;
+    gap: var(--tl-gap);
+    padding: var(--tl-pad) 0;
+  }
+  .entry::before {
+    content: '';
+    position: absolute;
+    top: var(--tl-dot-y);
+    left: calc(var(--tl-x) - 4px);
+    width: 9px;
+    height: 9px;
+    margin-top: -4px;
+    border-radius: 50%;
+    background: var(--tl-dot);
+    box-shadow: 0 0 0 4px var(--paper);
+  }
+  .entry + .entry {
+    border-top: 1px solid var(--line-soft);
+  }
+  .entry-years {
+    font-family: var(--serif);
+    font-size: 19px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .entry-sector {
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .entry-loc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 14px;
+    line-height: 1.4;
+  }
+  .entry-main {
+    min-width: 0;
+  }
+
+  .role {
+    margin-top: 26px;
+  }
+  .role-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .role-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .role-period {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .role-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .role-bullets li {
+    position: relative;
+    padding-left: 22px;
+    font-size: 15.5px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+  .role-bullets li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 11px;
+    width: 7px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .entry-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+  }
+
+  @media (max-width: 680px) {
+    /* Single column: the rail moves to a gutter on the left. */
+    .timeline {
+      --tl-x: -20px;
+      padding-left: 28px;
+    }
+    .timeline::before,
+    .timeline::after {
+      left: calc(28px + var(--tl-x));
+    }
+    .entry {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .entry-aside {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .entry-loc {
+      margin-top: 0;
+    }
+    .role-head {
+      gap: 4px;
+    }
+  }
+
+  /* ——— Skills ——— */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .skill-col {
+    background: var(--paper);
+    padding: 26px 24px;
+  }
+  .skill-label {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .skill-items {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .skill-items span {
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+
+  /* ——— Education ——— */
+  .edu-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(28px, 5vw, 60px);
+  }
+  @media (max-width: 720px) {
+    .edu-layout {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+  .edu-school {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .edu-degree {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+  .edu-line {
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  .edu-notes {
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin-top: 14px;
+    line-height: 1.55;
+    font-style: italic;
+    font-family: var(--serif);
+  }
+  .sub-h {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .facts-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .facts-list .row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 18px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .facts-list .row:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .facts-list .k {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .facts-list .v {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  @media (max-width: 460px) {
+    .facts-list .row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+
+  /* ——— Writing ——— */
+  .posts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  @media (max-width: 680px) {
+    .posts {
+      grid-template-columns: 1fr;
+    }
+  }
+  .post {
+    background: var(--paper);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: background 0.2s;
+    min-height: 230px;
+  }
+  .post:hover {
+    background: var(--card);
+  }
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .post-cat {
+    color: var(--accent-ink);
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  .post-meta .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--faint);
+  }
+  .post-title {
+    font-family: var(--serif);
+    font-size: 23px;
+    font-weight: 500;
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+  .post-excerpt {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+  .post-foot {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .post-tags {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+  .post-tags span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .post-arrow {
+    color: var(--accent);
+    transition: transform 0.2s;
+  }
+  .post:hover .post-arrow {
+    transform: translate(3px, -3px);
+  }
+  .writing-more {
+    margin-top: 28px;
+  }
+  .more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 3px;
+    transition: gap 0.2s;
+  }
+  .more-link:hover {
+    gap: 13px;
+  }
+
+  /* ——— Contact ——— */
+  .contact-card {
+    text-align: center;
+    padding: clamp(20px, 4vh, 30px) 0;
+  }
+  .contact-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 8vw, 80px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin-bottom: 22px;
+  }
+  .contact-sub {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 50ch;
+    margin: 0 auto 36px;
+    text-wrap: pretty;
+  }
+  .contact-links {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ——— Projects grid ——— */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  @media (max-width: 680px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .project-card {
+    background: var(--paper);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .project-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .project-name {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .project-status {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .project-desc {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    text-wrap: pretty;
+    flex: 1;
+  }
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .project-links {
+    display: flex;
+    gap: 14px;
+    margin-top: 4px;
+  }
+  .project-link {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--accent-ink);
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+    transition: opacity 0.2s;
+  }
+  .project-link:hover {
+    opacity: 0.75;
+  }
+  .project-link .arrow {
+    margin-left: 3px;
+  }
+
+  /* ——— Timeline drawn by scroll ———
+     The rail's tip follows the middle of the viewport: the fill starts when
+     the timeline's top reaches 50vh and completes when its bottom does.
+     Each dot lights up as the tip passes it. Browsers without scroll-driven
+     animations keep the static rail with lit dots. */
+  @property --tl-dot {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: transparent;
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .timeline::after {
+        display: block;
+        animation: tl-draw linear both;
+        animation-timeline: --timeline;
+        animation-range: cover 50vh cover calc(100% - 50vh);
+      }
+      .timeline {
+        view-timeline: --timeline;
+      }
+      .entry {
+        animation: tl-dot linear both;
+        animation-timeline: view();
+        animation-range: cover calc(50vh + var(--tl-dot-y) - 8px) cover calc(50vh + var(--tl-dot-y) + 8px);
+      }
+    }
+  }
+  @keyframes tl-draw {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes tl-dot {
+    from {
+      --tl-dot: var(--line);
+    }
+    to {
+      --tl-dot: var(--accent);
+    }
+  }
+</style>
