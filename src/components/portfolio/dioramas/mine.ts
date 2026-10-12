@@ -175,6 +175,18 @@ function truck(x: number, y: number, cargo: 'van' | 'dump', back = false) {
       [gx, y0 + w + 0.01, 1.45],
     ])
   );
+  // The windscreen only shows when the cab faces the viewer (+x)
+  const windscreen = back
+    ? mark(
+        'dio-cockpit',
+        poly([
+          [x + 3.51, y0 + 0.12, 1.05],
+          [x + 3.51, y0 + w - 0.12, 1.05],
+          [x + 3.51, y0 + w - 0.12, 1.45],
+          [x + 3.51, y0 + 0.12, 1.45],
+        ])
+      )
+    : '';
   const shadow = mark(
     'dio-shadow',
     poly([
@@ -184,7 +196,7 @@ function truck(x: number, y: number, cargo: 'van' | 'dump', back = false) {
       [x - 0.1, y0 + w + 0.15, 0],
     ])
   );
-  return { markup: shadow + paths(shapes) + glass, top: [X(0.5, 0), y, 1.7] as V };
+  return { markup: shadow + paths(shapes) + glass + windscreen, top: [X(0.5, 0), y, 1.7] as V };
 }
 
 // Haul truck backed up to the hopper, its open dump body over the conveyor's feed
