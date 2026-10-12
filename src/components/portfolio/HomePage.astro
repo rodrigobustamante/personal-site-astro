@@ -4,6 +4,9 @@ import SiteHeader from '~/components/portfolio/SiteHeader.astro';
 import SiteFooter from '~/components/portfolio/SiteFooter.astro';
 import { useTranslations, type Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
+import { fetchPosts } from '~/utils/blog';
+import { getPermalink } from '~/utils/permalinks';
+import { getDatetime, getFormattedDate, getPostLang } from '~/utils/utils';
 
 interface Props {
   lang: Lang;
@@ -11,6 +14,8 @@ interface Props {
 
 const { lang } = Astro.props;
 const { t, tl } = useTranslations(lang);
+// The two latest posts in this language.
+const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === lang).slice(0, 2);
 ---
 
 <PortfolioLayout
@@ -679,163 +684,47 @@ const { t, tl } = useTranslations(lang);
           <p class="section-sub">{t('writing.sub')}</p>
         </div>
         <div class="posts reveal">
-          {lang === 'es' ? (
-            <>
-              <a class="post" href="/blog/es/rendimiento-web-rendimiento-especulativo-guia">
-                <div class="post-meta">
-                  <span class="post-cat">Performance</span>
-                  <span class="dot" />
-                  <span>12 Mar 2025</span>
-                  <span class="dot" />
-                  <span>8 min de lectura</span>
+          {posts.map((post) => (
+            <a class="post" href={getPermalink(post.permalink, 'post')}>
+              <div class="post-meta">
+                {post.category && <span class="post-cat">{post.category.replaceAll('-', ' ')}</span>}
+                <span class="dot" />
+                <time datetime={getDatetime(post.publishDate)}>{getFormattedDate(post.publishDate, lang)}</time>
+                {post.readingTime && (
+                  <>
+                    <span class="dot" />
+                    <span>
+                      {post.readingTime} {t('blog.readingTime')}
+                    </span>
+                  </>
+                )}
+              </div>
+              <h3 class="post-title">{post.title}</h3>
+              {post.excerpt && <p class="post-excerpt">{post.excerpt}</p>}
+              <div class="post-foot">
+                <div class="post-tags">
+                  {post.tags?.map((tag) => (
+                    <span>#{tag}</span>
+                  ))}
                 </div>
-                <h3 class="post-title">Speculative Rendering — Mejorando el performance web</h3>
-                <p class="post-excerpt">
-                  Qué es el speculative rendering, cómo mejora el performance y buenas prácticas para implementarlo en
-                  tu sitio.
-                </p>
-                <div class="post-foot">
-                  <div class="post-tags">
-                    <>
-                      <span>#performance</span>
-                      <span>#seo</span>
-                    </>
-                  </div>
-                  <span class="post-arrow">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M6 18L18 6M9 6h9v9" />
-                    </svg>
-                  </span>
-                </div>
-              </a>
-              <a class="post" href="/blog/es/core-web-vitals-guia-completa-para-principiantes">
-                <div class="post-meta">
-                  <span class="post-cat">Tutoriales</span>
-                  <span class="dot" />
-                  <span>6 Mar 2025</span>
-                  <span class="dot" />
-                  <span>12 min de lectura</span>
-                </div>
-                <h3 class="post-title">Core Web Vitals — Guía completa para principiantes</h3>
-                <p class="post-excerpt">
-                  Todo sobre Core Web Vitals — qué son, por qué importan y cómo mejorar performance, accesibilidad y
-                  SEO.
-                </p>
-                <div class="post-foot">
-                  <div class="post-tags">
-                    <>
-                      <span>#performance</span>
-                      <span>#a11y</span>
-                      <span>#seo</span>
-                    </>
-                  </div>
-                  <span class="post-arrow">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M6 18L18 6M9 6h9v9" />
-                    </svg>
-                  </span>
-                </div>
-              </a>
-            </>
-          ) : (
-            <>
-              <a class="post" href="/blog/en/speculative-rendering-web-performance-guide">
-                <div class="post-meta">
-                  <span class="post-cat">Performance</span>
-                  <span class="dot" />
-                  <span>Mar 12, 2025</span>
-                  <span class="dot" />
-                  <span>8 min read</span>
-                </div>
-                <h3 class="post-title">Speculative Rendering — Enhancing Web Performance</h3>
-                <p class="post-excerpt">
-                  What speculative rendering is, how it improves performance, and best practices for implementing it on
-                  your site.
-                </p>
-                <div class="post-foot">
-                  <div class="post-tags">
-                    <>
-                      <span>#performance</span>
-                      <span>#seo</span>
-                    </>
-                  </div>
-                  <span class="post-arrow">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M6 18L18 6M9 6h9v9" />
-                    </svg>
-                  </span>
-                </div>
-              </a>
-              <a class="post" href="/blog/en/core-web-vitals-complete-guide-for-beginners">
-                <div class="post-meta">
-                  <span class="post-cat">Tutorials</span>
-                  <span class="dot" />
-                  <span>Mar 6, 2025</span>
-                  <span class="dot" />
-                  <span>12 min read</span>
-                </div>
-                <h3 class="post-title">Core Web Vitals — A Complete Guide for Beginners</h3>
-                <p class="post-excerpt">
-                  Everything about Core Web Vitals — what they are, why they matter, and how to improve performance,
-                  accessibility and SEO.
-                </p>
-                <div class="post-foot">
-                  <div class="post-tags">
-                    <>
-                      <span>#performance</span>
-                      <span>#a11y</span>
-                      <span>#seo</span>
-                    </>
-                  </div>
-                  <span class="post-arrow">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M6 18L18 6M9 6h9v9" />
-                    </svg>
-                  </span>
-                </div>
-              </a>
-            </>
-          )}
+                <span class="post-arrow">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 18L18 6M9 6h9v9" />
+                  </svg>
+                </span>
+              </div>
+            </a>
+          ))}
         </div>
         <div class="writing-more reveal">
           <a class="more-link" href={`/blog/${lang}`}>
