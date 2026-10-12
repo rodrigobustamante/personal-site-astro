@@ -1,6 +1,7 @@
 ---
 import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
 import SiteHeader from '~/components/portfolio/SiteHeader.astro';
+import { useTranslations } from '~/i18n/ui';
 
 interface Props {
   title?: string;
@@ -13,22 +14,16 @@ interface Props {
   noindex?: boolean;
 }
 
-const {
-  title = 'Blog — Rodrigo Bustamante',
-  description = 'Articles on web performance, frontend engineering, and software craftsmanship.',
-  translationUrl,
-  lang,
-  ogImage,
-  noindex,
-} = Astro.props;
+const { title = 'Blog — Rodrigo Bustamante', description, translationUrl, lang, ogImage, noindex } = Astro.props;
 
 const resolvedLang = (lang ?? 'en') as 'en' | 'es';
+const resolvedDescription = description ?? useTranslations(resolvedLang).t('blog.description');
 const resolvedOgImage = ogImage ?? `/og/blog/${resolvedLang}.png`;
 ---
 
 <PortfolioLayout
   title={title}
-  description={description}
+  description={resolvedDescription}
   lang={resolvedLang}
   ogImage={resolvedOgImage}
   translationUrl={translationUrl}

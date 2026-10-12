@@ -163,6 +163,11 @@ export const ui = {
     'contact.sub':
       'Open to Staff Frontend Engineer and Design System Lead roles. The fastest way to reach me is email.',
 
+    // blog
+    'blog.description': 'Articles on web performance, frontend engineering, and software craftsmanship.',
+    'blog.readingTime': 'min read',
+    'blog.category': 'Category',
+
     // footer
     'footer.credit': 'Designed & built by Rodrigo Bustamante · Madrid · 2026',
     'footer.more': 'More',
@@ -336,6 +341,11 @@ export const ui = {
     'contact.title': 'Hablemos.',
     'contact.sub':
       'Abierto a roles de Staff Frontend Engineer y Design System Lead. La forma más rápida de contactarme es por email.',
+
+    // blog
+    'blog.description': 'Artículos sobre rendimiento web, ingeniería frontend y oficio de software.',
+    'blog.readingTime': 'min de lectura',
+    'blog.category': 'Categoría',
 
     // footer
     'footer.credit': 'Diseñado y construido por Rodrigo Bustamante · Madrid · 2026',

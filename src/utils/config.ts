@@ -51,16 +51,6 @@ export const METADATA = {
   description: 'Articles on web performance, frontend engineering, and software craftsmanship.',
 };
 
-export const I18N = {
-  language: 'en',
-  dateFormatter: new Intl.DateTimeFormat('en', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  }),
-};
-
 export const APP_BLOG: AppBlogConfig = {
   isEnabled: true,
   postsPerPage: 6,

@@ -2,21 +2,24 @@
 import type { Post } from '~/types';
 import { APP_BLOG } from '~/utils/config';
 import { getPermalink } from '~/utils/permalinks';
-import { getFormattedDate } from '~/utils/utils';
+import { getDatetime, getFormattedDate, getPostLang } from '~/utils/utils';
+import { useTranslations } from '~/i18n/ui';
 
 export interface Props {
   post: Post;
 }
 
 const { post } = Astro.props;
+const lang = getPostLang(post.slug);
+const { t } = useTranslations(lang);
 const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : '';
 ---
 
-<li class="post-list-item reveal">
+<li class="post-list-item reveal" lang={lang}>
   <div class="post-card">
     <div>
       <div class="post-card-meta">
-        <time datetime={String(post.publishDate)}>{getFormattedDate(post.publishDate)}</time>
+        <time datetime={getDatetime(post.publishDate)}>{getFormattedDate(post.publishDate, lang)}</time>
         {post.category && (
           <>
             <span class="post-card-dot" />
@@ -28,7 +31,9 @@ const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : 
         {post.readingTime && (
           <>
             <span class="post-card-dot" />
-            <span>{post.readingTime} min read</span>
+            <span>
+              {post.readingTime} {t('blog.readingTime')}
+            </span>
           </>
         )}
       </div>

@@ -1,15 +1,18 @@
-import { I18N } from '~/utils/config';
+import type { Lang } from '~/i18n/ui';
 
-const formatter: Intl.DateTimeFormat =
-  I18N?.dateFormatter ||
-  new Intl.DateTimeFormat('en', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
+const dateFormatters: Record<Lang, Intl.DateTimeFormat> = {
+  en: new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' }),
+  es: new Intl.DateTimeFormat('es', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' }),
+};
 
-export const getFormattedDate = (date: Date): string => (date ? formatter.format(date) : '');
+export const getFormattedDate = (date: Date, lang: Lang = 'en'): string =>
+  date ? dateFormatters[lang].format(date) : '';
+
+/** Value for a `<time datetime>` attribute: the calendar date in UTC. */
+export const getDatetime = (date: Date): string => (date ? date.toISOString().slice(0, 10) : '');
+
+/** Language of a post, from the locale folder its slug starts with. */
+export const getPostLang = (slug: string): Lang => (slug.startsWith('es/') ? 'es' : 'en');
 
 export const trim = (str = '', ch?: string) => {
   let start = 0,
