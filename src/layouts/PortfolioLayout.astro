@@ -396,12 +396,31 @@ const jsonLd = JSON.stringify({
       .mobile-nav a:hover {
         background: var(--paper-2);
       }
-      @media (max-width: 760px) {
+      @media (max-width: 900px) {
         .header-nav {
           display: none;
         }
         .header-tools .menu-btn {
           display: inline-flex;
+        }
+      }
+      /* Phones: name, language, theme and menu share one row. */
+      @media (max-width: 480px) {
+        .header-inner {
+          gap: 12px;
+        }
+        .wordmark-name {
+          font-size: 18px;
+          white-space: nowrap;
+        }
+        .wordmark-dot {
+          display: none;
+        }
+        .header-tools {
+          gap: 6px;
+        }
+        .lang-btn {
+          padding: 0 10px;
         }
       }
       .header-tools {
