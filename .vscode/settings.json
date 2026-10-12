@@ -1,5 +1,4 @@
 {
-  "css.customData": ["./vscode.tailwind.json"],
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -13,8 +12,5 @@
   "prettier.documentSelectors": ["**/*.astro"],
   "[astro]": {
     "editor.defaultFormatter": "astro-build.astro-vscode"
-  },
-  "yaml.schemas": {
-    "./.vscode/astrowind/config-schema.json": "/src/config.yaml"
   }
 }
