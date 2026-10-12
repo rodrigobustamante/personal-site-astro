@@ -46,6 +46,18 @@ export const ui = {
     // experience section
     'exp.title': 'Experience',
     'exp.sub': 'A decade of building for scale — from payment rails to global platforms used by millions.',
+    'exp.present': 'Present',
+
+    'exp.vantaz.sector': 'Mining · Enterprise Software',
+    'exp.vantaz.loc': 'Madrid, Spain · Remote',
+    'exp.vantaz.highlight': 'Supplier management platform for a copper miner, built from the ground up',
+    'exp.vantaz.bullets': [
+      'Architected and built from scratch the supplier management platform of a Chilean copper mining company, bringing contract letters, new-supplier onboarding and supplier risk into a single system.',
+      'Set up a monorepo with one Next.js app per module and shared TypeScript packages (UI kit, typed API client, auth) on top of a FastAPI and PostgreSQL backend.',
+      "Integrated Entra ID with role-based permissions, DocuSign e-signature through signed webhooks, Microsoft Graph, Azure OpenAI, and master-data ingestion from the client's source systems.",
+      'Built the Azure DevOps pipeline — lint, type checks, tests, Playwright and Trivy scans — with per-environment builds and production releases through a staging-slot swap on Azure App Service behind Front Door.',
+      'Keep an audit wiki in sync with the code on every PR, covering access control, traceability and data handling.',
+    ],
 
     'exp.hangar.sector': 'Design Systems · Architecture',
     'exp.hangar.loc': 'Madrid & Santiago · Remote',
@@ -230,6 +242,18 @@ export const ui = {
     'exp.title': 'Experiencia',
     'exp.sub':
       'Una década construyendo a escala — desde pasarelas de pago hasta plataformas globales usadas por millones.',
+    'exp.present': 'Presente',
+
+    'exp.vantaz.sector': 'Minería · Software empresarial',
+    'exp.vantaz.loc': 'Madrid, España · Remoto',
+    'exp.vantaz.highlight': 'Plataforma de gestión de proveedores para una minera de cobre, construida desde cero',
+    'exp.vantaz.bullets': [
+      'Diseñé y construí desde cero la plataforma de gestión de proveedores de una minera de cobre chilena, que reúne en un solo sistema las cartas contractuales, el registro de proveedores nuevos y sus riesgos.',
+      'Definí un monorepo con una app Next.js por módulo y paquetes TypeScript compartidos (UI, cliente de API tipado, autenticación) sobre un backend FastAPI con PostgreSQL.',
+      'Integré Entra ID con permisos por rol, firma electrónica con DocuSign mediante webhooks firmados, Microsoft Graph, Azure OpenAI y la ingesta de datos maestros desde los sistemas del cliente.',
+      'Construí el pipeline en Azure DevOps: lint, tipos, tests, Playwright y escaneo con Trivy, con builds por ambiente y despliegue a producción vía swap de slot en Azure App Service detrás de Front Door.',
+      'Mantengo una documentación de auditoría sincronizada con el código en cada PR, que cubre control de acceso, trazabilidad y manejo de datos.',
+    ],
 
     'exp.hangar.sector': 'Design Systems · Arquitectura',
     'exp.hangar.loc': 'Madrid y Santiago · Remoto',

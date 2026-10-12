@@ -157,6 +157,50 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
         </div>
 
         <div class="timeline">
+          <!-- Vantaz Analytics -->
+          <article class="entry reveal">
+            <aside class="entry-aside">
+              <div class="entry-years">Apr 2026 — {t('exp.present')}</div>
+              <div class="entry-sector">{t('exp.vantaz.sector')}</div>
+              <div class="entry-loc">{t('exp.vantaz.loc')}</div>
+            </aside>
+            <div class="entry-main">
+              <h3 class="entry-company">Vantaz Analytics</h3>
+              <div class="entry-highlight">
+                <span class="star">✦</span>
+                {t('exp.vantaz.highlight')}
+              </div>
+              <div class="role">
+                <div class="role-head">
+                  <span class="role-title">Software Architect</span>
+                </div>
+                <ul class="role-bullets">
+                  {tl('exp.vantaz.bullets').map((b) => (
+                    <li>{b}</li>
+                  ))}
+                </ul>
+              </div>
+              <div class="entry-stack">
+                <span class="chip">Next.js</span>
+                <span class="chip">React</span>
+                <span class="chip">TypeScript</span>
+                <span class="chip">FastAPI</span>
+                <span class="chip">Python</span>
+                <span class="chip">PostgreSQL</span>
+                <span class="chip">Azure</span>
+                <span class="chip">Azure DevOps</span>
+                <span class="chip">Playwright</span>
+                <span class="chip">Tailwind CSS</span>
+              </div>
+              <a class="cs-link" href={localizedPath('/work/mining-supplier-platform', lang)}>
+                {t('exp.hangar.cs')}
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </div>
+          </article>
+
           <!-- Hangar Design System — LATAM Airlines -->
           <article class="entry reveal">
             <aside class="entry-aside">

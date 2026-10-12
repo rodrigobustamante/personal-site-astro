@@ -1,0 +1,86 @@
+---
+title: 'Plataforma de gestión de proveedores'
+subtitle: 'Reunir en un solo sistema los procesos de proveedores de una minera de cobre, construido desde cero y documentado para auditoría desde el código'
+tag: 'Caso de estudio'
+client: Vantaz Analytics · Minería del cobre, Chile
+role: 'Software Architect'
+period: 'Abr 2026 — Presente'
+scope: '3 procesos de negocio · 16 roles · En producción'
+stack: [Next.js, React, TypeScript, FastAPI, Python, PostgreSQL, Azure, Azure DevOps, Playwright]
+order: 0
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problema y contexto" title="Tres procesos de proveedores, cada uno por su lado">
+
+Vantaz es una empresa de consultoría y tecnología para la industria minera, con oficinas en Australia, Canadá, Perú y Chile. Su cliente, una minera de cobre en Chile, llevaba por separado tres procesos de proveedores: las cartas contractuales que se envían a los proveedores de cada contrato, el registro de proveedores nuevos y el registro de riesgos de proveedores.
+
+En cada uno participa un grupo distinto de personas — control de contratos, legal, abastecimiento, finanzas, gestión de proveedores, compliance y otras áreas — además de los propios proveedores, que no tienen cuenta en el directorio de la empresa. El objetivo era un solo sistema para los tres procesos, que respondiera con claridad quién puede hacer qué en cada paso, construido sobre el Azure del cliente.
+
+</Section>
+
+<Section label="02 — Arquitectura" title="Una app por proceso, una API que decide">
+  <Pillars>
+    <Pillar title="Un monorepo de módulos">
+
+Cada proceso es una aplicación Next.js con su propio prefijo público, desplegada por separado detrás de Azure Front Door. Las apps comparten paquetes TypeScript: un kit de UI con los tokens de diseño del cliente, un cliente de API tipado, la autenticación y los tipos del dominio. No hay backend-for-frontend: el navegador llama directo a un único servicio FastAPI, que concentra la autenticación, la autorización y los datos en PostgreSQL.
+
+    </Pillar>
+    <Pillar title="Permisos que decide la API">
+
+Las personas entran con Entra ID. El acceso se resuelve de roles a permisos y se verifica en la API en cada ruta, nunca por nombre de rol y nunca solo en la interfaz. Un test recorre todas las rutas y falla si alguna no tiene control de permiso, salvo una lista corta de rutas protegidas por otros medios. Los campos sensibles, como los datos bancarios de un proveedor, se eliminan de la respuesta misma, no solo de la pantalla.
+
+    </Pillar>
+    <Pillar title="Integraciones">
+
+Las cartas se firman con DocuSign, que avisa por un webhook verificado con su firma HMAC; lo que se firma sale de la carta guardada, no de lo que envía el navegador. Los proveedores llenan su ficha de registro con un enlace mágico de un solo uso, cuyo token se guarda solo como hash. Azure OpenAI asiste en la redacción de cartas, y proveedores y contratos se cargan cada mañana desde la base de origen del cliente y se concilian contra el sistema.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Flujos" title="Cada proceso como una máquina de estados">
+
+Cada módulo está modelado como etapas explícitas, con el permiso necesario para actuar en cada una. Una carta va desde la solicitud por control de contratos y una revisión legal opcional, aprobaciones adicionales, firma, envío y respuesta del proveedor. Un registro de proveedor parte con la solicitud y la ficha que llena el propio proveedor, y pasa por las áreas revisoras, validación comercial, gestión de proveedores, la vicepresidencia de abastecimiento y finanzas, hasta que el proveedor queda cargado en el ERP de la empresa. Los riesgos pertenecen a un área, y cada cambio registra quién lo hizo, el campo y sus valores anterior y nuevo.
+
+Las reglas que pidió el negocio viven en esas transiciones: un revisor puede devolver un registro con una observación, lo que pausa el reloj de la etapa; cada etapa tiene un plazo en días hábiles; y una detención de planta tiene su propio flujo, que genera una carta de cotización por contrato a partir de la planificación.
+
+</Section>
+
+<Section label="04 — Diferenciador" title="Documentación de auditoría al día con el código" highlight>
+
+La documentación de auditoría del sistema vive en el repositorio, junto al código, y se publica como la wiki del cliente. Todo cambio en autenticación, permisos, trazabilidad, manejo de datos, flujos, pipeline o infraestructura actualiza la página correspondiente en el mismo pull request, no en uno posterior. Cada afirmación cita el archivo y el símbolo que la hace cumplir, para que quien revisa pueda contrastarla con el código.
+
+La matriz de roles y permisos se genera desde el catálogo de permisos del código, y un test falla si la página publicada quedó desactualizada. Cada cambio relevante tiene además un documento de diseño con su contexto, las alternativas y la decisión: más de cuarenta a la fecha. Cuando los auditores del cliente preguntan qué hace el sistema, la respuesta ya está escrita, y dice lo que hace el código.
+
+</Section>
+
+<Section label="05 — Entrega" title="Un pipeline que promueve el mismo código">
+
+El pipeline de Azure DevOps corre lint, chequeo de tipos, detección de código sin uso y tests unitarios en frontend y backend, tests end-to-end con Playwright, y un escaneo nocturno con Trivy de dependencias, configuración y secretos. Los tests del backend corren contra un PostgreSQL real, nunca contra un sustituto.
+
+Un merge a la rama de desarrollo despliega a dev, y un merge a main despliega a QA. Producción es una ejecución manual y aprobada sobre la misma rama main, así que recibe exactamente lo que QA validó. Despliega a un slot de staging, verifica que el servicio esté listo y solo entonces hace el swap. Como la API corre sus migraciones al arrancar, ese swap también protege contra migraciones fallidas: si una falla, no arranca el slot, pero el sitio en vivo sigue funcionando.
+
+</Section>
+
+<Section label="06 — Mi rol" title="Del primer commit a producción">
+
+Entré a Vantaz en abril de 2026 y creé el repositorio en junio, definiendo su arquitectura desde el primer commit: la división en módulos, los paquetes compartidos, el modelo de permisos, las integraciones, el pipeline y las reglas de documentación. Desde entonces he escrito la mayor parte del código, y llevé cada módulo desde la primera pantalla hasta producción.
+
+</Section>
+
+<Metrics
+  label="07 — Resultados"
+  title="Lo que está funcionando"
+  items={[
+    { label: 'Alcance', value: 'Cartas, registro y riesgos de proveedores en un solo sistema, en producción' },
+    { label: 'Acceso', value: '16 roles sobre 44 permisos, con cada ruta de la API verificada por un test' },
+    { label: 'Calidad', value: 'Más de 4.000 tests automatizados, el backend contra PostgreSQL real, más Playwright' },
+    { label: 'Entrega', value: 'Más de 300 pull requests en cuatro meses, liberados por dev, QA y producción' },
+  ]}
+/>
