@@ -40,7 +40,15 @@ export default defineConfig({
       HTML: false,
       Image: false,
       JavaScript: true,
-      SVG: true,
+      // The diorama SVGs carry rules scoped to `.dio`, the page figure they are
+      // inlined into; SVGO's style plugins drop them as unused in the file.
+      SVG: {
+        svgo: {
+          multipass: true,
+          js2svg: { indent: 0, pretty: false },
+          plugins: [{ name: 'preset-default', params: { overrides: { minifyStyles: false, inlineStyles: false } } }],
+        },
+      },
       Logger: 1,
     }),
   ],
