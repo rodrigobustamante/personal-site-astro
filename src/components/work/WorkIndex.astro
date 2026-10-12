@@ -42,7 +42,7 @@ const entries = await getWork(lang);
               <div class="work-card-meta">
                 {entry.data.client && <span>{entry.data.client}</span>}
                 <span>{entry.data.period}</span>
-                <span>{entry.data.role}</span>
+                {entry.data.role && <span>{entry.data.role}</span>}
               </div>
               <span class="work-card-cta">
                 {t('work.read')}{' '}
