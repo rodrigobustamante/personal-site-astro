@@ -192,6 +192,12 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
                 <span class="chip">Playwright</span>
                 <span class="chip">Tailwind CSS</span>
               </div>
+              <a class="cs-link" href={localizedPath('/work/mining-supplier-platform', lang)}>
+                {t('exp.hangar.cs')}
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
             </div>
           </article>
 

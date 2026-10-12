@@ -1,0 +1,86 @@
+---
+title: 'Supplier Management Platform'
+subtitle: 'Bringing the supplier processes of a copper miner into one system, built from scratch and documented for audit from the code'
+tag: 'Case Study'
+client: Vantaz Analytics · Copper mining, Chile
+role: 'Software Architect'
+period: 'Apr 2026 — Present'
+scope: '3 business processes · 16 roles · In production'
+stack: [Next.js, React, TypeScript, FastAPI, Python, PostgreSQL, Azure, Azure DevOps, Playwright]
+order: 0
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problem & Context" title="Three supplier processes, run separately">
+
+Vantaz is a consulting and technology company for the mining industry, with offices in Australia, Canada, Peru and Chile. Its client, a copper mining company in Chile, ran three supplier processes on their own: the contractual letters sent to the suppliers of each contract, the onboarding of new suppliers, and the register of supplier risks.
+
+Each one involves a different set of people — contract control, legal, supply, finance, supplier management, compliance and others — plus the suppliers themselves, who have no account in the company's directory. The goal was a single system for the three processes, with a clear answer to who can do what at every step, built on the client's Azure.
+
+</Section>
+
+<Section label="02 — Architecture" title="One app per process, one API that decides">
+  <Pillars>
+    <Pillar title="A monorepo of modules">
+
+Each process is its own Next.js application with its own public prefix, deployed separately behind Azure Front Door. The apps share TypeScript packages: a UI kit with the client's design tokens, a typed API client, authentication, and domain types. There is no backend-for-frontend: the browser calls one FastAPI service directly, which owns authentication, authorization and data on PostgreSQL.
+
+    </Pillar>
+    <Pillar title="Permissions, decided in the API">
+
+People sign in with Entra ID. Access is resolved from roles to permissions and checked in the API on every route, never by role name and never only in the interface. A test walks every route and fails if one has no permission check, unless it is on a short list of routes protected by other means. Sensitive fields, like a supplier's bank details, are removed from the response itself, not just hidden on screen.
+
+    </Pillar>
+    <Pillar title="Integrations">
+
+Letters are signed through DocuSign, which reports back through a webhook verified by its HMAC signature; what gets signed comes from the stored letter, not from the browser. Suppliers fill in their onboarding form through a single-use magic link whose token is stored only as a hash. Azure OpenAI assists in drafting letters, and suppliers and contracts are loaded every morning from the client's source database and reconciled against the system.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Workflows" title="Each process as a state machine">
+
+Every module is modelled as explicit stages with the permission required to act on each one. A letter goes from request through contract control and an optional legal review, additional approvals, signature, delivery and the supplier's reply. A supplier onboarding runs from the request and the supplier's own form through the reviewing areas, commercial validation, supplier management, the supply VP and finance, until the supplier is loaded into the company's ERP. Risks are owned by an area, and every change records who made it, the field, and its previous and new value.
+
+The rules the business asked for live in those transitions: a reviewer can return an onboarding with an observation, which pauses its stage clock; each stage has a deadline in business days; and a plant shutdown has its own flow that generates a quotation letter per contract from the shutdown plan.
+
+</Section>
+
+<Section label="04 — Differentiator" title="Audit documentation that keeps up with the code" highlight>
+
+The system's audit documentation lives in the repository, next to the code, and is published as the client's wiki. Any change to authentication, permissions, traceability, data handling, workflows, the pipeline or the infrastructure updates the matching page in the same pull request, not in a follow-up. Every claim cites the file and symbol that enforces it, so a reviewer can check it against the code.
+
+The role and permission matrix is generated from the permission catalogue in the code, and a test fails if the published page is out of date. Every relevant change also has a design document with its context, the alternatives and the decision — more than forty so far. When the client's auditors ask what the system does, the answer is already written down, and it says what the code does.
+
+</Section>
+
+<Section label="05 — Delivery" title="A pipeline that promotes the same code">
+
+The Azure DevOps pipeline runs lint, type checks, unused-code detection and unit tests on both the frontend and the backend, end-to-end tests with Playwright, and a nightly Trivy scan of dependencies, configuration and secrets. Backend tests run against a real PostgreSQL, never a stand-in.
+
+Merging to the development branch deploys to dev, and merging to main deploys to QA. Production is a manual, approved run on the same main branch, so it gets exactly what QA validated. It deploys to a staging slot, checks that the service is ready, and only then swaps. Because the API runs its database migrations on startup, that swap is also the migration guard: a failed migration stops the slot from booting, not the live site.
+
+</Section>
+
+<Section label="06 — My role" title="From the first commit to production">
+
+I joined Vantaz in April 2026 and started the repository in June, setting its architecture from the first commit: the module split, the shared packages, the permission model, the integrations, the pipeline and the documentation rules. I have authored most of the code since, and took each module from the first screen to production.
+
+</Section>
+
+<Metrics
+  label="07 — Outcomes"
+  title="What is in place"
+  items={[
+    { label: 'Scope', value: 'Letters, supplier onboarding and supplier risk in one system, in production' },
+    { label: 'Access', value: '16 roles over 44 permissions, every API route checked by a test' },
+    { label: 'Quality', value: '4,000+ automated tests, backend against real PostgreSQL, plus Playwright' },
+    { label: 'Delivery', value: '300+ merged pull requests in four months, released through dev, QA and production' },
+  ]}
+/>
