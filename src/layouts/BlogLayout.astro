@@ -13,9 +13,18 @@ interface Props {
   ogImage?: string;
   /** Keeps the page out of search results (tag listings, the mixed-language /blog, 404). */
   noindex?: boolean;
+  structuredData?: Record<string, unknown>[];
 }
 
-const { title = 'Blog — Rodrigo Bustamante', description, translationUrl, lang, ogImage, noindex } = Astro.props;
+const {
+  title = 'Blog — Rodrigo Bustamante',
+  description,
+  translationUrl,
+  lang,
+  ogImage,
+  noindex,
+  structuredData,
+} = Astro.props;
 
 const resolvedLang = (lang ?? 'en') as 'en' | 'es';
 const resolvedDescription = description ?? useTranslations(resolvedLang).t('blog.description');
@@ -29,8 +38,15 @@ const resolvedOgImage = ogImage ?? `/og/blog/${resolvedLang}.png`;
   ogImage={resolvedOgImage}
   translationUrl={translationUrl}
   noindex={noindex}
+  structuredData={structuredData}
 >
   <Fragment slot="head">
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blog — Rodrigo Bustamante"
+      href={`/blog/${resolvedLang}/rss.xml`}
+    />
     <style is:global>
       /* Blog layout wrappers */
       .blog-wrap {
