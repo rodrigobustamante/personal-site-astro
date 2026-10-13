@@ -8,6 +8,7 @@ import { localizedPath } from '~/i18n/paths';
 import { workSlug } from '~/utils/work';
 import Diorama from '~/components/portfolio/dioramas/Diorama.astro';
 import type { SceneName } from '~/components/portfolio/dioramas/scenes';
+import { breadcrumbs, caseStudy } from '~/utils/structured-data';
 
 interface Props {
   entry: CollectionEntry<'work'>;
@@ -34,14 +35,27 @@ const meta = [
   ['work.meta.scope', data.scope],
   ['work.meta.stack', data.stack.join(', ')],
 ] as const;
+
+const ogImage = `/og/work/${slug}/${lang}.png`;
+const abs = (path: string) => new URL(path, Astro.site).href;
+const url = abs(localizedPath(`/work/${slug}`, lang));
+const structuredData = [
+  caseStudy({ url, title: data.title, description: data.subtitle, image: abs(ogImage), lang }),
+  breadcrumbs([
+    [t('nav.home'), abs(localizedPath('/', lang))],
+    [t('nav.work'), abs(localizedPath('/work', lang))],
+    [data.title, url],
+  ]),
+];
 ---
 
 <PortfolioLayout
   title={`${data.title} — Rodrigo Bustamante`}
   description={data.subtitle}
   lang={lang}
-  ogImage={`/og/work/${slug}/${lang}.png`}
+  ogImage={ogImage}
   hasLocalizedSibling
+  structuredData={structuredData}
 >
   <SiteHeader lang={lang} variant="portfolio" />
 

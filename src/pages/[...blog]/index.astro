@@ -9,6 +9,9 @@ import ToBlogLink from '~/components/blog/ToBlogLink.astro';
 import { getCanonical, getPermalink } from '~/utils/permalinks';
 import { getStaticPathsBlogPost, blogPostRobots } from '~/utils/blog';
 import { findImage } from '~/utils/images';
+import { localizedPath } from '~/i18n/paths';
+import { useTranslations } from '~/i18n/ui';
+import { blogPosting, breadcrumbs } from '~/utils/structured-data';
 
 export const prerender = true;
 
@@ -23,6 +26,26 @@ const lang: 'en' | 'es' = post.slug.startsWith('es/') ? 'es' : 'en';
 
 const url = getCanonical(getPermalink(post.permalink, 'post'));
 const image = (await findImage(post.image)) as ImageMetadata | string | undefined;
+const ogImage = `/og/post/${post.slug}.png`;
+
+const { t } = useTranslations(lang);
+const abs = (path: string) => new URL(path, Astro.site).href;
+const structuredData = [
+  blogPosting({
+    url: String(url),
+    title: post.title,
+    description: post.excerpt,
+    image: abs(ogImage),
+    lang,
+    publishDate: post.publishDate,
+    updateDate: post.updateDate,
+  }),
+  breadcrumbs([
+    [t('nav.home'), abs(localizedPath('/', lang))],
+    [t('nav.blog'), abs(`/blog/${lang}`)],
+    [post.title, String(url)],
+  ]),
+];
 ---
 
 <BlogLayout
@@ -30,8 +53,9 @@ const image = (await findImage(post.image)) as ImageMetadata | string | undefine
   description={post.excerpt}
   translationUrl={post.translation}
   lang={lang}
-  ogImage={`/og/post/${post.slug}.png`}
+  ogImage={ogImage}
   noindex={!blogPostRobots.index}
+  structuredData={structuredData}
 >
   <ToBlogLink lang={lang} />
   <SinglePost post={{ ...post, image: image }} url={url}>

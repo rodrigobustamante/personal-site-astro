@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import { SITE, SOCIALS } from '~/utils/config';
+import { PERSON_ID } from '~/utils/structured-data';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 import { PALETTES } from '~/utils/palettes';
@@ -26,6 +27,8 @@ interface Props {
   translationUrl?: string;
   /** Emits `robots: noindex, follow` and drops the hreflang alternates. */
   noindex?: boolean;
+  /** Extra schema.org nodes (BlogPosting, BreadcrumbList…), emitted in the same @graph as the Person. */
+  structuredData?: Record<string, unknown>[];
 }
 const {
   title = 'Rodrigo Bustamante — Senior Software Engineer · Design Engineer & Senior FrontEnd Engineer',
@@ -36,6 +39,7 @@ const {
   hasLocalizedSibling = false,
   translationUrl,
   noindex = false,
+  structuredData = [],
 } = Astro.props;
 
 const { t } = useTranslations(lang);
@@ -63,17 +67,23 @@ const alternates = hasLocalizedSibling
 
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Rodrigo Bustamante',
-  jobTitle: 'Senior Software Engineer · Design Engineer & Senior FrontEnd Engineer',
-  url: 'https://rodrigobustamante.cl',
-  image: ogImageAbs,
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Madrid',
-    addressCountry: 'ES',
-  },
-  sameAs: [SOCIALS.linkedin, SOCIALS.github, SOCIALS.x],
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': PERSON_ID,
+      name: 'Rodrigo Bustamante',
+      jobTitle: 'Senior Software Engineer · Design Engineer & Senior FrontEnd Engineer',
+      url: 'https://rodrigobustamante.cl',
+      image: ogImageAbs,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Madrid',
+        addressCountry: 'ES',
+      },
+      sameAs: [SOCIALS.linkedin, SOCIALS.github, SOCIALS.x],
+    },
+    ...structuredData,
+  ],
 });
 ---
 
@@ -106,7 +116,7 @@ const jsonLd = JSON.stringify({
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageAbs} />
-    <!-- JSON-LD Person schema -->
+    <!-- JSON-LD: Person plus the page's own nodes -->
     <script type="application/ld+json" set:html={jsonLd}></script>
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
