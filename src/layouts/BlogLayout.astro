@@ -444,14 +444,19 @@ const resolvedOgImage = ogImage ?? `/og/blog/${resolvedLang}.png`;
 
       /* 404 */
       .not-found {
-        min-height: 60vh;
+        /* The ring scales with this height; below ~540px it cuts into the text. */
+        min-height: max(70vh, 540px);
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
         padding: var(--pad);
+        position: relative;
+        isolation: isolate;
       }
       .not-found-inner {
+        position: relative;
+        z-index: 1;
         max-width: 440px;
       }
       .not-found-num {
