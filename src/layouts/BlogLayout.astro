@@ -444,7 +444,8 @@ const resolvedOgImage = ogImage ?? `/og/blog/${resolvedLang}.png`;
 
       /* 404 */
       .not-found {
-        min-height: 70vh;
+        /* The ring scales with this height; below ~540px it cuts into the text. */
+        min-height: max(70vh, 540px);
         display: flex;
         align-items: center;
         justify-content: center;
