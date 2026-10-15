@@ -2,6 +2,7 @@
 import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
 import SiteHeader from '~/components/portfolio/SiteHeader.astro';
 import SiteFooter from '~/components/portfolio/SiteFooter.astro';
+import GradientAscii from '~/components/common/gradient-ascii/GradientAscii.astro';
 import { useTranslations, type Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 import { fetchPosts } from '~/utils/blog';
@@ -803,6 +804,17 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
 
     <!-- ——— Contact ——— -->
     <section id="contact" class="section">
+      <GradientAscii
+        class="contact-ascii"
+        options={{
+          shape: 'rise',
+          scale: 0.7,
+          cellSize: 14,
+          glyphOpacity: 0.6,
+          gradientOpacity: 0.35,
+          clickEffect: 'none',
+        }}
+      />
       <div class="wrap">
         <div class="contact-card reveal">
           <h2 class="contact-title">{t('contact.title')}</h2>
@@ -1331,6 +1343,20 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
   }
 
   /* ——— Contact ——— */
+  #contact {
+    position: relative;
+    isolation: isolate;
+    /* Room below the links for the ASCII field. */
+    padding-bottom: clamp(150px, 24vh, 240px);
+  }
+  #contact > .wrap {
+    position: relative;
+    z-index: 1;
+  }
+  /* Keep the field in the space below the links. */
+  .contact-ascii {
+    mask-image: linear-gradient(to bottom, transparent 62%, #000 88%);
+  }
   .contact-card {
     text-align: center;
     padding: clamp(20px, 4vh, 30px) 0;

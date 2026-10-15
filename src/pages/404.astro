@@ -1,5 +1,6 @@
 ---
 import BlogLayout from '~/layouts/BlogLayout.astro';
+import GradientAscii from '~/components/common/gradient-ascii/GradientAscii.astro';
 import { getHomePermalink } from '~/utils/permalinks';
 
 export const prerender = true;
@@ -7,6 +8,7 @@ export const prerender = true;
 
 <BlogLayout title="404 — Page Not Found" noindex>
   <div class="not-found">
+    <GradientAscii options={{ shape: 'eclipse', scale: 2, cellSize: 16, glyphOpacity: 0.7, gradientOpacity: 0.5 }} />
     <div class="not-found-inner">
       <div class="not-found-num" aria-hidden="true">
         404

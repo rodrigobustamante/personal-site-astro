@@ -1,0 +1,103 @@
+---
+import type { GradientASCIIOptions } from './engine';
+
+interface Props {
+  /** Options passed to the engine; colors and lightMode come from the theme. */
+  options?: Omit<GradientASCIIOptions, 'colors' | 'lightMode'>;
+  class?: string;
+}
+
+const { options = {}, class: className } = Astro.props;
+---
+
+<div class:list={['gascii', className]} data-options={JSON.stringify(options)} aria-hidden="true"></div>
+
+<style>
+  /* Fills the nearest positioned ancestor, behind its content. */
+  .gascii {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .gascii :global(.gradient-ascii-canvas) {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  import type { GradientASCIIHandle, GradientASCIIOptions } from './engine';
+
+  const handles = new Set<GradientASCIIHandle>();
+  const observers = new Set<IntersectionObserver>();
+
+  // Compiling the shaders blocks the main thread, so wait for an idle moment.
+  const whenIdle = (callback: () => void) =>
+    'requestIdleCallback' in window ? requestIdleCallback(callback, { timeout: 1500 }) : setTimeout(callback, 200);
+
+  // Gradient ramps built from the theme tokens, so the effect follows both the
+  // light/dark switch and the accent palette the visitor picked.
+  function themeOptions(): GradientASCIIOptions {
+    const root = document.documentElement;
+    const css = getComputedStyle(root);
+    const token = (name: string) => css.getPropertyValue(name).trim();
+    const lightMode = root.dataset.theme !== 'dark';
+    return {
+      lightMode,
+      colors: lightMode
+        ? [token('--paper-2'), token('--accent'), token('--accent-ink')]
+        : [token('--accent-ink'), token('--accent'), token('--ink')],
+    };
+  }
+
+  function initGradientAscii() {
+    document.querySelectorAll<HTMLElement>('.gascii:not([data-io])').forEach((el) => {
+      el.dataset.io = '';
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          observer.disconnect();
+          observers.delete(observer);
+          import('./engine')
+            .then(({ mount }) =>
+              whenIdle(() => {
+                // A ClientRouter navigation may have swapped the page out while
+                // the engine chunk was loading.
+                if (!el.isConnected) return;
+                const options = JSON.parse(el.dataset.options ?? '{}') as GradientASCIIOptions;
+                const handle = mount(el, { ...options, ...themeOptions() });
+                if (handle) handles.add(handle);
+              })
+            )
+            .catch(() => {
+              // Decorative: without WebGL2 the section keeps its plain background.
+            });
+        },
+        { rootMargin: '200px 0px' }
+      );
+      observer.observe(el);
+      observers.add(observer);
+    });
+  }
+
+  new MutationObserver(() => {
+    if (!handles.size) return;
+    const next = themeOptions();
+    handles.forEach((handle) => handle.update(next));
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'style'] });
+
+  document.addEventListener('astro:before-swap', () => {
+    handles.forEach((handle) => handle.destroy());
+    handles.clear();
+    observers.forEach((observer) => observer.disconnect());
+    observers.clear();
+  });
+
+  initGradientAscii();
+  document.addEventListener('astro:page-load', initGradientAscii);
+</script>
