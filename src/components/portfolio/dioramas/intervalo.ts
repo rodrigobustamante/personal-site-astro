@@ -204,19 +204,21 @@ const svg = [
 const LOOP = '12s';
 const at = (v: number, w = 0) => `translate(${shift(v, w)})`;
 const css = `
+/* Line B wears the same colour as its train (the 'deep' tone base in iso.ts). */
+.dio { --dio-line-b: color-mix(in oklab, var(--ink) var(--dio-deep), var(--accent-3)); }
 .dio .dio-rail { fill: none; stroke: var(--dio-body); stroke-width: 0.7; opacity: 0.7; }
 .dio .dio-post { fill: none; stroke: var(--dio-wall); stroke-width: 1.2; }
 .dio .dio-edge { fill: none; stroke: var(--accent); stroke-width: 1.4; }
 .dio .dio-stripe { fill: none; stroke: var(--dio-void); stroke-width: 1; opacity: 0.35; }
 .dio .dio-car-windows { fill: none; stroke: var(--dio-body); stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 0 4.5; }
-.dio .dio-edge-b { fill: none; stroke: color-mix(in oklab, var(--ink) 65%, var(--accent)); stroke-width: 1.4; }
+.dio .dio-edge-b { fill: none; stroke: var(--dio-line-b); stroke-width: 1.4; }
 .dio .dio-ping { fill: none; stroke: var(--accent); stroke-width: 1.6; opacity: 0; transform-box: fill-box; transform-origin: center; vector-effect: non-scaling-stroke; }
-.dio .dio-ping-b { stroke: color-mix(in oklab, var(--ink) 65%, var(--accent)); }
+.dio .dio-ping-b { stroke: var(--dio-line-b); }
 .dio .dio-notes { opacity: 0; }
 .dio .dio-note-head { fill: var(--accent); stroke: none; }
 .dio .dio-note-stem { fill: none; stroke: var(--accent); stroke-width: 1.2; stroke-linecap: round; }
-.dio .dio-notes-b .dio-note-head { fill: color-mix(in oklab, var(--ink) 65%, var(--accent)); }
-.dio .dio-notes-b .dio-note-stem { stroke: color-mix(in oklab, var(--ink) 65%, var(--accent)); }
+.dio .dio-notes-b .dio-note-head { fill: var(--dio-line-b); }
+.dio .dio-notes-b .dio-note-stem { stroke: var(--dio-line-b); }
 .dio .dio-train-a { transform: ${at(TA.stop)}; }
 .dio .dio-train-b { transform: ${at(0, TB.stop - TB.start)}; }
 @media (prefers-reduced-motion: no-preference) {
