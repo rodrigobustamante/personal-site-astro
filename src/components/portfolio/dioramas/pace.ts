@@ -241,7 +241,9 @@ const SKIN: Record<string, string> = {
   hair: '#3a2a20',
 };
 const runnerCss = Object.entries(SKIN)
-  .flatMap(([m, c]) => [0, 8, 16, 26].map((k, t) => `.dio .${m}${t}{--f:color-mix(in oklab, ${c}, #161838 ${k}%)}`))
+  .flatMap(([m, c]) =>
+    [0, 8, 16, 26].map((k, t) => `.dio .${m}${t}{--f:color-mix(in oklab, ${c}, var(--dio-shade) ${k}%)}`)
+  )
   .join('');
 
 const svg = [

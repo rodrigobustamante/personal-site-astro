@@ -25,6 +25,8 @@ const [, , w, h] = SCENES[scene].viewBox.split(' ');
   .dio {
     --dio-tone: var(--ink);
     --dio-soft: 55%;
+    --dio-deep: 55%;
+    --dio-shade: #161838;
     --dio-k0: 0%;
     --dio-k1: 9%;
     --dio-k2: 18%;
@@ -53,6 +55,16 @@ const [, , w, h] = SCENES[scene].viewBox.split(' ');
     --dio-wall: color-mix(in oklab, var(--dio-tone) 30%, var(--card));
     --dio-body: color-mix(in oklab, var(--ink) 58%, var(--card));
     --dio-void: color-mix(in oklab, var(--paper), var(--ink) 5%);
+  }
+  /* Editorial keeps the original mixes: a single accent, warm shading. */
+  :root[data-style='editorial'] .dio {
+    --dio-soft: 40%;
+    --dio-deep: 65%;
+    --dio-shade: #1b130e;
+  }
+  :root[data-style='editorial'][data-theme='dark'] .dio {
+    --dio-tone: var(--ink);
+    --dio-wall: color-mix(in oklab, var(--ink) 22%, var(--card));
   }
   .dio svg {
     display: block;

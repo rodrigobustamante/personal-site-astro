@@ -28,7 +28,7 @@ const BASES: Record<string, string> = {
   // Secondary surfaces carry the companion hues, so each scene reads in three
   // colours rather than shades of one.
   soft: 'color-mix(in oklab, var(--accent-2) var(--dio-soft), var(--card))',
-  deep: 'color-mix(in oklab, var(--ink) 55%, var(--accent-3))',
+  deep: 'color-mix(in oklab, var(--ink) var(--dio-deep), var(--accent-3))',
 };
 export const toneCss = Object.entries(BASES)
   .flatMap(([m, base]) =>

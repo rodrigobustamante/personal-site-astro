@@ -4,7 +4,7 @@ import { SITE, SOCIALS } from '~/utils/config';
 import { PERSON_ID } from '~/utils/structured-data';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
-import { PALETTES, DEFAULT_PALETTE } from '~/utils/palettes';
+import { STYLES, DEFAULT_STYLE } from '~/utils/palettes';
 import { useTranslations } from '~/i18n/ui';
 
 interface Props {
@@ -232,6 +232,41 @@ const jsonLd = JSON.stringify({
         --accent-2: oklch(0.84 0.15 82);
         --accent-3: oklch(0.8 0.12 190);
         --on-accent: oklch(0.18 0.05 278);
+      }
+
+      /* Editorial style: warm paper and brown ink, the site's original look. */
+      :root[data-style='editorial'] {
+        --paper: oklch(0.972 0.013 79);
+        --paper-2: oklch(0.945 0.016 78);
+        --card: oklch(0.99 0.006 85);
+        --ink: oklch(0.27 0.018 55);
+        --ink-soft: oklch(0.42 0.02 52);
+        --muted: oklch(0.46 0.018 55);
+        --faint: oklch(0.6 0.015 60);
+        --line: oklch(0.88 0.014 72);
+        --line-soft: oklch(0.92 0.012 75);
+        --accent: oklch(0.565 0.125 42);
+        --accent-soft: color-mix(in oklab, oklch(0.565 0.125 42) 12%, transparent);
+        --accent-ink: oklch(0.46 0.12 42);
+        --accent-2: var(--accent);
+        --accent-3: var(--accent);
+        --on-accent: oklch(0.99 0.01 85);
+      }
+
+      :root[data-style='editorial'][data-theme='dark'] {
+        --paper: oklch(0.205 0.012 56);
+        --paper-2: oklch(0.245 0.014 56);
+        --card: oklch(0.255 0.014 56);
+        --ink: oklch(0.94 0.012 80);
+        --ink-soft: oklch(0.82 0.014 78);
+        --muted: oklch(0.68 0.016 70);
+        --faint: oklch(0.62 0.016 65);
+        --line: oklch(0.36 0.016 58);
+        --line-soft: oklch(0.31 0.014 58);
+        --accent: oklch(0.72 0.12 48);
+        --accent-soft: color-mix(in oklab, oklch(0.72 0.12 48) 16%, transparent);
+        --accent-ink: oklch(0.78 0.12 50);
+        --on-accent: oklch(0.18 0.02 56);
       }
 
       /* ——— Reset ——— */
@@ -747,29 +782,43 @@ const jsonLd = JSON.stringify({
         }
       }
     </style>
-    <!-- Anti-FOUC: set theme + lang before first paint -->
-    <script is:inline define:vars={{ PALETTES, DEFAULT_PALETTE }}>
+    <!-- Anti-FOUC: set theme, style + lang before first paint -->
+    <script is:inline define:vars={{ STYLES, DEFAULT_STYLE }}>
       (function () {
-        // Applies the stored theme and accent palette to <html>. Runs before
-        // first paint, again after every ClientRouter swap (which copies the
-        // static <html> attributes), and from the header toggle.
+        // Applies the stored theme, base style and accent palette to <html>.
+        // Runs before first paint, again after every ClientRouter swap (which
+        // copies the static <html> attributes), and from the header toggle.
+        // Storage can throw (blocked cookies, sandboxed frames): read it as null.
+        function read(key) {
+          try {
+            return localStorage.getItem(key);
+          } catch {
+            return null;
+          }
+        }
+        // Own keys only, so a stored 'constructor' can't match the prototype.
+        function pick(map, key, fallback) {
+          return key && Object.prototype.hasOwnProperty.call(map, key) ? key : fallback;
+        }
         function applyTheme() {
           const el = document.documentElement;
-          const theme =
-            localStorage.getItem('theme') ||
-            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-          const palette = localStorage.getItem('palette') || DEFAULT_PALETTE;
+          const theme = read('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          const styleName = pick(STYLES, read('style'), DEFAULT_STYLE);
+          const style = STYLES[styleName];
           el.dataset.theme = theme;
-          // A name saved before a palette was retired falls back to the default.
-          const p = PALETTES[palette] || PALETTES[DEFAULT_PALETTE];
+          el.dataset.style = styleName.toLowerCase();
+          // A palette from the other style, or one since retired, falls back to
+          // this style's default.
+          const p = style.palettes[pick(style.palettes, read('palette'), style.default)];
           const d = theme === 'dark';
-          el.style.setProperty('--accent', d ? p.d : p.l);
+          const accent = d ? p.d : p.l;
+          el.style.setProperty('--accent', accent);
           el.style.setProperty('--accent-ink', d ? p.di : p.li);
-          el.style.setProperty('--accent-2', d ? p.d2 : p.l2);
-          el.style.setProperty('--accent-3', d ? p.d3 : p.l3);
+          el.style.setProperty('--accent-2', (d ? p.d2 : p.l2) || accent);
+          el.style.setProperty('--accent-3', (d ? p.d3 : p.l3) || accent);
           el.style.setProperty(
             '--accent-soft',
-            'color-mix(in oklab, ' + (d ? p.d : p.l) + ' ' + (d ? 16 : 12) + '%, transparent)'
+            'color-mix(in oklab, ' + accent + ' ' + (d ? 16 : 12) + '%, transparent)'
           );
         }
         // First page of the session: flag <html> so the hero plays its intro

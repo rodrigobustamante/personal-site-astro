@@ -1,9 +1,9 @@
 /**
- * Accent palettes. `l` / `d` are the accent in light / dark mode, `li` / `di`
- * the darker / lighter ink variant used for accent text. Read by the anti-FOUC
- * script in PortfolioLayout (via define:vars) and rendered on /system.
- * `l` keeps white button text at 4.5:1 or more (WCAG AA); accent text uses
- * the ink variant.
+ * Accent palettes, grouped by base style. `l` / `d` are the accent in light /
+ * dark mode, `li` / `di` the darker / lighter ink variant used for accent text.
+ * Read by the anti-FOUC script in PortfolioLayout (via define:vars) and
+ * rendered on /system. `l` keeps white button text at 4.5:1 or more (WCAG AA);
+ * accent text uses the ink variant.
  */
 export interface Palette {
   l: string;
@@ -11,18 +11,23 @@ export interface Palette {
   li: string;
   di: string;
   /** Illustration-only companions (--accent-2 / --accent-3), light / dark: hues
-   * set against the accent so dioramas keep three distinct colours. */
-  l2: string;
-  d2: string;
-  l3: string;
-  d3: string;
+   * set against the accent so dioramas keep three distinct colours. Without
+   * them the accent fills both roles, as the Editorial style does. */
+  l2?: string;
+  d2?: string;
+  l3?: string;
+  d3?: string;
 }
 
-export const DEFAULT_PALETTE = 'Magenta';
+/** A base style: its neutrals live in PortfolioLayout under [data-style]. */
+export interface Style {
+  default: string;
+  palettes: Record<string, Palette>;
+}
 
 // Saturated accents over the cool indigo base, after Kurzgesagt's flat
 // illustration style. Checked to WCAG AA against --paper and --card.
-export const PALETTES: Record<string, Palette> = {
+const KURZGESAGT: Record<string, Palette> = {
   // Companions: amber, teal.
   Magenta: {
     l: 'oklch(0.55 0.21 355)',
@@ -89,4 +94,40 @@ export const PALETTES: Record<string, Palette> = {
     l3: 'oklch(0.6 0.1 195)',
     d3: 'oklch(0.8 0.12 190)',
   },
+};
+
+// Warm paper and earthy accents: the site's original look.
+const EDITORIAL: Record<string, Palette> = {
+  Terracotta: {
+    l: 'oklch(0.565 0.125 42)',
+    d: 'oklch(0.72 0.12 48)',
+    li: 'oklch(0.46 0.12 42)',
+    di: 'oklch(0.78 0.12 50)',
+  },
+  Ochre: { l: 'oklch(0.56 0.12 75)', d: 'oklch(0.78 0.11 82)', li: 'oklch(0.5 0.11 72)', di: 'oklch(0.82 0.11 84)' },
+  Olive: {
+    l: 'oklch(0.545 0.09 130)',
+    d: 'oklch(0.72 0.1 135)',
+    li: 'oklch(0.45 0.09 128)',
+    di: 'oklch(0.78 0.1 138)',
+  },
+  Indigo: {
+    l: 'oklch(0.5 0.11 270)',
+    d: 'oklch(0.7 0.12 275)',
+    li: 'oklch(0.45 0.12 270)',
+    di: 'oklch(0.76 0.12 278)',
+  },
+  Plum: {
+    l: 'oklch(0.52 0.13 350)',
+    d: 'oklch(0.72 0.12 352)',
+    li: 'oklch(0.45 0.13 350)',
+    di: 'oklch(0.78 0.12 354)',
+  },
+};
+
+export const DEFAULT_STYLE = 'Kurzgesagt';
+
+export const STYLES: Record<string, Style> = {
+  Kurzgesagt: { default: 'Magenta', palettes: KURZGESAGT },
+  Editorial: { default: 'Terracotta', palettes: EDITORIAL },
 };
