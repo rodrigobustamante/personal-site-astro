@@ -4,7 +4,7 @@ import SiteHeader from '~/components/portfolio/SiteHeader.astro';
 import SiteFooter from '~/components/portfolio/SiteFooter.astro';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
-import { PALETTES, DEFAULT_PALETTE } from '~/utils/palettes';
+import { STYLES, DEFAULT_STYLE } from '~/utils/palettes';
 
 interface Props {
   lang: Lang;
@@ -17,13 +17,16 @@ const COPY = {
     title: 'Design system',
     tag: 'System',
     intro:
-      'The tokens and components this site is built with, rendered live from the same CSS. Switch the accent palette or the theme and everything below — and the rest of the site — follows.',
+      'The tokens and components this site is built with, rendered live from the same CSS. Switch the base style, the accent palette or the theme and everything below — and the rest of the site — follows.',
+    style: 'Base style',
+    styleSub:
+      'Each style sets its own neutrals and accent palettes. Cosmos: cool indigo with saturated accents. Paper: warm paper with earthy accents, the original look.',
     accent: 'Accent palettes',
     accentSub:
-      'One accent per palette, with a darker ink variant for text in light mode and a lighter one in dark mode. Your choice is saved in this browser.',
+      'One accent per palette, with a darker ink variant for text in light mode and a lighter one in dark mode, plus two companion hues (the small dots) for illustrations. The palettes change with the base style; your choice is saved in this browser.',
     current: 'current',
     neutrals: 'Color tokens',
-    neutralsSub: 'Warm neutrals in OKLCH. Values update with the theme.',
+    neutralsSub: 'Neutrals of the current base style, in OKLCH. Values update with the style and theme.',
     type: 'Typography',
     typeSub:
       'Newsreader for display and reading, Hanken Grotesk for interface text. Both self-hosted as trimmed variable fonts.',
@@ -45,6 +48,8 @@ const COPY = {
       '--accent': 'Accent',
       '--accent-ink': 'Accent text',
       '--accent-soft': 'Accent tint',
+      '--accent-2': 'Illustration amber',
+      '--accent-3': 'Illustration teal',
     },
     specimen: {
       display: 'Display — Newsreader 400',
@@ -75,13 +80,16 @@ const COPY = {
     title: 'Sistema de diseño',
     tag: 'Sistema',
     intro:
-      'Los tokens y componentes con los que está hecho este sitio, renderizados en vivo desde el mismo CSS. Cambia la paleta de acento o el tema y todo lo de abajo —y el resto del sitio— lo sigue.',
+      'Los tokens y componentes con los que está hecho este sitio, renderizados en vivo desde el mismo CSS. Cambia el estilo base, la paleta de acento o el tema y todo lo de abajo —y el resto del sitio— lo sigue.',
+    style: 'Estilo base',
+    styleSub:
+      'Cada estilo define sus propios neutros y paletas de acento. Cosmos: índigo frío con acentos saturados. Paper: papel cálido con acentos terrosos, el look original.',
     accent: 'Paletas de acento',
     accentSub:
-      'Un acento por paleta, con una variante de texto más oscura en modo claro y otra más clara en modo oscuro. Tu elección se guarda en este navegador.',
+      'Un acento por paleta, con una variante de texto más oscura en modo claro y otra más clara en modo oscuro, y dos tonos complementarios (los puntos pequeños) para las ilustraciones. Las paletas cambian con el estilo base; tu elección se guarda en este navegador.',
     current: 'actual',
     neutrals: 'Tokens de color',
-    neutralsSub: 'Neutros cálidos en OKLCH. Los valores cambian con el tema.',
+    neutralsSub: 'Neutros del estilo base actual, en OKLCH. Los valores cambian con el estilo y el tema.',
     type: 'Tipografía',
     typeSub:
       'Newsreader para títulos y lectura, Hanken Grotesk para la interfaz. Ambas alojadas en el sitio como fuentes variables recortadas.',
@@ -103,6 +111,8 @@ const COPY = {
       '--accent': 'Acento',
       '--accent-ink': 'Texto de acento',
       '--accent-soft': 'Tinte de acento',
+      '--accent-2': 'Ámbar de ilustración',
+      '--accent-3': 'Turquesa de ilustración',
     },
     specimen: {
       display: 'Display — Newsreader 400',
@@ -151,28 +161,59 @@ const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
       <p class="sys-intro">{c.intro}</p>
     </header>
 
+    <section class="sys-section" aria-labelledby="sys-style">
+      <h2 id="sys-style" class="sys-h2">
+        {c.style}
+      </h2>
+      <p class="sys-sub">{c.styleSub}</p>
+      <div class="palettes">
+        {Object.entries(STYLES).map(([name, style]) => {
+          const p = style.palettes[style.default];
+          return (
+            <button
+              class="palette"
+              type="button"
+              data-style-option={name}
+              aria-pressed={name === DEFAULT_STYLE ? 'true' : 'false'}
+            >
+              <span class="palette-dots" aria-hidden="true">
+                <span style={`background:${p.l}`} />
+                <span style={`background:${p.d}`} />
+              </span>
+              <span class="palette-name">{name}</span>
+              <span class="palette-current">{c.current}</span>
+            </button>
+          );
+        })}
+      </div>
+    </section>
+
     <section class="sys-section" aria-labelledby="sys-accent">
       <h2 id="sys-accent" class="sys-h2">
         {c.accent}
       </h2>
       <p class="sys-sub">{c.accentSub}</p>
-      <div class="palettes">
-        {Object.entries(PALETTES).map(([name, p]) => (
-          <button
-            class="palette"
-            type="button"
-            data-palette={name}
-            aria-pressed={name === DEFAULT_PALETTE ? 'true' : 'false'}
-          >
-            <span class="palette-dots" aria-hidden="true">
-              <span style={`background:${p.l}`} />
-              <span style={`background:${p.d}`} />
-            </span>
-            <span class="palette-name">{name}</span>
-            <span class="palette-current">{c.current}</span>
-          </button>
-        ))}
-      </div>
+      {Object.entries(STYLES).map(([styleName, style]) => (
+        <div class="palettes" data-palettes-for={styleName.toLowerCase()}>
+          {Object.entries(style.palettes).map(([name, p]) => (
+            <button
+              class="palette"
+              type="button"
+              data-palette={name}
+              aria-pressed={styleName === DEFAULT_STYLE && name === style.default ? 'true' : 'false'}
+            >
+              <span class="palette-dots" aria-hidden="true">
+                <span style={`background:${p.l}`} />
+                <span style={`background:${p.d}`} />
+                {p.l2 && <span class="palette-companion" style={`background:${p.l2}`} />}
+                {p.l3 && <span class="palette-companion" style={`background:${p.l3}`} />}
+              </span>
+              <span class="palette-name">{name}</span>
+              <span class="palette-current">{c.current}</span>
+            </button>
+          ))}
+        </div>
+      ))}
     </section>
 
     <section class="sys-section" aria-labelledby="sys-color">
@@ -300,47 +341,78 @@ const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
 </PortfolioLayout>
 
 <script>
-  // Palette switcher + live token values. Re-binds after every ClientRouter
-  // navigation; the theme logic itself lives in PortfolioLayout.
+  import { DEFAULT_STYLE, STYLES } from '~/utils/palettes';
+
+  // Style + palette switchers and live token values. Re-binds after every
+  // ClientRouter navigation; the theme logic itself lives in PortfolioLayout.
   type ThemeWindow = Window & { __applyTheme?: () => void };
 
   function initSystem() {
     const root = document.documentElement;
-    const buttons = document.querySelectorAll<HTMLButtonElement>('.palette');
-    if (!buttons.length) return;
+    const styleButtons = document.querySelectorAll<HTMLButtonElement>('[data-style-option]');
+    const paletteButtons = document.querySelectorAll<HTMLButtonElement>('[data-palette]');
+    if (!paletteButtons.length) return;
 
-    const readPalette = () => {
+    const read = (key: string) => {
       try {
-        return localStorage.getItem('palette') || 'Terracotta';
+        return localStorage.getItem(key);
       } catch {
-        return 'Terracotta';
+        return null;
       }
+    };
+    const save = (key: string, value: string) => {
+      try {
+        localStorage.setItem(key, value);
+      } catch {
+        // Storage blocked: the choice applies only until the next page.
+      }
+    };
+    // Mirror the layout script: unknown names resolve to the defaults.
+    const own = (map: object, key: string | null): key is string => !!key && Object.hasOwn(map, key);
+    const readStyle = () => {
+      const name = read('style');
+      return own(STYLES, name) ? name : DEFAULT_STYLE;
+    };
+    const readPalette = () => {
+      const style = STYLES[readStyle()];
+      const name = read('palette');
+      return own(style.palettes, name) ? name : style.default;
     };
     const fillValues = () => {
       const styles = getComputedStyle(root);
       document.querySelectorAll<HTMLElement>('.swatch-value').forEach((el) => {
         el.textContent = styles.getPropertyValue(el.dataset.token ?? '').trim();
       });
-      const current = readPalette();
-      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.palette === current)));
+      const style = readStyle();
+      const palette = readPalette();
+      styleButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.styleOption === style)));
+      paletteButtons.forEach((b) => {
+        const group = b.closest<HTMLElement>('[data-palettes-for]')?.dataset.palettesFor;
+        b.setAttribute('aria-pressed', String(group === style.toLowerCase() && b.dataset.palette === palette));
+      });
+    };
+    const apply = () => {
+      (window as ThemeWindow).__applyTheme?.();
+      fillValues();
     };
 
-    buttons.forEach((button) =>
+    styleButtons.forEach((button) =>
       button.addEventListener('click', () => {
-        try {
-          localStorage.setItem('palette', button.dataset.palette ?? 'Terracotta');
-        } catch {
-          // Storage blocked: the palette applies only until the next page.
-        }
-        (window as ThemeWindow).__applyTheme?.();
-        fillValues();
+        save('style', button.dataset.styleOption ?? DEFAULT_STYLE);
+        apply();
+      })
+    );
+    paletteButtons.forEach((button) =>
+      button.addEventListener('click', () => {
+        save('palette', button.dataset.palette ?? STYLES[readStyle()].default);
+        apply();
       })
     );
 
     fillValues();
     // The header toggle changes data-theme and the inline --accent* styles.
     const observer = new MutationObserver(fillValues);
-    observer.observe(root, { attributes: true, attributeFilter: ['data-theme', 'style'] });
+    observer.observe(root, { attributes: true, attributeFilter: ['data-theme', 'data-style', 'style'] });
     document.addEventListener('astro:before-swap', () => observer.disconnect(), { once: true });
   }
 
@@ -405,6 +477,14 @@ const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 12px;
   }
+  /* Only the active style's palettes; Cosmos is the default. */
+  .palettes[data-palettes-for='paper'],
+  :global(:root[data-style='paper']) .palettes[data-palettes-for='cosmos'] {
+    display: none;
+  }
+  :global(:root[data-style='paper']) .palettes[data-palettes-for='paper'] {
+    display: grid;
+  }
   .palette {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -443,6 +523,15 @@ const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
   }
   .palette-dots span + span {
     margin-left: -8px;
+  }
+  /* Smaller dots for the illustration companions, set apart from the accent. */
+  .palette-dots .palette-companion {
+    width: 14px;
+    height: 14px;
+    align-self: center;
+  }
+  .palette-dots span:not(.palette-companion) + .palette-companion {
+    margin-left: 4px;
   }
   .palette-name {
     font-weight: 500;
