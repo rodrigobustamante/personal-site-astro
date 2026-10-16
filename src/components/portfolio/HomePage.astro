@@ -681,6 +681,16 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
                   ↗
                 </span>
               </a>
+              <a
+                class="project-link"
+                href={localizedPath('/work/intervalo', lang)}
+                aria-label={`${t('projects.more')} — Intervalo`}
+              >
+                {t('projects.more')}
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
             </div>
           </article>
         </div>
