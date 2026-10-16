@@ -524,6 +524,41 @@ const jsonLd = JSON.stringify({
         color: var(--ink-soft);
         transition: all 0.2s;
       }
+      /* Small hover / keyboard-focus tooltips on the header tools. Right-aligned
+         to the button so the last one never runs past the page edge; skipped on
+         touch screens, where the aria-label does the job. */
+      @media (hover: hover) {
+        .tool-btn[data-tip] {
+          position: relative;
+        }
+        .tool-btn[data-tip]::after {
+          content: attr(data-tip);
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          z-index: 10;
+          padding: 5px 9px;
+          border-radius: 6px;
+          background: var(--ink);
+          color: var(--paper);
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 1.2;
+          white-space: nowrap;
+          pointer-events: none;
+          opacity: 0;
+          transform: translateY(-2px);
+          transition:
+            opacity 0.15s,
+            transform 0.15s;
+        }
+        .tool-btn[data-tip]:hover::after,
+        .tool-btn[data-tip]:focus-visible::after {
+          opacity: 1;
+          transform: none;
+          transition-delay: 0.35s;
+        }
+      }
       .tool-btn:hover {
         border-color: var(--ink-soft);
         color: var(--ink);

@@ -58,6 +58,7 @@ const nav =
       <a
         class="tool-btn lang-btn"
         id="lang-toggle"
+        data-tip={t('tip.lang')}
         href={altUrl}
         hreflang={otherLang}
         data-astro-reload
@@ -77,6 +78,9 @@ const nav =
         class="tool-btn style-btn"
         id="style-toggle"
         data-style-toggle
+        data-tip={t('tip.toPaper')}
+        data-tip-off={t('tip.toPaper')}
+        data-tip-on={t('tip.toCosmos')}
         type="button"
         aria-label={t('header.style')}
         aria-pressed="false"
@@ -112,7 +116,16 @@ const nav =
           <path d="M7.2 14.8c-3.1 1.9-4.7 3.7-4 4.6 1 1.4 6.4-.8 12-4.9s9.2-8.6 8.2-10c-.6-.9-3-.3-6 1.3"></path>
         </svg>
       </button>
-      <button class="tool-btn" id="theme-toggle" type="button" aria-label={t('header.theme')} aria-pressed="false">
+      <button
+        class="tool-btn"
+        id="theme-toggle"
+        type="button"
+        aria-label={t('header.theme')}
+        aria-pressed="false"
+        data-tip={t('tip.toDark')}
+        data-tip-off={t('tip.toDark')}
+        data-tip-on={t('tip.toLight')}
+      >
         <svg
           id="icon-sun"
           width="16"
@@ -177,6 +190,12 @@ const nav =
   // exposed as window.__applyTheme so it can run before first paint.
   const applyTheme = () => (window as Window & { __applyTheme?: () => void }).__applyTheme?.();
 
+  // Tooltips name the action a toggle performs, so they flip with its state.
+  const setTip = (el: HTMLElement, on: boolean) => {
+    const tip = on ? el.dataset.tipOn : el.dataset.tipOff;
+    if (tip) el.dataset.tip = tip;
+  };
+
   let scrollBound = false;
   function bindScroll() {
     if (scrollBound) return;
@@ -205,6 +224,7 @@ const nav =
       if (iconSun) iconSun.style.display = theme === 'dark' ? 'block' : 'none';
       if (iconMoon) iconMoon.style.display = theme === 'dark' ? 'none' : 'block';
       themeToggle?.setAttribute('aria-pressed', String(theme === 'dark'));
+      if (themeToggle) setTip(themeToggle, theme === 'dark');
     };
     applyThemeIcons(document.documentElement.dataset.theme || 'light');
 
@@ -223,6 +243,8 @@ const nav =
       if (iconPaper) iconPaper.style.display = paper ? 'none' : 'block';
       if (iconCosmos) iconCosmos.style.display = paper ? 'block' : 'none';
       styleToggles.forEach((el) => el.setAttribute('aria-pressed', String(paper)));
+      const styleButton = document.getElementById('style-toggle');
+      if (styleButton) setTip(styleButton, paper);
     };
     applyStyleIcon();
     styleToggles.forEach((el) =>
