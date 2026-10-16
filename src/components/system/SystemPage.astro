@@ -20,7 +20,7 @@ const COPY = {
       'The tokens and components this site is built with, rendered live from the same CSS. Switch the accent palette or the theme and everything below — and the rest of the site — follows.',
     accent: 'Accent palettes',
     accentSub:
-      'One accent per palette, with a darker ink variant for text in light mode and a lighter one in dark mode. Your choice is saved in this browser.',
+      'One accent per palette, with a darker ink variant for text in light mode and a lighter one in dark mode, plus two companion hues (the small dots) for illustrations. Your choice is saved in this browser.',
     current: 'current',
     neutrals: 'Color tokens',
     neutralsSub: 'Cool indigo neutrals in OKLCH. Values update with the theme.',
@@ -80,7 +80,7 @@ const COPY = {
       'Los tokens y componentes con los que está hecho este sitio, renderizados en vivo desde el mismo CSS. Cambia la paleta de acento o el tema y todo lo de abajo —y el resto del sitio— lo sigue.',
     accent: 'Paletas de acento',
     accentSub:
-      'Un acento por paleta, con una variante de texto más oscura en modo claro y otra más clara en modo oscuro. Tu elección se guarda en este navegador.',
+      'Un acento por paleta, con una variante de texto más oscura en modo claro y otra más clara en modo oscuro, y dos tonos complementarios (los puntos pequeños) para las ilustraciones. Tu elección se guarda en este navegador.',
     current: 'actual',
     neutrals: 'Tokens de color',
     neutralsSub: 'Neutros índigo fríos en OKLCH. Los valores cambian con el tema.',
@@ -171,6 +171,8 @@ const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
             <span class="palette-dots" aria-hidden="true">
               <span style={`background:${p.l}`} />
               <span style={`background:${p.d}`} />
+              <span class="palette-companion" style={`background:${p.l2}`} />
+              <span class="palette-companion" style={`background:${p.l3}`} />
             </span>
             <span class="palette-name">{name}</span>
             <span class="palette-current">{c.current}</span>
@@ -451,6 +453,15 @@ const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
   }
   .palette-dots span + span {
     margin-left: -8px;
+  }
+  /* Smaller dots for the illustration companions, set apart from the accent. */
+  .palette-dots .palette-companion {
+    width: 14px;
+    height: 14px;
+    align-self: center;
+  }
+  .palette-dots span:not(.palette-companion) + .palette-companion {
+    margin-left: 4px;
   }
   .palette-name {
     font-weight: 500;
