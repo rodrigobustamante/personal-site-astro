@@ -172,7 +172,7 @@ export const ui = {
     'projects.pace.status': 'In development',
     'projects.intervalo.title': 'Intervalo',
     'projects.intervalo.desc':
-      'Sonic visualization of metro networks (Santiago & Madrid) using GTFS open data, MapLibre GL JS, and the Web Audio API. Each station, line, and transfer becomes sound.',
+      'Sonic visualization of metro networks (Santiago & Madrid) using GTFS open data, MapLibre GL JS, and the Web Audio API. Each train arriving at a station becomes a note.',
     'projects.intervalo.status': 'In development',
     'projects.repo': 'Repo',
     'projects.demo': 'Demo',
@@ -376,7 +376,7 @@ export const ui = {
     'projects.pace.status': 'En desarrollo',
     'projects.intervalo.title': 'Intervalo',
     'projects.intervalo.desc':
-      'Visualización sonora de redes de metro (Santiago y Madrid) usando datos abiertos GTFS, MapLibre GL JS y la Web Audio API. Cada estación, línea y trasbordo se convierte en sonido.',
+      'Visualización sonora de redes de metro (Santiago y Madrid) usando datos abiertos GTFS, MapLibre GL JS y la Web Audio API. Cada tren que llega a una estación se convierte en una nota.',
     'projects.intervalo.status': 'En desarrollo',
     'projects.repo': 'Repo',
     'projects.demo': 'Demo',

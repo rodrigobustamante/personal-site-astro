@@ -1,0 +1,75 @@
+---
+title: 'Intervalo'
+subtitle: 'El metro como instrumento: los trenes de Santiago y Madrid recreados a partir de sus horarios, cada llegada a una estación una nota'
+tag: 'Proyecto personal'
+period: 'May 2026 — Presente'
+scope: 'App web · Pipeline de datos GTFS · Audio generativo'
+stack: [Next.js, React, TypeScript, MapLibre GL JS, Web Audio API, GTFS, Tailwind CSS, Vercel]
+order: 4
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problema y contexto" title="Escuchar una red de metro">
+
+Una red de metro tiene un ritmo: los trenes salen de sus cabeceras según un horario, llegan a las estaciones a intervalos fijos y, cuanto más cargada la hora, más denso el patrón. Intervalo hace audible ese ritmo. Eliges una ciudad, Santiago o Madrid, y un mapa a pantalla completa muestra todos los trenes que circulan en ese momento. Cuando un tren llega a una estación suena una nota corta con la voz de su línea, y en el mapa se abre un anillo.
+
+Es un proyecto personal inspirado en El Organillero y TrainJazz, que construí solo sobre los datos abiertos GTFS de cada ciudad. La primera versión cubría Santiago; Madrid se sumó al día siguiente.
+
+</Section>
+
+<Section label="02 — Arquitectura" title="Datos estáticos, sin servidor">
+  <Pillars>
+    <Pillar title="El servicio de hoy a partir de un horario estático">
+
+Intervalo no usa datos en tiempo real. El horario GTFS de cada ciudad se procesa una vez, y el navegador calcula dónde debería estar cada tren ahora: toma la hora actual en la zona horaria de la ciudad, elige el calendario de servicio de ese día de la semana y ubica cada viaje entre su última parada y la siguiente. El resultado parece en vivo sin ningún backend: la app es un sitio Next.js en Vercel, sin rutas de API ni variables de entorno.
+
+    </Pillar>
+    <Pillar title="Un pipeline por ciudad en tiempo de build">
+
+Dos scripts de Node leen los archivos GTFS y escriben JSON compacto. Para Santiago, el script se queda solo con el operador del metro, elige un trazado por línea y une los andenes de cada sentido en una sola estación. Además, en el build asocia cada estación al punto más cercano del trazado de su línea. Así los trenes avanzan sobre la geometría real de la vía entre estaciones, en vez de cruzar el mapa en línea recta.
+
+El feed de Madrid describe el servicio como frecuencias, no como viajes individuales. En vez de expandirlo, el script genera 120 plantillas de viaje y una lista de horas de salida para cada una, y el navegador reconstruye los viajes al cargar. El horario de Madrid pesa 0,4 MB, frente a 28,6 MB de los viajes ya expandidos de Santiago. Las líneas con ramales, como la M7, la M9 y la M10, vienen en varios tramos, que el script encadena en un solo recorrido: une los extremos a menos de unos 100 m y se niega a salvar huecos de más de un kilómetro.
+
+    </Pillar>
+    <Pillar title="Un solo bucle de animación, fuera de React">
+
+El mapa es MapLibre GL JS sobre los mapas base de CARTO, oscuro o claro según el tema. Líneas, estaciones, trenes y anillos de llegada son capas GeoJSON, y un único bucle con `requestAnimationFrame` actualiza en cada frame las fuentes de trenes y anillos. Los trenes no son componentes de React, así que moverlos en cada frame nunca pasa por un render.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Diferenciador" title="El horario es la partitura" highlight>
+
+No hay secuenciador. Las notas salen del horario: cada línea tiene un tono y una forma de onda fijos, y cada llegada toca una nota con una envolvente corta, un ataque rápido y una caída de un tercio de segundo. La música es el ritmo de la propia red: la hora punta suena densa, la madrugada escasa, y la frecuencia de una línea se escucha como un tempo.
+
+Lo que suena depende de dónde miras. Solo las llegadas dentro de la parte visible del mapa hacen ruido, y el zoom funciona como volumen: con la ciudad entera a la vista hay silencio, y un par de niveles de zoom más adentro el volumen es completo, con una transición suavizada para que nunca haga clic. Recorrer la ciudad cambia la mezcla. Para que siga siendo música, suenan como máximo cuatro notas a la vez, y un mismo tren no puede volver a sonar en la misma estación antes de diez segundos.
+
+Los navegadores no dejan que el audio empiece solo, así que el contexto de audio se crea al elegir una ciudad. Ese clic es el gesto que habilita el sonido.
+
+</Section>
+
+<Section label="04 — Accesibilidad" title="Una pieza que no hace falta ver ni escuchar">
+
+Para las tecnologías de asistencia, el mapa es decorativo. En su lugar, una región live anuncia las llegadas como "línea — estación", como máximo una vez por segundo, así que la pieza se puede seguir con un lector de pantalla. Los controles tienen etiquetas y un foco visible, la primera ciudad recibe el foco al cargar, y con movimiento reducido los anillos de llegada se desactivan. La interfaz está en español e inglés, y recuerda el idioma y el tema.
+
+</Section>
+
+<Metrics
+  label="05 — Resultados"
+  title="Lo que está funcionando"
+  items={[
+    { label: 'Ciudades', value: 'Santiago: 7 líneas y 143 estaciones. Madrid: 12 líneas de Metro' },
+    {
+      label: 'Datos',
+      value: 'El feed de frecuencias de Madrid en un horario de 0,4 MB, reconstruido en el navegador',
+    },
+    { label: 'Sonido', value: 'Notas solo de los trenes visibles, con el zoom como volumen' },
+    { label: 'Infraestructura', value: 'Un sitio Next.js estático en Vercel, sin backend ni datos en tiempo real' },
+  ]}
+/>

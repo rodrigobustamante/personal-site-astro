@@ -1,0 +1,72 @@
+---
+title: 'Intervalo'
+subtitle: 'The metro as an instrument: Santiago and Madrid trains replayed from their timetables, each arrival at a station a note'
+tag: 'Side project'
+period: 'May 2026 — Present'
+scope: 'Web app · GTFS data pipeline · Generative audio'
+stack: [Next.js, React, TypeScript, MapLibre GL JS, Web Audio API, GTFS, Tailwind CSS, Vercel]
+order: 4
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problem & Context" title="Listening to a metro network">
+
+A metro network runs on a rhythm: trains leave their terminals on a timetable, reach stations at fixed intervals, and the busier the hour, the denser the pattern. Intervalo makes that rhythm audible. You pick a city, Santiago or Madrid, and a full-screen map shows every train running at that moment. When a train reaches a station it plays a short note in the voice of its line, and a ring opens on the map.
+
+It's a side project inspired by El Organillero and TrainJazz, built on my own on top of the cities' open GTFS data. The first version covered Santiago; Madrid was added the following day.
+
+</Section>
+
+<Section label="02 — Architecture" title="Static data, no server">
+  <Pillars>
+    <Pillar title="Today's service from a static timetable">
+
+Intervalo doesn't use real-time feeds. Each city's GTFS timetable is processed once, and the browser works out where every train should be right now: it takes the current time in the city's own time zone, picks the service calendar for that day of the week, and places each trip between its last and next stop. The result looks live with no backend at all: the app is a Next.js site on Vercel, with no API routes and no environment variables.
+
+    </Pillar>
+    <Pillar title="A build-time pipeline per city">
+
+Two Node scripts read the GTFS archives and write compact JSON. For Santiago, the script keeps only the metro agency, picks one track shape per line, and merges the per-direction platforms into a single station. It also matches each station, at build time, to its nearest point on the line's track. Trains then move along the real track geometry between stations instead of cutting straight across the map.
+
+Madrid's feed describes service as frequencies rather than individual trips. Instead of expanding it, the script emits 120 trip templates and a list of start times for each, and the browser rebuilds the trips on load. Madrid's schedule weighs 0.4 MB, against 28.6 MB for Santiago's fully expanded trips. Branched lines such as M7, M9 and M10 come in several shape pieces, which the script chains into one path, joining ends closer than about 100 m and refusing to bridge gaps of more than about a kilometre.
+
+    </Pillar>
+    <Pillar title="One animation loop, outside React">
+
+The map is MapLibre GL JS over CARTO basemaps, dark or light to match the theme. Lines, stations, trains and arrival rings are GeoJSON layers, and a single `requestAnimationFrame` loop updates the train and ring sources each frame. Trains are not React components, so moving them every frame never goes through a render.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Differentiator" title="The timetable is the score" highlight>
+
+There is no sequencer. The notes come from the timetable: each line has a fixed pitch and waveform, and each arrival plays a note shaped by a short envelope, a quick attack and a decay of about a third of a second. The music is the network's own rhythm: rush hour sounds dense, late night sparse, and a line's frequency can be heard as a tempo.
+
+What you hear depends on where you look. Only arrivals inside the visible part of the map make sound, and zoom works as the volume: the city is silent when fully zoomed out and reaches full volume a couple of zoom levels in, with the change smoothed so it never clicks. Panning across the city changes the mix. To keep it musical, at most four notes play at once, and the same train can't retrigger at the same station within ten seconds.
+
+Browsers don't allow audio to start on its own, so the audio context is created when you choose a city. That click is the gesture that unlocks sound.
+
+</Section>
+
+<Section label="04 — Accessibility" title="A piece you don't need to see or hear">
+
+The map is decorative for assistive technology. In its place, a polite live region announces arrivals as "line — station", at most once per second, so the piece can be followed with a screen reader. Controls have labels and visible focus rings, the first city is focused on load, and with reduced motion enabled the arrival rings are turned off. The interface is in Spanish and English, and remembers the language and theme.
+
+</Section>
+
+<Metrics
+  label="05 — Outcomes"
+  title="What is in place"
+  items={[
+    { label: 'Cities', value: 'Santiago: 7 lines and 143 stations. Madrid: 12 Metro lines' },
+    { label: 'Data', value: "Madrid's frequency feed packed into a 0.4 MB schedule, rebuilt in the browser" },
+    { label: 'Sound', value: 'Notes only for visible trains, with zoom as the volume' },
+    { label: 'Infrastructure', value: 'A static Next.js site on Vercel, with no backend or real-time feed' },
+  ]}
+/>

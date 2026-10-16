@@ -1,4 +1,5 @@
 import { hangarScene } from './hangar';
+import { intervaloScene } from './intervalo';
 import { mineScene } from './mine';
 import { paceScene } from './pace';
 import { terminalScene } from './terminal';
@@ -9,5 +10,6 @@ export const SCENES = {
   terminal: terminalScene,
   mine: mineScene,
   pace: paceScene,
+  intervalo: intervaloScene,
 };
 export type SceneName = keyof typeof SCENES;
