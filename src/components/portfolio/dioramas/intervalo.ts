@@ -100,7 +100,7 @@ function train(at: V, dir: 'x' | 'y', mat: string, cars: number, len: number, w:
   return paths(shapes) + mark('dio-stripe', stripe) + mark('dio-car-windows', win);
 }
 
-const trainA = train([0, 7.95, top], 'x', 'roof', 2, 3, 1.1, 1.15);
+const trainA = train([0, 7.95, top], 'x', 'car', 2, 3, 1.1, 1.15);
 const TA = { stop: A.sx0 + 0.4, hide: A.tower + 0.05 };
 
 const tower = [
@@ -203,7 +203,17 @@ const svg = [
 // leaves: A into the interchange building, B back down its tunnel.
 const LOOP = '12s';
 const at = (v: number, w = 0) => `translate(${shift(v, w)})`;
+// Line A's train: the accent with its lightness lowered and its chroma kept,
+// much more in dark mode, where the plain accent turns pale against the lit
+// volumes. Faces then shade towards the scene's shade colour.
+const carCss = [0, 8, 16, 26]
+  .map((k, t) => `.dio .car${t}{--f:color-mix(in oklab, var(--dio-car), var(--dio-shade) ${k}%)}`)
+  .join('');
+
 const css = `
+.dio { --dio-car: oklch(from var(--accent) calc(l - 0.05) c h); }
+:root[data-theme='dark'] .dio { --dio-car: oklch(from var(--accent) calc(l - 0.2) calc(c + 0.03) h); }
+${carCss}
 /* Line B wears the same colour as its train (the 'deep' tone base in iso.ts). */
 .dio { --dio-line-b: color-mix(in oklab, var(--ink) var(--dio-deep), var(--accent-3)); }
 .dio .dio-rail { fill: none; stroke: var(--dio-body); stroke-width: 0.7; opacity: 0.7; }
