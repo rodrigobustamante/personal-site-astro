@@ -19,18 +19,20 @@ const dot = (a: V, b: V) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const len = (a: V) => Math.hypot(...a);
 export const r1 = (n: number) => Math.round(n * 10) / 10;
 
-/** Fill bases of the tone classes; tones mix them towards --ink (see Diorama.astro). */
+/** Fill bases of the tone classes; tones mix them towards --dio-tone (see Diorama.astro). */
 const BASES: Record<string, string> = {
   ground: 'var(--paper-2)',
   wall: 'var(--dio-wall)',
   body: 'var(--dio-body)',
   roof: 'var(--accent)',
-  soft: 'color-mix(in oklab, var(--accent) 40%, var(--card))',
-  deep: 'color-mix(in oklab, var(--ink) 65%, var(--accent))',
+  // Secondary surfaces carry the companion hues, so each scene reads in three
+  // colours rather than shades of one.
+  soft: 'color-mix(in oklab, var(--accent-2) var(--dio-soft), var(--card))',
+  deep: 'color-mix(in oklab, var(--ink) 55%, var(--accent-3))',
 };
 export const toneCss = Object.entries(BASES)
   .flatMap(([m, base]) =>
-    [0, 1, 2, 3].map((i) => `.dio .${m}${i}{--f:color-mix(in oklab, ${base}, var(--ink) var(--dio-k${i}))}`)
+    [0, 1, 2, 3].map((i) => `.dio .${m}${i}{--f:color-mix(in oklab, ${base}, var(--dio-tone) var(--dio-k${i}))}`)
   )
   .join('');
 

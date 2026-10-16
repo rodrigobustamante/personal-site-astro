@@ -241,7 +241,7 @@ const SKIN: Record<string, string> = {
   hair: '#3a2a20',
 };
 const runnerCss = Object.entries(SKIN)
-  .flatMap(([m, c]) => [0, 8, 16, 26].map((k, t) => `.dio .${m}${t}{--f:color-mix(in oklab, ${c}, #1b130e ${k}%)}`))
+  .flatMap(([m, c]) => [0, 8, 16, 26].map((k, t) => `.dio .${m}${t}{--f:color-mix(in oklab, ${c}, #161838 ${k}%)}`))
   .join('');
 
 const svg = [
@@ -280,7 +280,7 @@ const css = `
 .dio .dio-chart { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; }
 .dio .dio-chart-soft { stroke: var(--dio-body); stroke-width: 1; opacity: 0.6; }
 .dio .dio-pacer { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: ${dash} ${r1(LEN - dash)}; stroke-dashoffset: -${lead}; }
-.dio .dio-mow { fill: color-mix(in oklab, var(--paper-2), var(--ink) calc(var(--dio-k0) + 4%)); }
+.dio .dio-mow { fill: color-mix(in oklab, var(--paper-2), var(--dio-tone) calc(var(--dio-k0) + 4%)); }
 ${runnerCss}
 .dio .dio-glasses { fill: none; stroke: #1b1b1b; stroke-width: 0.8; stroke-linecap: round; }
 .dio .dio-heading, .dio .dio-stride-b { opacity: 0; }

@@ -4,7 +4,7 @@ import { SITE, SOCIALS } from '~/utils/config';
 import { PERSON_ID } from '~/utils/structured-data';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
-import { PALETTES } from '~/utils/palettes';
+import { PALETTES, DEFAULT_PALETTE } from '~/utils/palettes';
 import { useTranslations } from '~/i18n/ui';
 
 interface Props {
@@ -194,18 +194,22 @@ const jsonLd = JSON.stringify({
          Design tokens
       —————————————————————————————————————————— */
       :root {
-        --paper: oklch(0.972 0.013 79);
-        --paper-2: oklch(0.945 0.016 78);
-        --card: oklch(0.99 0.006 85);
-        --ink: oklch(0.27 0.018 55);
-        --ink-soft: oklch(0.42 0.02 52);
-        --muted: oklch(0.46 0.018 55);
-        --faint: oklch(0.6 0.015 60);
-        --line: oklch(0.88 0.014 72);
-        --line-soft: oklch(0.92 0.012 75);
-        --accent: oklch(0.565 0.125 42);
-        --accent-soft: color-mix(in oklab, oklch(0.565 0.125 42) 12%, transparent);
-        --accent-ink: oklch(0.46 0.12 42);
+        --paper: oklch(0.975 0.01 270);
+        --paper-2: oklch(0.945 0.016 272);
+        --card: oklch(0.993 0.004 270);
+        --ink: oklch(0.25 0.06 278);
+        --ink-soft: oklch(0.38 0.06 278);
+        --muted: oklch(0.47 0.045 276);
+        --faint: oklch(0.6 0.035 274);
+        --line: oklch(0.88 0.022 272);
+        --line-soft: oklch(0.925 0.016 272);
+        --accent: oklch(0.55 0.21 355);
+        --accent-soft: color-mix(in oklab, oklch(0.55 0.21 355) 12%, transparent);
+        --accent-ink: oklch(0.5 0.2 355);
+        /* Illustration-only companions to the accent (dioramas, figures), never text. */
+        --accent-2: oklch(0.64 0.15 64);
+        --accent-3: oklch(0.6 0.1 195);
+        --on-accent: oklch(0.99 0.006 270);
         --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
         --sans: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
         --maxw: 1080px;
@@ -213,18 +217,21 @@ const jsonLd = JSON.stringify({
       }
 
       :root[data-theme='dark'] {
-        --paper: oklch(0.205 0.012 56);
-        --paper-2: oklch(0.245 0.014 56);
-        --card: oklch(0.255 0.014 56);
-        --ink: oklch(0.94 0.012 80);
-        --ink-soft: oklch(0.82 0.014 78);
-        --muted: oklch(0.68 0.016 70);
-        --faint: oklch(0.62 0.016 65);
-        --line: oklch(0.36 0.016 58);
-        --line-soft: oklch(0.31 0.014 58);
-        --accent: oklch(0.72 0.12 48);
-        --accent-soft: color-mix(in oklab, oklch(0.72 0.12 48) 16%, transparent);
-        --accent-ink: oklch(0.78 0.12 50);
+        --paper: oklch(0.2 0.05 278);
+        --paper-2: oklch(0.235 0.058 280);
+        --card: oklch(0.255 0.062 281);
+        --ink: oklch(0.96 0.014 260);
+        --ink-soft: oklch(0.86 0.022 262);
+        --muted: oklch(0.74 0.035 266);
+        --faint: oklch(0.66 0.04 268);
+        --line: oklch(0.36 0.06 280);
+        --line-soft: oklch(0.3 0.055 280);
+        --accent: oklch(0.72 0.18 355);
+        --accent-soft: color-mix(in oklab, oklch(0.72 0.18 355) 16%, transparent);
+        --accent-ink: oklch(0.8 0.13 355);
+        --accent-2: oklch(0.84 0.15 82);
+        --accent-3: oklch(0.8 0.12 190);
+        --on-accent: oklch(0.18 0.05 278);
       }
 
       /* ——— Reset ——— */
@@ -503,11 +510,8 @@ const jsonLd = JSON.stringify({
       }
       .btn-primary {
         background: var(--accent);
-        color: oklch(0.99 0.01 85);
+        color: var(--on-accent);
         border-color: var(--accent);
-      }
-      :root[data-theme='dark'] .btn-primary {
-        color: oklch(0.18 0.02 56);
       }
       .btn-primary:hover {
         box-shadow: 0 10px 26px -10px color-mix(in oklab, var(--accent) 70%, transparent);
@@ -744,7 +748,7 @@ const jsonLd = JSON.stringify({
       }
     </style>
     <!-- Anti-FOUC: set theme + lang before first paint -->
-    <script is:inline define:vars={{ PALETTES }}>
+    <script is:inline define:vars={{ PALETTES, DEFAULT_PALETTE }}>
       (function () {
         // Applies the stored theme and accent palette to <html>. Runs before
         // first paint, again after every ClientRouter swap (which copies the
@@ -754,9 +758,10 @@ const jsonLd = JSON.stringify({
           const theme =
             localStorage.getItem('theme') ||
             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-          const palette = localStorage.getItem('palette') || 'Terracotta';
+          const palette = localStorage.getItem('palette') || DEFAULT_PALETTE;
           el.dataset.theme = theme;
-          const p = PALETTES[palette] || PALETTES.Terracotta;
+          // A name saved before a palette was retired falls back to the default.
+          const p = PALETTES[palette] || PALETTES[DEFAULT_PALETTE];
           const d = theme === 'dark';
           el.style.setProperty('--accent', d ? p.d : p.l);
           el.style.setProperty('--accent-ink', d ? p.di : p.li);

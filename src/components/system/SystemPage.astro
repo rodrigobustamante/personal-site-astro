@@ -23,7 +23,7 @@ const COPY = {
       'One accent per palette, with a darker ink variant for text in light mode and a lighter one in dark mode. Your choice is saved in this browser.',
     current: 'current',
     neutrals: 'Color tokens',
-    neutralsSub: 'Warm neutrals in OKLCH. Values update with the theme.',
+    neutralsSub: 'Cool indigo neutrals in OKLCH. Values update with the theme.',
     type: 'Typography',
     typeSub:
       'Newsreader for display and reading, Hanken Grotesk for interface text. Both self-hosted as trimmed variable fonts.',
@@ -45,6 +45,8 @@ const COPY = {
       '--accent': 'Accent',
       '--accent-ink': 'Accent text',
       '--accent-soft': 'Accent tint',
+      '--accent-2': 'Illustration amber',
+      '--accent-3': 'Illustration teal',
     },
     specimen: {
       display: 'Display — Newsreader 400',
@@ -81,7 +83,7 @@ const COPY = {
       'Un acento por paleta, con una variante de texto más oscura en modo claro y otra más clara en modo oscuro. Tu elección se guarda en este navegador.',
     current: 'actual',
     neutrals: 'Tokens de color',
-    neutralsSub: 'Neutros cálidos en OKLCH. Los valores cambian con el tema.',
+    neutralsSub: 'Neutros índigo fríos en OKLCH. Los valores cambian con el tema.',
     type: 'Tipografía',
     typeSub:
       'Newsreader para títulos y lectura, Hanken Grotesk para la interfaz. Ambas alojadas en el sitio como fuentes variables recortadas.',
@@ -103,6 +105,8 @@ const COPY = {
       '--accent': 'Acento',
       '--accent-ink': 'Texto de acento',
       '--accent-soft': 'Tinte de acento',
+      '--accent-2': 'Ámbar de ilustración',
+      '--accent-3': 'Turquesa de ilustración',
     },
     specimen: {
       display: 'Display — Newsreader 400',
@@ -300,6 +304,8 @@ const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
 </PortfolioLayout>
 
 <script>
+  import { DEFAULT_PALETTE, PALETTES } from '~/utils/palettes';
+
   // Palette switcher + live token values. Re-binds after every ClientRouter
   // navigation; the theme logic itself lives in PortfolioLayout.
   type ThemeWindow = Window & { __applyTheme?: () => void };
@@ -309,11 +315,13 @@ const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
     const buttons = document.querySelectorAll<HTMLButtonElement>('.palette');
     if (!buttons.length) return;
 
+    // Mirrors the layout script: a retired name resolves to the default.
     const readPalette = () => {
       try {
-        return localStorage.getItem('palette') || 'Terracotta';
+        const name = localStorage.getItem('palette');
+        return name && name in PALETTES ? name : DEFAULT_PALETTE;
       } catch {
-        return 'Terracotta';
+        return DEFAULT_PALETTE;
       }
     };
     const fillValues = () => {
@@ -328,7 +336,7 @@ const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
     buttons.forEach((button) =>
       button.addEventListener('click', () => {
         try {
-          localStorage.setItem('palette', button.dataset.palette ?? 'Terracotta');
+          localStorage.setItem('palette', button.dataset.palette ?? DEFAULT_PALETTE);
         } catch {
           // Storage blocked: the palette applies only until the next page.
         }

@@ -20,9 +20,11 @@ const [, , w, h] = SCENES[scene].viewBox.split(' ');
 <figure class="dio" aria-hidden="true" data-src={`/dioramas/${scene}.svg`} style={`aspect-ratio: ${w} / ${h}`}></figure>
 
 <style is:global>
-  /* Tones 0 (lit) … 3 (shaded) mix each base towards --ink; the amounts flip
-     in dark mode, where --ink is the light end. */
+  /* Tones 0 (lit) … 3 (shaded) mix each base towards --dio-tone; the amounts
+     flip in dark mode, where the tone is the light end. */
   .dio {
+    --dio-tone: var(--ink);
+    --dio-soft: 55%;
     --dio-k0: 0%;
     --dio-k1: 9%;
     --dio-k2: 18%;
@@ -39,12 +41,16 @@ const [, , w, h] = SCENES[scene].viewBox.split(' ');
     }
   }
   :root[data-theme='dark'] .dio {
+    /* Periwinkle rather than --ink, so lit faces stay blue instead of grey. */
+    --dio-tone: oklch(0.74 0.11 275);
+    /* Amber over the dark card turns brown unless it dominates the mix. */
+    --dio-soft: 80%;
     --dio-k0: 28%;
     --dio-k1: 18%;
     --dio-k2: 9%;
     --dio-k3: 2%;
     /* Lift the volumes off the dark apron; the plane reads as the lightest. */
-    --dio-wall: color-mix(in oklab, var(--ink) 22%, var(--card));
+    --dio-wall: color-mix(in oklab, var(--dio-tone) 30%, var(--card));
     --dio-body: color-mix(in oklab, var(--ink) 58%, var(--card));
     --dio-void: color-mix(in oklab, var(--paper), var(--ink) 5%);
   }

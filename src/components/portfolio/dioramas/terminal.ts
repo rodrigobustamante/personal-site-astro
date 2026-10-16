@@ -129,7 +129,7 @@ const css = `
 .dio .dio-runway { fill: color-mix(in oklab, var(--dio-void) 20%, var(--paper-2)); }
 .dio .dio-centre {
   fill: none;
-  stroke: color-mix(in oklab, var(--paper-2), var(--ink) var(--dio-k0));
+  stroke: color-mix(in oklab, var(--paper-2), var(--dio-tone) var(--dio-k0));
   stroke-width: 1.2;
   stroke-dasharray: 8 7;
 }

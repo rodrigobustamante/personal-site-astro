@@ -12,32 +12,25 @@ export interface Palette {
   di: string;
 }
 
-export const DEFAULT_PALETTE = 'Terracotta';
+export const DEFAULT_PALETTE = 'Magenta';
 
+// Saturated accents over the cool indigo base, after Kurzgesagt's flat
+// illustration style. Checked to WCAG AA against --paper and --card.
 export const PALETTES: Record<string, Palette> = {
-  Terracotta: {
-    l: 'oklch(0.565 0.125 42)',
-    d: 'oklch(0.72 0.12 48)',
-    li: 'oklch(0.46 0.12 42)',
-    di: 'oklch(0.78 0.12 50)',
+  Magenta: {
+    l: 'oklch(0.55 0.21 355)',
+    d: 'oklch(0.72 0.18 355)',
+    li: 'oklch(0.5 0.2 355)',
+    di: 'oklch(0.8 0.13 355)',
   },
-  Ochre: { l: 'oklch(0.56 0.12 75)', d: 'oklch(0.78 0.11 82)', li: 'oklch(0.5 0.11 72)', di: 'oklch(0.82 0.11 84)' },
-  Olive: {
-    l: 'oklch(0.545 0.09 130)',
-    d: 'oklch(0.72 0.1 135)',
-    li: 'oklch(0.45 0.09 128)',
-    di: 'oklch(0.78 0.1 138)',
-  },
-  Indigo: {
-    l: 'oklch(0.5 0.11 270)',
-    d: 'oklch(0.7 0.12 275)',
-    li: 'oklch(0.45 0.12 270)',
-    di: 'oklch(0.76 0.12 278)',
-  },
-  Plum: {
-    l: 'oklch(0.52 0.13 350)',
-    d: 'oklch(0.72 0.12 352)',
-    li: 'oklch(0.45 0.13 350)',
-    di: 'oklch(0.78 0.12 354)',
+  Coral: { l: 'oklch(0.56 0.18 30)', d: 'oklch(0.74 0.16 34)', li: 'oklch(0.5 0.17 30)', di: 'oklch(0.8 0.12 36)' },
+  Amber: { l: 'oklch(0.55 0.13 62)', d: 'oklch(0.82 0.15 76)', li: 'oklch(0.49 0.12 60)', di: 'oklch(0.86 0.13 80)' },
+  Teal: { l: 'oklch(0.52 0.1 198)', d: 'oklch(0.78 0.12 192)', li: 'oklch(0.47 0.09 198)', di: 'oklch(0.83 0.1 190)' },
+  Sky: { l: 'oklch(0.52 0.14 248)', d: 'oklch(0.76 0.12 238)', li: 'oklch(0.47 0.14 250)', di: 'oklch(0.82 0.1 236)' },
+  Violet: {
+    l: 'oklch(0.52 0.2 300)',
+    d: 'oklch(0.73 0.15 302)',
+    li: 'oklch(0.47 0.2 300)',
+    di: 'oklch(0.81 0.11 302)',
   },
 };
