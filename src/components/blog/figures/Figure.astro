@@ -84,6 +84,27 @@ const last = steps.length;
 <style is:global>
   .fig {
     /* Status colours for good / needs-improvement / poor, as Lighthouse uses them. */
+    --good: oklch(0.56 0.12 165);
+    --warn: oklch(0.64 0.15 64);
+    --bad: oklch(0.56 0.2 18);
+    --photo-sky: oklch(0.84 0.06 250);
+    --photo-sun: oklch(0.86 0.15 82);
+    --photo-hill: oklch(0.6 0.1 185);
+    --photo-hill-2: oklch(0.5 0.1 200);
+    /* Placeholder blocks inside the mock pages, on --card in both themes. */
+    --skel: color-mix(in oklab, var(--ink) 8%, var(--card));
+    margin: 2.2em 0 2.4em;
+  }
+  :root[data-theme='dark'] .fig {
+    --good: oklch(0.78 0.14 168);
+    --warn: oklch(0.84 0.15 82);
+    --bad: oklch(0.72 0.18 18);
+    --photo-sky: oklch(0.42 0.1 275);
+    --photo-sun: oklch(0.84 0.15 82);
+    --photo-hill: oklch(0.45 0.09 190);
+    --photo-hill-2: oklch(0.37 0.08 205);
+  }
+  :root[data-style='paper'] .fig {
     --good: oklch(0.56 0.13 152);
     --warn: oklch(0.64 0.14 68);
     --bad: oklch(0.56 0.18 25);
@@ -91,11 +112,8 @@ const last = steps.length;
     --photo-sun: oklch(0.87 0.13 88);
     --photo-hill: oklch(0.62 0.09 160);
     --photo-hill-2: oklch(0.52 0.08 168);
-    /* Placeholder blocks inside the mock pages, on --card in both themes. */
-    --skel: color-mix(in oklab, var(--ink) 8%, var(--card));
-    margin: 2.2em 0 2.4em;
   }
-  :root[data-theme='dark'] .fig {
+  :root[data-style='paper'][data-theme='dark'] .fig {
     --good: oklch(0.76 0.15 152);
     --warn: oklch(0.8 0.14 75);
     --bad: oklch(0.7 0.17 25);
@@ -104,6 +122,7 @@ const last = steps.length;
     --photo-hill: oklch(0.47 0.07 160);
     --photo-hill-2: oklch(0.4 0.06 168);
   }
+
   .fig-scene {
     container-type: inline-size;
     font-family: var(--sans);

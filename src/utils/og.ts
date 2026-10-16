@@ -18,13 +18,13 @@ export type OgCard =
 // Same tokens as the dark theme in PortfolioLayout.astro, resolved to hex
 // because satori/librsvg do not understand oklch().
 const C = {
-  paper: oklchToHex(0.205, 0.012, 56),
-  paper2: oklchToHex(0.245, 0.014, 56),
-  ink: oklchToHex(0.94, 0.012, 80),
-  inkSoft: oklchToHex(0.82, 0.014, 78),
-  muted: oklchToHex(0.68, 0.016, 70),
-  line: oklchToHex(0.36, 0.016, 58),
-  accent: oklchToHex(0.72, 0.12, 48),
+  paper: oklchToHex(0.2, 0.05, 278),
+  paper2: oklchToHex(0.235, 0.058, 280),
+  ink: oklchToHex(0.96, 0.014, 260),
+  inkSoft: oklchToHex(0.86, 0.022, 262),
+  muted: oklchToHex(0.74, 0.035, 266),
+  line: oklchToHex(0.36, 0.06, 280),
+  accent: oklchToHex(0.72, 0.18, 355),
 };
 
 const FONT_DIR = path.join(process.cwd(), 'node_modules/@fontsource');

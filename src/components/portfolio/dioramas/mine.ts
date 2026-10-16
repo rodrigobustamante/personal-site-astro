@@ -94,7 +94,7 @@ function bench(k: number): Shape[] {
 const pit = Array.from({ length: P.levels }, (_, n) => paths(bench(P.levels - n)));
 const pitCss = Array.from({ length: P.levels * 4 }, (_, n) => {
   const [k, t] = [Math.floor(n / 4) + 1, n % 4];
-  return `.dio .pit${k}-${t}{--f:color-mix(in oklab, color-mix(in oklab, var(--paper-2), var(--ink) var(--dio-k${t})), var(--dio-void) ${k * 7}%)}`;
+  return `.dio .pit${k}-${t}{--f:color-mix(in oklab, color-mix(in oklab, var(--paper-2), var(--dio-tone) var(--dio-k${t})), var(--dio-void) ${k * 7}%)}`;
 }).join('');
 
 // Concentrator, back right, with its stack
