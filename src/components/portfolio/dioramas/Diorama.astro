@@ -56,13 +56,13 @@ const [, , w, h] = SCENES[scene].viewBox.split(' ');
     --dio-body: color-mix(in oklab, var(--ink) 58%, var(--card));
     --dio-void: color-mix(in oklab, var(--paper), var(--ink) 5%);
   }
-  /* Editorial keeps the original mixes: a single accent, warm shading. */
-  :root[data-style='editorial'] .dio {
+  /* Paper keeps the original mixes: a single accent, warm shading. */
+  :root[data-style='paper'] .dio {
     --dio-soft: 40%;
     --dio-deep: 65%;
     --dio-shade: #1b130e;
   }
-  :root[data-style='editorial'][data-theme='dark'] .dio {
+  :root[data-style='paper'][data-theme='dark'] .dio {
     --dio-tone: var(--ink);
     --dio-wall: color-mix(in oklab, var(--ink) 22%, var(--card));
   }

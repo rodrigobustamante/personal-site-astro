@@ -234,8 +234,8 @@ const jsonLd = JSON.stringify({
         --on-accent: oklch(0.18 0.05 278);
       }
 
-      /* Editorial style: warm paper and brown ink, the site's original look. */
-      :root[data-style='editorial'] {
+      /* Paper style: warm paper and brown ink, the site's original look. */
+      :root[data-style='paper'] {
         --paper: oklch(0.972 0.013 79);
         --paper-2: oklch(0.945 0.016 78);
         --card: oklch(0.99 0.006 85);
@@ -253,7 +253,7 @@ const jsonLd = JSON.stringify({
         --on-accent: oklch(0.99 0.01 85);
       }
 
-      :root[data-style='editorial'][data-theme='dark'] {
+      :root[data-style='paper'][data-theme='dark'] {
         --paper: oklch(0.205 0.012 56);
         --paper-2: oklch(0.245 0.014 56);
         --card: oklch(0.255 0.014 56);
@@ -445,8 +445,33 @@ const jsonLd = JSON.stringify({
         border-radius: 8px;
         font-size: 16px;
       }
-      .mobile-nav a:hover {
+      .mobile-nav a:hover,
+      .mobile-style:hover {
         background: var(--paper-2);
+      }
+      .mobile-style {
+        display: none;
+        justify-content: space-between;
+        margin-top: 4px;
+        padding: 12px 14px;
+        border-top: 1px solid var(--line-soft);
+        border-radius: 8px;
+        font: inherit;
+        font-size: 16px;
+        color: var(--ink);
+        text-align: left;
+      }
+      .mobile-style[aria-pressed='true']::after {
+        content: '✓';
+        color: var(--accent-ink);
+      }
+      @media (max-width: 400px) {
+        .header-tools .style-btn {
+          display: none;
+        }
+        .mobile-style {
+          display: flex;
+        }
       }
       @media (max-width: 900px) {
         .header-nav {
@@ -456,7 +481,7 @@ const jsonLd = JSON.stringify({
           display: inline-flex;
         }
       }
-      /* Phones: name, language, theme and menu share one row. */
+      /* Phones: name, language, style, theme and menu share one row. */
       @media (max-width: 480px) {
         .header-inner {
           gap: 12px;
@@ -468,11 +493,16 @@ const jsonLd = JSON.stringify({
         .wordmark-dot {
           display: none;
         }
-        .header-tools {
+        /* Scoped under .header-inner: the base .header-tools rule comes later. */
+        .header-inner .header-tools {
           gap: 6px;
         }
         .lang-btn {
           padding: 0 10px;
+        }
+        /* Icon-only buttons fit their 36px circle without side padding. */
+        .header-tools .tool-btn:not(.lang-btn) {
+          padding: 0;
         }
       }
       .header-tools {

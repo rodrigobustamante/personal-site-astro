@@ -12,7 +12,7 @@ export interface Palette {
   di: string;
   /** Illustration-only companions (--accent-2 / --accent-3), light / dark: hues
    * set against the accent so dioramas keep three distinct colours. Without
-   * them the accent fills both roles, as the Editorial style does. */
+   * them the accent fills both roles, as the Paper style does. */
   l2?: string;
   d2?: string;
   l3?: string;
@@ -27,7 +27,7 @@ export interface Style {
 
 // Saturated accents over the cool indigo base, after Kurzgesagt's flat
 // illustration style. Checked to WCAG AA against --paper and --card.
-const KURZGESAGT: Record<string, Palette> = {
+const COSMOS: Record<string, Palette> = {
   // Companions: amber, teal.
   Magenta: {
     l: 'oklch(0.55 0.21 355)',
@@ -97,7 +97,7 @@ const KURZGESAGT: Record<string, Palette> = {
 };
 
 // Warm paper and earthy accents: the site's original look.
-const EDITORIAL: Record<string, Palette> = {
+const PAPER: Record<string, Palette> = {
   Terracotta: {
     l: 'oklch(0.565 0.125 42)',
     d: 'oklch(0.72 0.12 48)',
@@ -125,9 +125,9 @@ const EDITORIAL: Record<string, Palette> = {
   },
 };
 
-export const DEFAULT_STYLE = 'Kurzgesagt';
+export const DEFAULT_STYLE = 'Cosmos';
 
 export const STYLES: Record<string, Style> = {
-  Kurzgesagt: { default: 'Magenta', palettes: KURZGESAGT },
-  Editorial: { default: 'Terracotta', palettes: EDITORIAL },
+  Cosmos: { default: 'Magenta', palettes: COSMOS },
+  Paper: { default: 'Terracotta', palettes: PAPER },
 };

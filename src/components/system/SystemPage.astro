@@ -20,7 +20,7 @@ const COPY = {
       'The tokens and components this site is built with, rendered live from the same CSS. Switch the base style, the accent palette or the theme and everything below — and the rest of the site — follows.',
     style: 'Base style',
     styleSub:
-      'Each style sets its own neutrals and accent palettes. Kurzgesagt: cool indigo with saturated accents. Editorial: warm paper with earthy accents.',
+      'Each style sets its own neutrals and accent palettes. Cosmos: cool indigo with saturated accents. Paper: warm paper with earthy accents, the original look.',
     accent: 'Accent palettes',
     accentSub:
       'One accent per palette, with a darker ink variant for text in light mode and a lighter one in dark mode, plus two companion hues (the small dots) for illustrations. The palettes change with the base style; your choice is saved in this browser.',
@@ -83,7 +83,7 @@ const COPY = {
       'Los tokens y componentes con los que está hecho este sitio, renderizados en vivo desde el mismo CSS. Cambia el estilo base, la paleta de acento o el tema y todo lo de abajo —y el resto del sitio— lo sigue.',
     style: 'Estilo base',
     styleSub:
-      'Cada estilo define sus propios neutros y paletas de acento. Kurzgesagt: índigo frío con acentos saturados. Editorial: papel cálido con acentos terrosos.',
+      'Cada estilo define sus propios neutros y paletas de acento. Cosmos: índigo frío con acentos saturados. Paper: papel cálido con acentos terrosos, el look original.',
     accent: 'Paletas de acento',
     accentSub:
       'Un acento por paleta, con una variante de texto más oscura en modo claro y otra más clara en modo oscuro, y dos tonos complementarios (los puntos pequeños) para las ilustraciones. Las paletas cambian con el estilo base; tu elección se guarda en este navegador.',
@@ -477,12 +477,12 @@ const tokens = Object.keys(c.roles) as (keyof typeof c.roles)[];
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 12px;
   }
-  /* Only the active style's palettes; Kurzgesagt is the default. */
-  .palettes[data-palettes-for='editorial'],
-  :global(:root[data-style='editorial']) .palettes[data-palettes-for='kurzgesagt'] {
+  /* Only the active style's palettes; Cosmos is the default. */
+  .palettes[data-palettes-for='paper'],
+  :global(:root[data-style='paper']) .palettes[data-palettes-for='cosmos'] {
     display: none;
   }
-  :global(:root[data-style='editorial']) .palettes[data-palettes-for='editorial'] {
+  :global(:root[data-style='paper']) .palettes[data-palettes-for='paper'] {
     display: grid;
   }
   .palette {
