@@ -36,9 +36,16 @@ export const toneCss = Object.entries(BASES)
   )
   .join('');
 
-/** A scene as a standalone SVG file, ready to be inlined into a .dio figure. */
-export const sceneDocument = ({ viewBox, svg, css }: Scene) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" focusable="false"><style>${toneCss}${css}</style>${svg}</svg>`;
+/**
+ * A scene as a standalone SVG file, ready to be inlined into a .dio figure.
+ * Its styles are scoped to that figure (`data-scene`), so two scenes on one
+ * page can't restyle each other.
+ */
+export const sceneDocument = ({ viewBox, svg, css }: Scene, name: string) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" focusable="false"><style>${(toneCss + css).replace(
+    /\.dio\b(?!-)/g,
+    `.dio[data-scene=${name}]`
+  )}</style>${svg}</svg>`;
 
 export function createScene(S = 16) {
   const bounds = { x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity };
