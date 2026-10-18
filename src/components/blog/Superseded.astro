@@ -1,7 +1,7 @@
 ---
 /**
  * Original content that no longer holds, kept in the post for the record and
- * dimmed under a label. The <Update> that follows it has the current version.
+ * marked by a label and a dashed frame (not dimmed, so code stays legible). The <Update> that follows it has the current version.
  */
 interface Props {
   lang: 'en' | 'es';
@@ -28,9 +28,6 @@ const label = lang === 'es' ? 'Obsoleto · ver la actualización' : 'Outdated ·
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--muted);
-  }
-  .superseded-body {
-    opacity: 0.6;
   }
   .superseded-body :global(pre) {
     margin-bottom: 0;
