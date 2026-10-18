@@ -9,8 +9,7 @@ export const ui = {
     'nav.contact': 'Contact',
 
     // hero
-    'hero.pitch':
-      'I architect scalable frontend systems and <em>design systems</em> for global brands — with <em>9 years</em> of engineering behind me, building platforms used by millions.',
+    'hero.pitch': 'I design and build frontend platforms and design systems, from airlines to copper mining.',
     'hero.stat.years': 'years engineering',
     'hero.stat.teams': 'teams on the design system',
     'hero.stat.millions': 'Millions',
@@ -180,8 +179,7 @@ export const ui = {
     'nav.contact': 'Contacto',
 
     // hero
-    'hero.pitch':
-      'Arquitecto sistemas frontend y <em>design systems</em> escalables para marcas globales — con <em>9 años</em> de ingeniería a mis espaldas, construyendo plataformas usadas por millones.',
+    'hero.pitch': 'Diseño y construyo plataformas frontend y design systems, de aerolíneas a minería del cobre.',
     'hero.stat.years': 'años de ingeniería',
     'hero.stat.teams': 'equipos en el design system',
     'hero.stat.millions': 'Millones',

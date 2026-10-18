@@ -35,13 +35,13 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     <section id="top" class="hero">
       <div class="wrap hero-grid">
         <div class="hero-left">
-          <div class="hero-role">Senior Software Engineer | Design Engineer &amp; Senior FrontEnd Engineer</div>
+          <div class="hero-role">Design Engineer · Senior Frontend Engineer</div>
           <h1 class="hero-name">
             Rodrigo
             <br />
             Bustamante
           </h1>
-          <p class="hero-pitch" set:html={t('hero.pitch')} />
+          <p class="hero-pitch">{t('hero.pitch')}</p>
           <div class="hero-stats">
             <span class="hero-stat">
               <b data-count="9">9</b> {t('hero.stat.years')}
@@ -752,7 +752,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     flex-shrink: 0;
   }
   .hero-role {
-    font-size: 15px;
+    font-size: 16px;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--accent-ink);
@@ -770,17 +770,13 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     text-wrap: pretty;
     margin-bottom: 34px;
   }
-  .hero-pitch em {
-    color: var(--ink);
-    font-style: italic;
-  }
   .hero-stats {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     gap: 8px 18px;
     margin-bottom: 30px;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
   }
   .hero-stat {
@@ -812,7 +808,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     align-items: center;
     gap: 18px;
     flex-wrap: wrap;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
     margin-bottom: 36px;
   }
@@ -887,7 +883,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     letter-spacing: -0.01em;
   }
   .entry-sector {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--muted);
@@ -934,7 +930,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     font-variant-numeric: tabular-nums;
   }
   .earlier-org {
-    font-size: 17px;
+    font-size: 19px;
     font-weight: 600;
     color: var(--ink);
   }
@@ -966,7 +962,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     margin-bottom: 12px;
   }
   .role-title {
-    font-size: 17px;
+    font-size: 19px;
     font-weight: 600;
     color: var(--ink);
   }
@@ -983,9 +979,10 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     gap: 10px;
   }
   .role-bullets li {
+    max-width: 68ch;
     position: relative;
     padding-left: 22px;
-    font-size: 15.5px;
+    font-size: 16px;
     color: var(--ink-soft);
     line-height: 1.55;
     text-wrap: pretty;
@@ -1037,7 +1034,8 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
   /* ——— Skills ——— */
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* One row of five groups; auto-fit left the fifth alone under four. */
+    grid-template-columns: repeat(5, 1fr);
     gap: 2px;
     background: var(--line-soft);
     border: 1px solid var(--line-soft);
@@ -1048,9 +1046,22 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     background: var(--paper);
     padding: 26px 24px;
   }
+  @media (max-width: 900px) {
+    .skills-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .skills-grid > :last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 560px) {
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+  }
   .skill-label {
     font-family: var(--serif);
-    font-size: 18px;
+    font-size: 19px;
     color: var(--ink);
     margin-bottom: 16px;
     padding-bottom: 12px;
@@ -1062,7 +1073,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     gap: 9px;
   }
   .skill-items span {
-    font-size: 15px;
+    font-size: 16px;
     color: var(--ink-soft);
   }
 
@@ -1097,7 +1108,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     margin-top: 8px;
   }
   .edu-notes {
-    font-size: 15px;
+    font-size: 16px;
     color: var(--ink-soft);
     margin-top: 14px;
     line-height: 1.55;
@@ -1105,7 +1116,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     font-family: var(--serif);
   }
   .sub-h {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
@@ -1127,12 +1138,12 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     padding-top: 0;
   }
   .facts-list .k {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--ink);
     font-weight: 600;
   }
   .facts-list .v {
-    font-size: 15px;
+    font-size: 16px;
     color: var(--ink-soft);
     line-height: 1.5;
   }
@@ -1174,7 +1185,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 12.5px;
+    font-size: 13px;
     color: var(--muted);
   }
   .post-cat {
@@ -1190,14 +1201,19 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
   }
   .post-title {
     font-family: var(--serif);
-    font-size: 23px;
+    font-size: 24px;
     font-weight: 500;
     line-height: 1.22;
     letter-spacing: -0.01em;
     text-wrap: pretty;
   }
+  @media (max-width: 680px) {
+    .post-title {
+      font-size: 19px;
+    }
+  }
   .post-excerpt {
-    font-size: 15px;
+    font-size: 16px;
     color: var(--ink-soft);
     line-height: 1.55;
     text-wrap: pretty;
@@ -1214,7 +1230,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     flex-wrap: wrap;
   }
   .post-tags span {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
   }
   .post-arrow {
@@ -1231,7 +1247,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 15px;
+    font-size: 16px;
     color: var(--ink);
     border-bottom: 1px solid var(--accent);
     padding-bottom: 3px;
@@ -1269,7 +1285,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     margin-bottom: 22px;
   }
   .contact-sub {
-    font-size: 18px;
+    font-size: 19px;
     color: var(--muted);
     max-width: 50ch;
     margin: 0 auto 36px;
@@ -1327,13 +1343,13 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     letter-spacing: -0.01em;
   }
   .project-status {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--muted);
   }
   .project-desc {
-    font-size: 15px;
+    font-size: 16px;
     color: var(--ink-soft);
     line-height: 1.6;
     text-wrap: pretty;
@@ -1350,7 +1366,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     margin-top: 4px;
   }
   .project-link {
-    font-size: 13.5px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--accent-ink);
     border-bottom: 1px solid var(--accent);
