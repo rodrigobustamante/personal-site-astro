@@ -4,7 +4,8 @@ import SiteHeader from '~/components/portfolio/SiteHeader.astro';
 import SiteFooter from '~/components/portfolio/SiteFooter.astro';
 import { useTranslations, type Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
-import { getWork, workSlug } from '~/utils/work';
+import { getWork, workScene, workSlug } from '~/utils/work';
+import Diorama from '~/components/portfolio/dioramas/Diorama.astro';
 
 interface Props {
   lang: Lang;
@@ -36,6 +37,7 @@ const entries = await getWork(lang);
         {entries.map((entry) => (
           <li>
             <a class="work-card reveal" href={localizedPath(`/work/${workSlug(entry)}`, lang)}>
+              {workScene(workSlug(entry)) && <Diorama scene={workScene(workSlug(entry))!} />}
               <span class="cs-tag">{entry.data.tag}</span>
               <h2 transition:name={`work-title-${workSlug(entry)}`}>{entry.data.title}</h2>
               <p>{entry.data.subtitle}</p>
@@ -60,6 +62,9 @@ const entries = await getWork(lang);
 </PortfolioLayout>
 
 <style is:global>
+  .work-card .dio {
+    margin: 0 0 12px;
+  }
   .cs-wrap {
     max-width: 760px;
     margin: 0 auto;

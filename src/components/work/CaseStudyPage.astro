@@ -5,9 +5,8 @@ import SiteHeader from '~/components/portfolio/SiteHeader.astro';
 import SiteFooter from '~/components/portfolio/SiteFooter.astro';
 import { useTranslations, type Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
-import { workSlug } from '~/utils/work';
+import { workScene, workSlug } from '~/utils/work';
 import Diorama from '~/components/portfolio/dioramas/Diorama.astro';
-import type { SceneName } from '~/components/portfolio/dioramas/scenes';
 import { breadcrumbs, caseStudy } from '~/utils/structured-data';
 
 interface Props {
@@ -20,16 +19,7 @@ const { t } = useTranslations(lang);
 const { Content } = await render(entry);
 const { data } = entry;
 const slug = workSlug(entry);
-// Decorative header scene, for the case studies that have one.
-const scene = (
-  {
-    'hangar-design-system': 'hangar',
-    'latam-airlines-home': 'terminal',
-    'mining-supplier-platform': 'mine',
-    pace: 'pace',
-    intervalo: 'intervalo',
-  } as Record<string, SceneName>
-)[slug];
+const scene = workScene(slug);
 const meta = [
   ['work.meta.role', data.role],
   ['work.meta.period', data.period],

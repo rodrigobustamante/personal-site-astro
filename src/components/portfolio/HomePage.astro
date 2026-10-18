@@ -3,6 +3,7 @@ import PortfolioLayout from '~/layouts/PortfolioLayout.astro';
 import SiteHeader from '~/components/portfolio/SiteHeader.astro';
 import SiteFooter from '~/components/portfolio/SiteFooter.astro';
 import GradientAscii from '~/components/common/gradient-ascii/GradientAscii.astro';
+import Diorama from '~/components/portfolio/dioramas/Diorama.astro';
 import { useTranslations, type Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
 import { fetchPosts } from '~/utils/blog';
@@ -329,200 +330,35 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
               </a>
             </div>
           </article>
+        </div>
 
-          <!-- Simple — Ripley.com (SME) -->
-          <article class="entry reveal">
-            <aside class="entry-aside">
-              <div class="entry-years">Apr 2020 — Aug 2020</div>
-              <div class="entry-sector">{t('exp.simple-sme.sector')}</div>
-              <div class="entry-loc">Santiago, Chile</div>
-            </aside>
-            <div class="entry-main">
-              <h3 class="entry-company">Simple — Ripley.com</h3>
-              <div class="entry-highlight">
-                <span class="star">✦</span>
-                {t('exp.simple-sme.highlight')}
-              </div>
-              <div class="role">
-                <div class="role-head">
-                  <span class="role-title">Subject Matter Expert</span>
+        <!-- Before 2020: one line per role; the detail lives in the CV -->
+        <div class="earlier reveal">
+          <h3 class="earlier-title">{t('exp.before.title')}</h3>
+          <ul class="earlier-list">
+            {[
+              ['Apr 2020 — Aug 2020', 'Simple — Ripley.com', 'Subject Matter Expert', t('exp.simple-sme.highlight')],
+              [
+                'Feb 2020 — Apr 2020',
+                'eCommerce Gateway — Coca-Cola / Embonor',
+                'Backend Developer',
+                t('exp.gateway.highlight'),
+              ],
+              ['May 2019 — Feb 2020', 'Simple — Ripley.com', 'FullStack Developer', t('exp.simple-fs.highlight')],
+              ['2018 — 2019', 'INNSPIRAL', 'Technology Analyst', t('exp.innspiral.highlight')],
+              ['2015 — 2018', t('exp.before.early-orgs'), t('exp.before.early-roles'), t('exp.earlier.highlight')],
+            ].map(([years, org, role, note]) => (
+              <li class="earlier-item">
+                <span class="earlier-years">{years}</span>
+                <div>
+                  <p class="earlier-org">
+                    {org} <span class="earlier-role">· {role}</span>
+                  </p>
+                  <p class="earlier-note">{note}</p>
                 </div>
-                <ul class="role-bullets">
-                  {tl('exp.simple-sme.bullets').map((b) => (
-                    <li>{b}</li>
-                  ))}
-                </ul>
-              </div>
-              <div class="entry-stack">
-                <span class="chip">React</span>
-                <span class="chip">Node.js</span>
-                <span class="chip">Express</span>
-                <span class="chip">Redis</span>
-                <span class="chip">imgix</span>
-                <span class="chip">Heroku</span>
-                <span class="chip">GitLab CI</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- eCommerce Gateway — Coca-Cola / Embonor -->
-          <article class="entry reveal">
-            <aside class="entry-aside">
-              <div class="entry-years">Feb 2020 — Apr 2020</div>
-              <div class="entry-sector">{t('exp.gateway.sector')}</div>
-              <div class="entry-loc">Santiago, Chile</div>
-            </aside>
-            <div class="entry-main">
-              <h3 class="entry-company">eCommerce Gateway — Coca-Cola / Embonor</h3>
-              <div class="entry-highlight">
-                <span class="star">✦</span>
-                {t('exp.gateway.highlight')}
-              </div>
-              <div class="role">
-                <div class="role-head">
-                  <span class="role-title">Backend Developer</span>
-                </div>
-                <ul class="role-bullets">
-                  {tl('exp.gateway.bullets').map((b) => (
-                    <li>{b}</li>
-                  ))}
-                </ul>
-              </div>
-              <div class="entry-stack">
-                <span class="chip">Node.js</span>
-                <span class="chip">Express</span>
-                <span class="chip">MySQL</span>
-                <span class="chip">AWS EKS</span>
-                <span class="chip">Kubernetes</span>
-                <span class="chip">GitLab CI</span>
-                <span class="chip">Kiphu</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Simple — Ripley.com (FullStack) -->
-          <article class="entry reveal">
-            <aside class="entry-aside">
-              <div class="entry-years">May 2019 — Feb 2020</div>
-              <div class="entry-sector">{t('exp.simple-fs.sector')}</div>
-              <div class="entry-loc">Santiago, Chile</div>
-            </aside>
-            <div class="entry-main">
-              <h3 class="entry-company">Simple — Ripley.com</h3>
-              <div class="entry-highlight">
-                <span class="star">✦</span>
-                {t('exp.simple-fs.highlight')}
-              </div>
-              <div class="role">
-                <div class="role-head">
-                  <span class="role-title">FullStack Developer</span>
-                </div>
-                <ul class="role-bullets">
-                  {tl('exp.simple-fs.bullets').map((b) => (
-                    <li>{b}</li>
-                  ))}
-                </ul>
-              </div>
-              <div class="entry-stack">
-                <span class="chip">React</span>
-                <span class="chip">Node.js</span>
-                <span class="chip">Express</span>
-                <span class="chip">Redis</span>
-                <span class="chip">imgix</span>
-                <span class="chip">Heroku</span>
-                <span class="chip">GitLab CI</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- INNSPIRAL -->
-          <article class="entry reveal">
-            <aside class="entry-aside">
-              <div class="entry-years">2018 — 2019</div>
-              <div class="entry-sector">{t('exp.innspiral.sector')}</div>
-              <div class="entry-loc">Santiago, Chile</div>
-            </aside>
-            <div class="entry-main">
-              <h3 class="entry-company">INNSPIRAL</h3>
-              <div class="entry-highlight">
-                <span class="star">✦</span>
-                {t('exp.innspiral.highlight')}
-              </div>
-              <div class="role">
-                <div class="role-head">
-                  <span class="role-title">Technology Analyst</span>
-                  <span class="role-period">Jun 2018 — May 2019</span>
-                </div>
-                <ul class="role-bullets">
-                  {tl('exp.innspiral.bullets').map((b) => (
-                    <li>{b}</li>
-                  ))}
-                </ul>
-              </div>
-              <div class="entry-stack">
-                <span class="chip">Node.js</span>
-                <span class="chip">React</span>
-                <span class="chip">SQL</span>
-                <span class="chip">Cloud</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Earlier roles -->
-          <article class="entry reveal">
-            <aside class="entry-aside">
-              <div class="entry-years">2015 — 2018</div>
-              <div class="entry-sector">{t('exp.earlier.sector')}</div>
-              <div class="entry-loc">Santiago, Chile</div>
-            </aside>
-            <div class="entry-main">
-              <h3 class="entry-company">{t('exp.earlier.title')}</h3>
-              <div class="entry-highlight">
-                <span class="star">✦</span>
-                {t('exp.earlier.highlight')}
-              </div>
-              <div class="role">
-                <div class="role-head">
-                  <span class="role-title">Software Engineer — Ormasoft</span>
-                  <span class="role-period">Feb 2018 — May 2018</span>
-                </div>
-                <ul class="role-bullets">
-                  {tl('exp.earlier.ormasoft.bullets').map((b) => (
-                    <li>{b}</li>
-                  ))}
-                </ul>
-              </div>
-              <div class="role">
-                <div class="role-head">
-                  <span class="role-title">Software Engineer Intern — Análisis Ltda.</span>
-                  <span class="role-period">Sep 2017 — Dec 2017</span>
-                </div>
-                <ul class="role-bullets">
-                  {tl('exp.earlier.analisis.bullets').map((b) => (
-                    <li>{b}</li>
-                  ))}
-                </ul>
-              </div>
-              <div class="role">
-                <div class="role-head">
-                  <span class="role-title">{t('exp.earlier.ta-title')}</span>
-                  <span class="role-period">Mar 2015 — Dec 2017</span>
-                </div>
-                <ul class="role-bullets">
-                  {tl('exp.earlier.duoc.bullets').map((b) => (
-                    <li>{b}</li>
-                  ))}
-                </ul>
-              </div>
-              <div class="entry-stack">
-                <span class="chip">Angular</span>
-                <span class="chip">Aurelia</span>
-                <span class="chip">D3.js</span>
-                <span class="chip">Node.js</span>
-                <span class="chip">SQL</span>
-              </div>
-            </div>
-          </article>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
@@ -602,6 +438,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
         </div>
         <div class="projects-grid reveal">
           <article class="project-card">
+            <Diorama scene="pace" />
             <div class="project-head">
               <h3 class="project-name">{t('projects.pace.title')}</h3>
               <span class="project-status">{t('projects.pace.status')}</span>
@@ -648,6 +485,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
             </div>
           </article>
           <article class="project-card">
+            <Diorama scene="intervalo" />
             <div class="project-head">
               <h3 class="project-name">{t('projects.intervalo.title')}</h3>
               <span class="project-status">{t('projects.intervalo.status')}</span>
@@ -1065,6 +903,57 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     min-width: 0;
   }
 
+  /* Roles before 2020, one line each below the timeline */
+  .earlier {
+    display: grid;
+    grid-template-columns: var(--tl-aside, 132px) 1fr;
+    gap: clamp(20px, 4vw, 52px);
+    margin-top: clamp(40px, 6vh, 64px);
+  }
+  .earlier-title {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .earlier-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .earlier-item {
+    display: grid;
+    grid-template-columns: 11em 1fr;
+    gap: 6px 20px;
+  }
+  .earlier-years {
+    font-size: 16px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .earlier-org {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .earlier-role {
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .earlier-note {
+    font-size: 16px;
+    color: var(--ink);
+    margin-top: 2px;
+  }
+  @media (max-width: 680px) {
+    .earlier,
+    .earlier-item {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .role {
     margin-top: 26px;
   }
@@ -1414,6 +1303,15 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     display: flex;
     flex-direction: column;
     gap: 16px;
+  }
+  /* One box for every scene, so the card titles line up whatever its proportions. */
+  .project-card .dio {
+    aspect-ratio: 16 / 10 !important;
+    min-height: 0;
+    margin: 0 0 4px;
+  }
+  .project-card .dio svg {
+    height: 100%;
   }
   .project-head {
     display: flex;

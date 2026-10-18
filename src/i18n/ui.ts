@@ -53,6 +53,9 @@ export const ui = {
     'exp.title': 'Experience',
     'exp.sub': 'A decade of building for scale — from payment rails to global platforms used by millions.',
     'exp.present': 'Present',
+    'exp.before.title': 'Before 2020',
+    'exp.before.early-orgs': 'Ormasoft, Análisis Ltda., Duoc UC',
+    'exp.before.early-roles': 'Software Engineer, Teaching Assistant',
 
     'exp.vantaz.sector': 'Mining · Enterprise Software',
     'exp.vantaz.loc': 'Madrid, Spain · Remote',
@@ -98,50 +101,15 @@ export const ui = {
       'Worked in 2-week Scrum sprints managed via Jira.',
     ],
 
-    'exp.simple-sme.sector': 'Retail · eCommerce',
     'exp.simple-sme.highlight': 'Subject Matter Expert during COVID-19 crisis',
-    'exp.simple-sme.bullets': [
-      'Took the role of Subject Matter Expert, helping new team members design, develop, implement, and deploy new features during the COVID-19 crisis context.',
-      'Led technical decisions and maintained system stability under increased e-commerce demand during the pandemic.',
-      'Stack: React microfrontends, Node.js/Express APIs, Redis, imgix as image CDN, Heroku deployment, and GitLab CI/CD.',
-    ],
 
-    'exp.gateway.sector': 'Digital Payments · eCommerce',
     'exp.gateway.highlight': 'Payment gateway for Chile and Peru',
-    'exp.gateway.bullets': [
-      'Developed a Node.js/Express payment gateway for CocaCola Embonor covering Chile and Peru, using MySQL to persist transaction records.',
-      'Deployed on AWS EKS using Kubernetes as container orchestration, with GitLab CI/CD for continuous integration and delivery.',
-      'Integrated Kiphu as SaaS for digital payments.',
-    ],
 
-    'exp.simple-fs.sector': 'Retail · eCommerce',
     'exp.simple-fs.highlight': "Core of online sales for one of Chile and Peru's largest retailers",
-    'exp.simple-fs.bullets': [
-      'Developed the main page, product catalogs, product tabs, and campaign administration panel (for analysts to create campaigns), among other modules.',
-      'Worked side by side with the marketing and technology departments, integrating vendor technologies and performing requirements analysis.',
-      'Stack: React microfrontends, Node.js/Express APIs, Redis, imgix as image CDN, Heroku deployment, and GitLab CI/CD.',
-    ],
 
-    'exp.innspiral.sector': 'Corporate Innovation',
     'exp.innspiral.highlight': '30% faster time-to-market',
-    'exp.innspiral.bullets': [
-      'Developed and deployed end-to-end innovation platforms for corporate clients, owning the full lifecycle from database modeling to cloud deployment.',
-      'Reduced time-to-market for internal pilot projects by 30%.',
-    ],
 
-    'exp.earlier.sector': 'Healthcare · Finance · Teaching',
-    'exp.earlier.title': 'Earlier roles',
     'exp.earlier.highlight': 'Where the foundations were laid',
-    'exp.earlier.ta-title': 'Teaching Assistant — Duoc UC',
-    'exp.earlier.ormasoft.bullets': [
-      'Architected a unified medical-records system for the Chilean healthcare sector using Aurelia, D3.js for clinical visualization and HTML5 Canvas for high-performance rendering.',
-    ],
-    'exp.earlier.analisis.bullets': [
-      'Built specialized accounting software for CasaIdeas with Angular and Node.js/Express, implementing complex PL/SQL queries for accurate financial reporting.',
-    ],
-    'exp.earlier.duoc.bullets': [
-      'Mentored undergraduates in Programming Fundamentals and Database Design through workshops and hands-on guidance.',
-    ],
 
     // skills
     'skills.sub': 'The tools and disciplines I reach for.',
@@ -257,6 +225,9 @@ export const ui = {
     'exp.sub':
       'Una década construyendo a escala — desde pasarelas de pago hasta plataformas globales usadas por millones.',
     'exp.present': 'Presente',
+    'exp.before.title': 'Antes de 2020',
+    'exp.before.early-orgs': 'Ormasoft, Análisis Ltda., Duoc UC',
+    'exp.before.early-roles': 'Software Engineer, ayudante',
 
     'exp.vantaz.sector': 'Minería · Software empresarial',
     'exp.vantaz.loc': 'Madrid, España · Remoto',
@@ -302,50 +273,15 @@ export const ui = {
       'Metodología: Scrum con sprints de 2 semanas gestionados en Jira.',
     ],
 
-    'exp.simple-sme.sector': 'Retail · eCommerce',
     'exp.simple-sme.highlight': 'SME durante la crisis COVID-19',
-    'exp.simple-sme.bullets': [
-      'Asumí el rol de Subject Matter Expert, apoyando a los nuevos miembros del equipo en el diseño, desarrollo, implementación y despliegue de nuevas funcionalidades en el contexto de la crisis COVID-19.',
-      'Lideré decisiones técnicas y mantuve la estabilidad del sistema ante el aumento de la demanda del ecommerce durante la pandemia.',
-      'Stack: React microfrontends, Node.js/Express APIs, Redis, imgix como CDN de imágenes, Heroku y GitLab CI/CD.',
-    ],
 
-    'exp.gateway.sector': 'Pagos digitales · eCommerce',
     'exp.gateway.highlight': 'Pasarela de pagos para Chile y Perú',
-    'exp.gateway.bullets': [
-      'Desarrollé una pasarela de pagos con Node.js y Express para CocaCola Embonor, operando en Chile y Perú, con MySQL para la persistencia de transacciones.',
-      'Desplegué en AWS EKS usando Kubernetes como orquestador de contenedores, con GitLab CI/CD para la integración continua.',
-      'Integré Kiphu como SaaS para pagos digitales.',
-    ],
 
-    'exp.simple-fs.sector': 'Retail · eCommerce',
     'exp.simple-fs.highlight': 'Core de ventas online de uno de los mayores retail de Chile y Perú',
-    'exp.simple-fs.bullets': [
-      'Desarrollé la página principal del sitio, catálogos de productos, ficha de producto y el panel de administración para que los analistas creen campañas, entre otros módulos.',
-      'Trabajé de la mano con los departamentos de marketing y tecnología, integrando tecnologías de distintos proveedores y realizando análisis de requerimientos.',
-      'Stack: React microfrontends, Node.js/Express APIs, Redis, imgix como CDN de imágenes, Heroku y GitLab CI/CD.',
-    ],
 
-    'exp.innspiral.sector': 'Innovación Corporativa',
     'exp.innspiral.highlight': '30% menos time-to-market',
-    'exp.innspiral.bullets': [
-      'Desarrollé y desplegué plataformas de innovación end-to-end para clientes corporativos, gestionando el ciclo completo desde modelado de BD hasta deploy en cloud.',
-      'Reduje en 30% el time-to-market de los pilotos internos.',
-    ],
 
-    'exp.earlier.sector': 'Salud · Finanzas · Docencia',
-    'exp.earlier.title': 'Roles anteriores',
     'exp.earlier.highlight': 'Donde se sentaron las bases',
-    'exp.earlier.ta-title': 'Ayudante — Duoc UC',
-    'exp.earlier.ormasoft.bullets': [
-      'Arquitecté un sistema unificado de fichas médicas para el sector salud chileno con Aurelia, D3.js para visualización clínica y HTML5 Canvas para renderizado de alto rendimiento.',
-    ],
-    'exp.earlier.analisis.bullets': [
-      'Construí software contable especializado para CasaIdeas con Angular y Node.js/Express, implementando consultas PL/SQL complejas para reportería financiera precisa.',
-    ],
-    'exp.earlier.duoc.bullets': [
-      'Mentoreé a estudiantes en Fundamentos de Programación y Diseño de Bases de Datos mediante talleres y guía práctica.',
-    ],
 
     // skills
     'skills.sub': 'Las herramientas y disciplinas a las que recurro.',
