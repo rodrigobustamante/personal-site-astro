@@ -86,6 +86,8 @@ const last = steps.length;
     /* Status colours for good / needs-improvement / poor, as Lighthouse uses them. */
     --good: oklch(0.56 0.12 165);
     --warn: oklch(0.64 0.15 64);
+    /* --warn is too light for small text on the page; labels use this. */
+    --warn-ink: oklch(0.5 0.13 60);
     --bad: oklch(0.56 0.2 18);
     --photo-sky: oklch(0.84 0.06 250);
     --photo-sun: oklch(0.86 0.15 82);
@@ -98,6 +100,7 @@ const last = steps.length;
   :root[data-theme='dark'] .fig {
     --good: oklch(0.78 0.14 168);
     --warn: oklch(0.84 0.15 82);
+    --warn-ink: var(--warn);
     --bad: oklch(0.72 0.18 18);
     --photo-sky: oklch(0.42 0.1 275);
     --photo-sun: oklch(0.84 0.15 82);
@@ -107,6 +110,7 @@ const last = steps.length;
   :root[data-style='paper'] .fig {
     --good: oklch(0.56 0.13 152);
     --warn: oklch(0.64 0.14 68);
+    --warn-ink: oklch(0.5 0.12 62);
     --bad: oklch(0.56 0.18 25);
     --photo-sky: oklch(0.86 0.05 230);
     --photo-sun: oklch(0.87 0.13 88);
@@ -116,6 +120,7 @@ const last = steps.length;
   :root[data-style='paper'][data-theme='dark'] .fig {
     --good: oklch(0.76 0.15 152);
     --warn: oklch(0.8 0.14 75);
+    --warn-ink: var(--warn);
     --bad: oklch(0.7 0.17 25);
     --photo-sky: oklch(0.55 0.06 235);
     --photo-sun: oklch(0.8 0.12 85);
