@@ -59,6 +59,9 @@ export default defineConfig({
       remarkPlugins: [readingTimeRemarkPlugin],
       rehypePlugins: [responsiveTablesRehypePlugin],
     }),
+    // github-dark (the default) leaves comments at 3:1 on its background;
+    // github-dark-default keeps every token above 4.5:1.
+    shikiConfig: { theme: 'github-dark-default' },
   },
   vite: {
     resolve: {
