@@ -26,3 +26,9 @@ package-lock.json
 
 # Lighthouse CI reports
 .lighthouseci/
+
+# Local agent tooling: skills, their lockfile and the design inspector output
+.agents/
+.claude/
+.taste-skill/
+skills-lock.json

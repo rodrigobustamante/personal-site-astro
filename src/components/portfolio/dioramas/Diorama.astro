@@ -17,7 +17,13 @@ const { scene } = Astro.props;
 const [, , w, h] = SCENES[scene].viewBox.split(' ');
 ---
 
-<figure class="dio" aria-hidden="true" data-src={`/dioramas/${scene}.svg`} style={`aspect-ratio: ${w} / ${h}`}></figure>
+<figure
+  class="dio"
+  aria-hidden="true"
+  data-scene={scene}
+  data-src={`/dioramas/${scene}.svg`}
+  style={`aspect-ratio: ${w} / ${h}`}
+></figure>
 
 <style is:global>
   /* Tones 0 (lit) … 3 (shaded) mix each base towards --dio-tone; the amounts

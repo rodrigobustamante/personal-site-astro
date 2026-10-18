@@ -9,6 +9,6 @@ export const getStaticPaths = (() =>
 
 /** The diorama SVGs, fetched and inlined by Diorama.astro so they stay out of the page HTML. */
 export const GET: APIRoute = ({ params }) =>
-  new Response(sceneDocument(SCENES[params.scene as SceneName]), {
+  new Response(sceneDocument(SCENES[params.scene as SceneName], params.scene as string), {
     headers: { 'Content-Type': 'image/svg+xml; charset=utf-8' },
   });
