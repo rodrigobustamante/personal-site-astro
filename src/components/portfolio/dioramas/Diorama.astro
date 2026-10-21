@@ -139,8 +139,7 @@ const [, , w, h] = SCENES[scene].viewBox.split(' ');
     .dio svg {
       animation: dio-in 0.6s ease-out both;
     }
-    /* Loops synced across scenes (--dio-t) keep running: pausing one would
-         put it out of phase with the other. */
+    /* Synced loops (--dio-t) keep running, or the two scenes drift apart. */
     .dio[data-paused] :not(.dio-sync) {
       animation-play-state: paused;
     }
