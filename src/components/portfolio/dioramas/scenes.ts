@@ -1,3 +1,4 @@
+import { a11yScene } from './a11y';
 import { hangarScene } from './hangar';
 import { intervaloScene } from './intervalo';
 import { madridScene } from './madrid';
@@ -13,6 +14,7 @@ export const SCENES = {
   mine: mineScene,
   pace: paceScene,
   intervalo: intervaloScene,
+  a11y: a11yScene,
   santiago: santiagoScene,
   madrid: madridScene,
 };

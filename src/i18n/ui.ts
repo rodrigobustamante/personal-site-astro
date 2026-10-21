@@ -147,6 +147,10 @@ export const ui = {
     'projects.intervalo.desc':
       'Sonic visualization of metro networks (Santiago & Madrid) using GTFS open data, MapLibre GL JS, and the Web Audio API. Each train arriving at a station becomes a note.',
     'projects.intervalo.status': 'In development',
+    'projects.a11y.title': 'A11yScan',
+    'projects.a11y.desc':
+      'Accessibility scanner for any URL: runs axe-core in a real browser, scores the page from 0 to 100 and exports PDF reports. Every request goes through an egress proxy that blocks private addresses.',
+    'projects.a11y.status': 'In development',
     'projects.repo': 'Repo',
     'projects.demo': 'Demo',
     'projects.more': 'Read more',
@@ -325,6 +329,10 @@ export const ui = {
     'projects.intervalo.desc':
       'Visualización sonora de redes de metro (Santiago y Madrid) usando datos abiertos GTFS, MapLibre GL JS y la Web Audio API. Cada tren que llega a una estación se convierte en una nota.',
     'projects.intervalo.status': 'En desarrollo',
+    'projects.a11y.title': 'A11yScan',
+    'projects.a11y.desc':
+      'Escáner de accesibilidad para cualquier URL: ejecuta axe-core en un navegador real, puntúa la página de 0 a 100 y exporta informes en PDF. Cada petición pasa por un proxy de salida que bloquea las direcciones privadas.',
+    'projects.a11y.status': 'En desarrollo',
     'projects.repo': 'Repo',
     'projects.demo': 'Demo',
     'projects.more': 'Leer más',
