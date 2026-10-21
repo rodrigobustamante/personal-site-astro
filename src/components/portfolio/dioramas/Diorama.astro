@@ -139,7 +139,8 @@ const [, , w, h] = SCENES[scene].viewBox.split(' ');
     .dio svg {
       animation: dio-in 0.6s ease-out both;
     }
-    .dio[data-paused] * {
+    /* Synced loops (--dio-t) keep running, or the two scenes drift apart. */
+    .dio[data-paused] :not(.dio-sync) {
       animation-play-state: paused;
     }
   }
@@ -174,6 +175,9 @@ const [, , w, h] = SCENES[scene].viewBox.split(' ');
             .then((res) => (res.ok ? res.text() : ''))
             .then((svg) => {
               el.innerHTML = svg;
+              // A shared clock for loops that span two scenes: delaying by the
+              // time since page load puts every scene at the same phase.
+              el.style.setProperty('--dio-t', `${-Math.round(performance.now())}ms`);
               // Re-home the scene's <style> as an HTML element: some browsers
               // don't apply a <style> nested in inline SVG added after load.
               const sheet = el.querySelector('svg style');

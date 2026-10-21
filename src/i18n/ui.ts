@@ -110,6 +110,12 @@ export const ui = {
 
     'exp.earlier.highlight': 'Where the foundations were laid',
 
+    // journey
+    'journey.title': 'From Santiago to Madrid',
+    'journey.sub': 'Ten years building software in Santiago, then a move across the Atlantic in September 2025.',
+    'journey.santiago': 'Santiago, Chile',
+    'journey.madrid': 'Madrid, Spain',
+
     // skills
     'skills.sub': 'The tools and disciplines I reach for.',
     'skills.architecture': 'Architecture',
@@ -280,6 +286,13 @@ export const ui = {
     'exp.innspiral.highlight': '30% menos time-to-market',
 
     'exp.earlier.highlight': 'Donde se sentaron las bases',
+
+    // journey
+    'journey.title': 'De Santiago a Madrid',
+    'journey.sub':
+      'Diez años construyendo software en Santiago y, en septiembre de 2025, el salto al otro lado del Atlántico.',
+    'journey.santiago': 'Santiago, Chile',
+    'journey.madrid': 'Madrid, España',
 
     // skills
     'skills.sub': 'Las herramientas y disciplinas a las que recurro.',

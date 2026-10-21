@@ -6,6 +6,8 @@
  */
 export type V = [number, number, number];
 export type Shape = { d: string; cls: string };
+/** A building: x, y, dx, dy, height and material. */
+export type Block = [number, number, number, number, number, string];
 /** A finished scene: its SVG body and the CSS of its loop. */
 export type Scene = { viewBox: string; svg: string; css: string };
 
@@ -30,10 +32,13 @@ const BASES: Record<string, string> = {
   soft: 'color-mix(in oklab, var(--accent-2) var(--dio-soft), var(--card))',
   deep: 'color-mix(in oklab, var(--ink) var(--dio-deep), var(--accent-3))',
 };
+/** The four tone classes of a material, for scenes that bring their own. */
+export const tones = (m: string, base: string) =>
+  [0, 1, 2, 3]
+    .map((i) => `.dio .${m}${i}{--f:color-mix(in oklab, ${base}, var(--dio-tone) var(--dio-k${i}))}`)
+    .join('');
 export const toneCss = Object.entries(BASES)
-  .flatMap(([m, base]) =>
-    [0, 1, 2, 3].map((i) => `.dio .${m}${i}{--f:color-mix(in oklab, ${base}, var(--dio-tone) var(--dio-k${i}))}`)
-  )
+  .map(([m, base]) => tones(m, base))
   .join('');
 
 /**
@@ -113,6 +118,16 @@ export function createScene(S = 16) {
         mid
       ),
     ];
+  }
+
+  /** A convex solid from its faces (any winding); hidden faces are dropped. */
+  function solid(faces: V[][], mat: string): Shape[] {
+    const pts = faces.flat();
+    const c = pts.reduce<V>(
+      (s, p) => [s[0] + p[0] / pts.length, s[1] + p[1] / pts.length, s[2] + p[2] / pts.length],
+      [0, 0, 0]
+    );
+    return faces.flatMap((f) => face(f, mat, c));
   }
 
   /** A body of revolution along the x axis: rings at each station, joined by quads. */
@@ -346,6 +361,32 @@ export function createScene(S = 16) {
     return { shadow, body, beacons };
   }
 
+  /** Boxes drawn back to front, so nearer blocks overlap farther ones. */
+  const blocks = (list: Block[]) =>
+    list
+      .slice()
+      .sort((a, b) => a[0] + a[1] - (b[0] + b[1]))
+      .flatMap(([x, y, dx, dy, h, mat]) => box(x, y, 0, dx, dy, h, mat));
+
+  /** Rows of windows on a block's two visible faces, as dotted strokes. */
+  function windows(x: number, y: number, dx: number, dy: number, h: number) {
+    const rows = Array.from({ length: Math.floor((h - 0.4) / 0.8) }, (_, i) => 0.7 + i * 0.8);
+    return rows
+      .flatMap((z) => [
+        line([x + dx + 0.02, y + 0.35, z], [x + dx + 0.02, y + dy - 0.35, z]),
+        line([x + 0.35, y + dy + 0.02, z], [x + dx - 0.35, y + dy + 0.02, z]),
+      ])
+      .join('');
+  }
+
+  /** Buildings back to front, each with its windows before the next one covers them. */
+  const city = (list: Block[]) =>
+    list
+      .slice()
+      .sort((a, b) => a[0] + a[1] - (b[0] + b[1]))
+      .map((b) => paths(blocks([b])) + mark('dio-windows', windows(b[0], b[1], b[2], b[3], b[4])))
+      .join('');
+
   /** Faces as <path>s, merging consecutive faces of one tone (painter's order is kept). */
   const paths = (list: Shape[]) =>
     list
@@ -370,5 +411,23 @@ export function createScene(S = 16) {
       .map(r1)
       .join(' ');
 
-  return { proj, poly, line, shift, face, box, loft, slab, plane, paths, mark, beacons, viewBox };
+  return {
+    proj,
+    poly,
+    line,
+    shift,
+    face,
+    box,
+    solid,
+    loft,
+    slab,
+    plane,
+    paths,
+    mark,
+    beacons,
+    viewBox,
+    blocks,
+    windows,
+    city,
+  };
 }
