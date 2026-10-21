@@ -1,132 +1,71 @@
-# Personal Site with Astro
+# rodrigobustamante.cl
 
-Welcome to the repository for my personal website, built using [Astro](https://astro.build/). This site serves as a portfolio, blog, and a place to share my projects and thoughts.
+[![CI](https://github.com/rodrigobustamante/personal-site/actions/workflows/ci.yml/badge.svg)](https://github.com/rodrigobustamante/personal-site/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-0891b2.svg)](LICENSE.md)
+[![Website](https://img.shields.io/badge/web-rodrigobustamante.cl-0891b2.svg)](https://rodrigobustamante.cl)
 
-## 🚀 Project Overview
+Source of my personal site: portfolio, case studies and a blog on web performance and design systems. Bilingual (English and Spanish), with light and dark themes.
 
-This project is a static website built with Astro, a modern static site generator that allows you to build fast, optimized websites with your favorite frameworks like React, Svelte, or Vue. The site is designed to be lightweight, fast, and easy to maintain.
+<a href="https://rodrigobustamante.cl">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/preview-dark.png" />
+    <img src="docs/preview-light.png" alt="Home page of rodrigobustamante.cl" width="100%" />
+  </picture>
+</a>
 
-### Features:
+## What's inside
 
-- **Blog**: A collection of articles and tutorials.
-- **Portfolio**: Showcase of my projects and work.
-- **Responsive Design**: Optimized for all devices.
-- **SEO Friendly**: Built with SEO best practices in mind.
-- **Dark Mode**: Supports dark mode for better readability.
+- **Case studies** ([/work](https://rodrigobustamante.cl/work)): Hangar Design System, LATAM Airlines home page, a mining supplier platform, PACE and Intervalo.
+- **Blog** ([/blog/en](https://rodrigobustamante.cl/blog/en)): MDX posts in English and Spanish, with an RSS feed per language.
+- **Design system** ([/system](https://rodrigobustamante.cl/system)): the tokens, type scale and components the site is built with. The full spec lives in [`DESIGN.md`](DESIGN.md).
+- **Uses** ([/uses](https://rodrigobustamante.cl/uses)): how the site is built.
+- **Edge language redirect**: a Cloudflare Worker sends visitors to `/` or `/es` based on their language before the static HTML is served.
 
-## 🛠️ Technologies Used
+## Stack
 
-- **Astro**: For building the static site.
-- **Tailwind CSS**: For styling and responsive design.
-- **Markdown**: For writing blog posts.
-- **JavaScript/TypeScript**: For interactivity and dynamic content.
-- **Cloudflare Pages**: For hosting the site.
+- [Astro](https://astro.build) with MDX, generated Open Graph images (Satori + Sharp), sitemap and RSS.
+- Plain CSS with design tokens, self-hosted fonts (Newsreader and Hanken Grotesk).
+- Cloudflare Workers with static assets, deployed with Wrangler.
+- Quality gates in CI: ESLint, Prettier, unit tests (`node --test`), build and Lighthouse CI.
 
-## 📂 Project Structure
+## Getting started
+
+Requires Node.js 22+ and pnpm.
 
 ```bash
-personal-site-astro/
-├── src/
-│   ├── assets/           # Static assets (images, fonts, etc.)
-│   ├── components/       # Reusable components
-│   ├── content/          # Blog posts in Markdown
-│   ├── layouts/          # Layout templates
-│   ├── pages/            # Site pages
-│   └── utils/            # Helpers methods for formatting, parsing, etc.
-├── public/               # Static assets (images, fonts, etc.)
-├── astro.config.mjs      # Astro configuration
-├── tailwind.config.cjs   # Tailwind CSS configuration
-├── wrangler.toml         # Cloudflare page configs
-└── README.md             # This file
+pnpm install
+pnpm dev        # http://localhost:4321
+pnpm build      # output in dist/
+pnpm preview
 ```
 
-## 🚀 Getting Started
+Other scripts: `pnpm lint:eslint`, `pnpm format`, `pnpm test` and `pnpm lighthouse`.
 
-### Prerequisites
+## Writing a post
 
-- Node.js (18 or higher)
-- npm or yarn
+Add an `.mdx` file to `src/content/post/en` or `src/content/post/es`:
 
-### Installation
-
-1. **Clone the repository:**
-
-   ```bash
-   git clone https://github.com/rodrigobustamante/personal-site-astro.git
-   cd personal-site-astro
-   ```
-
-2. **Install dependencies:**
-
-   ```bash
-   npm install
-   ```
-
-3. **Run the development server:**
-
-   ```bash
-   npm run dev
-   ```
-
-   The site will be available at `http://localhost:4321`.
-
-4. **Build the site for production:**
-
-   ```bash
-   npm run build
-   ```
-
-   The built files will be in the `dist/` directory.
-
-5. **Preview with wrangler:**
-
-   ```bash
-   npm run preview
-   ```
-
-   This will preview the site using wrangler to simulate the deploy on Cloudflare pages.
-
-## 📝 Blogging
-
-To add a new blog post:
-
-1. Create a new Markdown file in the `src/content/post` directory.  
-   **Note**: The content/post folder has two subfolders, en and es, for future posts in English and Spanish.
-2. Use the following frontmatter template:
-
-   ```markdown
-   ---
-   publishDate: YYYY-MM-DD
-   title: 'Your post title'
-   excerpt: 'Your post description'
-   image: 'Your post image'
-   category: 'Your post category'
-   draft: 'true or false if the post is a draft'
-   tags: 'List of tags'
-   metadata:
-     title: 'Your post title'
-     description: 'Your post description'
-   ---
-
-   # Your Post Title
-
-   Your content here...
-   ```
-
-3. Save the file and the post will be automatically included in the blog.
-
-## 🤝 Contributing
-
-Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request.
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 📧 Contact
-
-If you have any questions or just want to say hi, feel free to reach out to me via [email](mailto:rbustamantejelvez@gmail.com) or connect with me on [LinkedIn](https://www.linkedin.com/in/rod-bustamante/).
-
+```markdown
+---
+publishDate: YYYY-MM-DDT00:00:00Z
+title: Your post title
+excerpt: Short description
+image: ~/assets/images/posts/cover.jpg
+category: Tutorials
+draft: false
+translation: /blog/es/your-post-slug # link to the other language, if any
+tags:
+  - tag
+metadata:
+  title: Your post title
+  description: Short description
 ---
 
-Thank you for visiting my repository! 🎉
+Your content here...
+```
+
+Case studies live in `src/content/work/en` and `src/content/work/es`.
+
+## License
+
+[MIT](LICENSE.md) © Rodrigo Bustamante. Blog posts and case studies are my own writing; please link back rather than republishing them.
