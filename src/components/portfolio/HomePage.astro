@@ -558,6 +558,43 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
               </a>
             </div>
           </article>
+          <article class="project-card">
+            <Diorama scene="a11y" />
+            <div class="project-head">
+              <h3 class="project-name">{t('projects.a11y.title')}</h3>
+              <span class="project-status">{t('projects.a11y.status')}</span>
+            </div>
+            <p class="project-desc">{t('projects.a11y.desc')}</p>
+            <div class="project-stack">
+              <span class="chip">Next.js</span>
+              <span class="chip">Express</span>
+              <span class="chip">Playwright</span>
+              <span class="chip">axe-core</span>
+              <span class="chip">TypeScript</span>
+            </div>
+            <div class="project-links">
+              <a
+                class="project-link"
+                href="https://github.com/rodrigobustamante/a11y-web-validator"
+                aria-label={`${t('projects.repo')} — A11yScan`}
+              >
+                {t('projects.repo')}
+                <span class="arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+              <a
+                class="project-link"
+                href={localizedPath('/work/a11y-web-validator', lang)}
+                aria-label={`${t('projects.more')} — A11yScan`}
+              >
+                {t('projects.more')}
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </div>
+          </article>
         </div>
       </div>
     </section>

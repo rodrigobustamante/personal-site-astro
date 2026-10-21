@@ -20,5 +20,6 @@ const SCENE_BY_SLUG: Record<string, SceneName> = {
   'mining-supplier-platform': 'mine',
   pace: 'pace',
   intervalo: 'intervalo',
+  'a11y-web-validator': 'a11y',
 };
 export const workScene = (slug: string): SceneName | undefined => SCENE_BY_SLUG[slug];
