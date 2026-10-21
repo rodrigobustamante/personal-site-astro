@@ -363,11 +363,38 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
       </div>
     </section>
 
+    <!-- ——— From Santiago to Madrid ——— -->
+    <section id="journey" class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-num">02</span>
+          <h2 class="section-title">{t('journey.title')}</h2>
+          <p class="section-sub">{t('journey.sub')}</p>
+        </div>
+        <div class="journey reveal">
+          <div class="journey-city">
+            <Diorama scene="santiago" />
+            <p class="journey-caption">
+              <span class="journey-name">{t('journey.santiago')}</span>
+              <span class="journey-years">2015 — 2025</span>
+            </p>
+          </div>
+          <div class="journey-city">
+            <Diorama scene="madrid" />
+            <p class="journey-caption">
+              <span class="journey-name">{t('journey.madrid')}</span>
+              <span class="journey-years">2025 — {t('exp.present')}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ——— Skills ——— -->
     <section id="skills" class="section">
       <div class="wrap">
         <div class="section-head reveal">
-          <span class="section-num">02</span>
+          <span class="section-num">03</span>
           <h2 class="section-title">Skills</h2>
           <p class="section-sub">{t('skills.sub')}</p>
         </div>
@@ -432,7 +459,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     <section id="projects" class="section">
       <div class="wrap">
         <div class="section-head reveal">
-          <span class="section-num">03</span>
+          <span class="section-num">04</span>
           <h2 class="section-title">{t('projects.title')}</h2>
           <p class="section-sub">{t('projects.sub')}</p>
         </div>
@@ -539,7 +566,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     <section id="education" class="section">
       <div class="wrap">
         <div class="section-head reveal">
-          <span class="section-num">04</span>
+          <span class="section-num">05</span>
           <h2 class="section-title">{t('edu.title')}</h2>
           <p class="section-sub">{t('edu.sub')}</p>
         </div>
@@ -582,7 +609,7 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     <section id="writing" class="section">
       <div class="wrap">
         <div class="section-head reveal">
-          <span class="section-num">05</span>
+          <span class="section-num">06</span>
           <h2 class="section-title">{t('writing.title')}</h2>
           <p class="section-sub">{t('writing.sub')}</p>
         </div>
@@ -1296,6 +1323,44 @@ const posts = (await fetchPosts()).filter((post) => getPostLang(post.slug) === l
     gap: 14px;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  /* ——— From Santiago to Madrid ——— */
+  .journey {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(24px, 4vw, 56px);
+    /* The scenes differ in height: keep the captions on one line. */
+    align-items: end;
+  }
+  @media (max-width: 680px) {
+    .journey {
+      grid-template-columns: 1fr;
+    }
+  }
+  .journey .dio {
+    margin: 0;
+  }
+  .journey-caption {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .journey-name {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .journey-years {
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
   }
 
   /* ——— Projects grid ——— */

@@ -6,39 +6,12 @@
  * behind prefers-reduced-motion; the static frame is a complete scene on its
  * own.
  */
-import { createScene, r1, type Scene, type Shape, type V } from './iso';
+import { createScene, r1, type Block, type Scene, type Shape, type V } from './iso';
 
-const { proj, poly, line, shift, box, slab, paths, mark, beacons, viewBox } = createScene();
+const { proj, poly, line, shift, box, slab, paths, mark, beacons, viewBox, blocks, windows, city } = createScene();
 
 const AX = 24;
 const AY = 17;
-
-type Block = [number, number, number, number, number, string];
-/** Boxes drawn back to front, so nearer blocks overlap farther ones. */
-const blocks = (list: Block[]) =>
-  list
-    .slice()
-    .sort((a, b) => a[0] + a[1] - (b[0] + b[1]))
-    .flatMap(([x, y, dx, dy, h, mat]) => box(x, y, 0, dx, dy, h, mat));
-
-/** Rows of windows on a block's two visible faces, as dotted strokes. */
-function windows(x: number, y: number, dx: number, dy: number, h: number) {
-  const rows = Array.from({ length: Math.floor((h - 0.4) / 0.8) }, (_, i) => 0.7 + i * 0.8);
-  return rows
-    .flatMap((z) => [
-      line([x + dx + 0.02, y + 0.35, z], [x + dx + 0.02, y + dy - 0.35, z]),
-      line([x + 0.35, y + dy + 0.02, z], [x + dx - 0.35, y + dy + 0.02, z]),
-    ])
-    .join('');
-}
-
-/** Buildings back to front, each with its windows before the next one covers them. */
-const city = (list: Block[]) =>
-  list
-    .slice()
-    .sort((a, b) => a[0] + a[1] - (b[0] + b[1]))
-    .map((b) => paths(blocks([b])) + mark('dio-windows', windows(b[0], b[1], b[2], b[3], b[4])))
-    .join('');
 
 // City behind the viaduct, along the back edges
 const BACK: Block[] = [
