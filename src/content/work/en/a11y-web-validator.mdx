@@ -1,0 +1,66 @@
+---
+title: 'A11yScan'
+subtitle: 'An accessibility scanner for any URL: axe-core rules run in a real browser, a health score, and a report you can hand over'
+tag: 'Side project'
+period: 'Jan 2026 — Present'
+scope: 'Web app · Audit API · Security hardening'
+stack: [Next.js, React, TypeScript, Radix UI, TanStack Query, Tailwind CSS, Express, Playwright, axe-core, Zod]
+order: 5
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problem & Context" title="Accessibility checks people actually run">
+
+Most accessibility problems are found late, by the people who run into them. Automated checks don't replace a manual audit, but they catch a large share of the common failures: missing alternative text, low contrast, unlabelled controls, broken heading order. A11yScan makes that first pass take a few seconds. You paste a URL, the page is loaded in a real browser, and you get the violations grouped by impact, the exact HTML that causes each one, and a link to how to fix it.
+
+It's a side project, built on my own as a pnpm monorepo: a Next.js front end, an Express API that drives the browser, and a shared types package between them.
+
+</Section>
+
+<Section label="02 — Architecture" title="A real browser behind a small API">
+  <Pillars>
+    <Pillar title="Rules run where the page renders">
+
+The API opens the URL in headless Chromium with Playwright and runs axe-core against the rendered DOM, with the WCAG 2.0 and 2.1 A/AA rule sets plus axe's best practices. Running in a browser matters: contrast, focus and ARIA problems often only exist after scripts and styles have run. To keep scans fast, images, fonts and media are not downloaded, while stylesheets are, so contrast is measured on the real colours.
+
+    </Pillar>
+    <Pillar title="A score and a report">
+
+Each violation is weighted by impact and by how many elements it affects, and the result becomes a 0–100 health score that is easy to track over time. The front end, built on Radix UI primitives, groups issues by severity and shows the offending HTML for each one. Results can be exported as a PDF report, rendered on the server from the same data.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Differentiator" title="A scanner that can't be turned inward" highlight>
+
+A service that loads any URL a stranger gives it is an easy target for server-side request forgery: point it at `localhost`, a private network or a cloud metadata address, and the report hands back whatever it finds. Before making the repository public I treated that as the main risk.
+
+A first guard that checked every request the browser made was not enough: Playwright doesn't intercept the individual hops of an HTTP redirect, so a public URL that redirected to an internal address went through, and I reproduced the leak locally. The fix moves the check to the network boundary. Chromium now sends all its traffic through a small egress proxy inside the API, which resolves each destination, refuses private and reserved IPv4 and IPv6 ranges, and connects to the exact address it checked. That closes redirects, DNS rebinding and WebSockets in one place, with the per-request guard kept as a second layer.
+
+The PDF export got the same treatment: the report data is validated, every value is escaped, and the page is rendered with JavaScript and network access turned off. A limit on concurrent browsers keeps a burst of requests from taking the service down.
+
+</Section>
+
+<Metrics
+  label="04 — Outcomes"
+  title="What is in place"
+  items={[
+    { label: 'Audit', value: 'axe-core WCAG 2.0/2.1 A/AA rules and best practices, run in headless Chromium' },
+    { label: 'Report', value: '0–100 health score, issues by impact with the offending HTML, PDF export' },
+    {
+      label: 'Security',
+      value: 'Egress proxy that vets the resolved IP of every connection, including each redirect hop',
+    },
+    {
+      label: 'Quality',
+      value:
+        'CI with type checks, builds, a Docker build and 18 tests, one of them an end-to-end redirect attack in a real browser',
+    },
+  ]}
+/>

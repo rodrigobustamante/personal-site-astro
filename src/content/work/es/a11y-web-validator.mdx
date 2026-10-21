@@ -1,0 +1,69 @@
+---
+title: 'A11yScan'
+subtitle: 'Un escáner de accesibilidad para cualquier URL: reglas de axe-core en un navegador real, una puntuación de salud y un informe que se puede compartir'
+tag: 'Proyecto personal'
+period: 'Ene 2026 — Presente'
+scope: 'App web · API de auditoría · Seguridad'
+stack: [Next.js, React, TypeScript, Radix UI, TanStack Query, Tailwind CSS, Express, Playwright, axe-core, Zod]
+order: 5
+---
+
+import Section from '~/components/work/Section.astro';
+import Pillars from '~/components/work/Pillars.astro';
+import Pillar from '~/components/work/Pillar.astro';
+import Metrics from '~/components/work/Metrics.astro';
+
+<Section label="01 — Problema y contexto" title="Revisiones de accesibilidad que de verdad se hacen">
+
+La mayoría de los problemas de accesibilidad se descubren tarde, cuando alguien tropieza con ellos. Las revisiones automáticas no sustituyen una auditoría manual, pero detectan buena parte de los fallos más comunes: imágenes sin texto alternativo, contraste insuficiente, controles sin etiqueta o encabezados desordenados. A11yScan hace esa primera pasada en segundos. Pegas una URL, la página se carga en un navegador real y obtienes las infracciones agrupadas por impacto, el HTML exacto que provoca cada una y un enlace a cómo corregirla.
+
+Es un proyecto personal que construí solo como un monorepo con pnpm: un frontend en Next.js, una API en Express que controla el navegador y un paquete de tipos compartido entre ambos.
+
+</Section>
+
+<Section label="02 — Arquitectura" title="Un navegador real detrás de una API pequeña">
+  <Pillars>
+    <Pillar title="Las reglas se ejecutan donde se pinta la página">
+
+La API abre la URL en Chromium sin interfaz con Playwright y ejecuta axe-core sobre el DOM ya renderizado, con las reglas WCAG 2.0 y 2.1 de nivel A y AA más las buenas prácticas de axe. Que sea en un navegador importa: muchos problemas de contraste, foco y ARIA solo aparecen después de que se ejecutan los scripts y se aplican los estilos. Para que el escaneo sea rápido no se descargan imágenes, fuentes ni vídeos, pero sí las hojas de estilo, así que el contraste se mide con los colores reales.
+
+    </Pillar>
+    <Pillar title="Una puntuación y un informe">
+
+Cada infracción pesa según su impacto y según cuántos elementos afecta, y el resultado se convierte en una puntuación de salud de 0 a 100, fácil de seguir en el tiempo. El frontend, construido sobre los componentes de Radix UI, agrupa los problemas por gravedad y muestra el HTML que falla en cada caso. Los resultados se pueden exportar como un informe PDF, generado en el servidor a partir de los mismos datos.
+
+    </Pillar>
+
+  </Pillars>
+</Section>
+
+<Section label="03 — Diferenciador" title="Un escáner que no se puede volver hacia dentro" highlight>
+
+Un servicio que carga cualquier URL que le da un desconocido es un blanco fácil para la falsificación de peticiones del lado del servidor (SSRF): basta con apuntarlo a `localhost`, a una red privada o a la dirección de metadatos del proveedor cloud, y el informe devuelve lo que encuentre. Antes de hacer público el repositorio lo traté como el riesgo principal.
+
+Una primera protección que revisaba cada petición del navegador no bastaba: Playwright no intercepta cada salto de una redirección HTTP, así que una URL pública que redirigía a una dirección interna pasaba, y reproduje la fuga en local. La solución lleva la comprobación al borde de la red. Ahora Chromium envía todo su tráfico a través de un pequeño proxy de salida dentro de la API, que resuelve cada destino, rechaza los rangos privados y reservados de IPv4 e IPv6 y se conecta exactamente a la dirección que comprobó. Eso cierra en un solo punto las redirecciones, el DNS rebinding y los WebSockets, y la revisión por petición se mantiene como segunda capa.
+
+La exportación a PDF recibió el mismo trato: los datos del informe se validan, cada valor se escapa y la página se genera sin JavaScript ni acceso a la red. Un límite de navegadores simultáneos evita que una ráfaga de peticiones tumbe el servicio.
+
+</Section>
+
+<Metrics
+  label="04 — Resultados"
+  title="Lo que está en marcha"
+  items={[
+    { label: 'Auditoría', value: 'Reglas WCAG 2.0/2.1 A/AA y buenas prácticas de axe-core, en Chromium sin interfaz' },
+    {
+      label: 'Informe',
+      value: 'Puntuación de 0 a 100, problemas por impacto con el HTML que falla y exportación a PDF',
+    },
+    {
+      label: 'Seguridad',
+      value: 'Proxy de salida que valida la IP resuelta de cada conexión, incluido cada salto de una redirección',
+    },
+    {
+      label: 'Calidad',
+      value:
+        'CI con comprobación de tipos, builds, build de Docker y 18 tests, uno de ellos un ataque de redirección de extremo a extremo en un navegador real',
+    },
+  ]}
+/>
