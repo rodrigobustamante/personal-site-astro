@@ -15,26 +15,22 @@ const { t } = useTranslations(lang);
 const otherLang = alternateLang(lang);
 const homeHref = localizedPath('/', lang);
 const blogHref = `/blog/${lang}`;
-const isHome = stripLocale(Astro.url.pathname) === '/';
+const path = stripLocale(Astro.url.pathname);
+const isHome = path === '/';
 // Section anchors only work on the home page; elsewhere they point back to it.
 const section = (id: string) => (isHome ? `#${id}` : localizedPath(`/#${id}`, lang));
 const altUrl =
   translationUrl ?? (variant === 'blog' ? `/blog/${otherLang}` : localizedPath(Astro.url.pathname, otherLang));
 
-const nav =
-  variant === 'portfolio'
-    ? [
-        { href: section('work'), label: t('nav.experience') },
-        { href: localizedPath('/work', lang), label: t('nav.work') },
-        { href: section('skills'), label: t('nav.skills') },
-        { href: section('writing'), label: t('nav.writing') },
-        { href: section('contact'), label: t('nav.contact') },
-      ]
-    : [
-        { href: homeHref, label: t('nav.home') },
-        { href: blogHref, label: t('nav.blog') },
-        { href: localizedPath('/#contact', lang), label: t('nav.contact') },
-      ];
+// One menu everywhere: the blog used to get a shorter one, which made the
+// header change under the visitor when moving between sections.
+const nav = [
+  { href: section('work'), label: t('nav.experience') },
+  { href: localizedPath('/work', lang), label: t('nav.work'), current: /^\/work(\/|$)/.test(path) },
+  { href: section('skills'), label: t('nav.skills') },
+  { href: blogHref, label: t('nav.blog'), current: /^\/blog(\/|$)/.test(path) },
+  { href: section('contact'), label: t('nav.contact') },
+];
 ---
 
 <header class="header" id="site-header" data-variant={variant} data-alt-url={altUrl}>
@@ -47,7 +43,9 @@ const nav =
     </a>
     <nav class="header-nav" aria-label={t('header.nav')}>
       {nav.map((item) => (
-        <a href={item.href}>{item.label}</a>
+        <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+          {item.label}
+        </a>
       ))}
     </nav>
     <div class="header-tools">
@@ -176,7 +174,9 @@ const nav =
       button as a popover (top layer, light dismiss, no JS needed). */}
   <nav class="mobile-nav" id="mobile-nav" popover aria-label={t('header.nav')}>
     {nav.map((item) => (
-      <a href={item.href}>{item.label}</a>
+      <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+        {item.label}
+      </a>
     ))}
     {/* Narrow phones have no room for the style button in the bar. */}
     <button class="mobile-style" data-style-toggle type="button" aria-pressed="false">
