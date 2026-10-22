@@ -1,0 +1,150 @@
+---
+/**
+ * The last year of GitHub contributions as a static SVG, drawn at build time
+ * from src/data/contributions.json (refreshed weekly by the contributions
+ * workflow). No client script and no third-party request; the cells take
+ * their colour from the accent token, so they follow the style and theme.
+ */
+import data from '~/data/contributions.json';
+import type { Lang } from '~/i18n/ui';
+import { contributionLevels, monthStarts } from '~/utils/contributions';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const CELL = 10;
+const STEP = 13;
+const TOP = 18;
+const levels = contributionLevels(data.weeks);
+const width = data.weeks.length * STEP;
+const height = TOP + 7 * STEP;
+const monthName = new Intl.DateTimeFormat(lang, { month: 'short', timeZone: 'UTC' });
+const months = monthStarts(data.start, data.weeks.length).map(({ week, month }) => ({
+  x: week * STEP,
+  label: monthName.format(new Date(Date.UTC(2000, month, 1))),
+}));
+const total = new Intl.NumberFormat(lang).format(data.total);
+const COPY = {
+  en: {
+    label: `${total} contributions on GitHub in the last year`,
+    caption: `${total} contributions in the last year, private repositories included.`,
+    link: 'GitHub profile',
+    less: 'Less',
+    more: 'More',
+  },
+  es: {
+    label: `${total} contribuciones en GitHub en el último año`,
+    caption: `${total} contribuciones en el último año, incluidos los repositorios privados.`,
+    link: 'Perfil de GitHub',
+    less: 'Menos',
+    more: 'Más',
+  },
+}[lang];
+---
+
+<figure class="contrib">
+  <div class="contrib-scroll">
+    <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={COPY.label}>
+      {months.map((m) => (
+        <text x={m.x} y="10" class="contrib-month">
+          {m.label}
+        </text>
+      ))}
+      {levels.map((week, w) =>
+        week.map((level, d) => (
+          <rect x={w * STEP} y={TOP + d * STEP} width={CELL} height={CELL} rx="2" class={`lvl${level}`} />
+        ))
+      )}
+    </svg>
+  </div>
+  <figcaption>
+    <span>{COPY.caption}</span>
+    <span class="contrib-legend" aria-hidden="true">
+      {COPY.less}
+      {[0, 1, 2, 3, 4].map((l) => (
+        <i class={`lvl${l}`} />
+      ))}
+      {COPY.more}
+    </span>
+    <a class="cs-link" href={`https://github.com/${data.login}`}>
+      {COPY.link}
+      <span class="arrow" aria-hidden="true">
+        ↗
+      </span>
+    </a>
+  </figcaption>
+</figure>
+
+<style>
+  .contrib {
+    margin: 0;
+  }
+  /* Right to left, so a narrow screen shows the most recent weeks first */
+  .contrib-scroll {
+    overflow-x: auto;
+    direction: rtl;
+    padding-bottom: 4px;
+  }
+  .contrib svg {
+    display: block;
+    direction: ltr;
+    width: 100%;
+    min-width: 600px;
+    height: auto;
+  }
+  .contrib-month {
+    font-size: 10px;
+    fill: var(--ink-soft);
+  }
+  .lvl0 {
+    fill: color-mix(in oklab, var(--ink) 8%, var(--paper));
+    background: color-mix(in oklab, var(--ink) 8%, var(--paper));
+  }
+  .lvl1 {
+    fill: color-mix(in oklab, var(--accent) 30%, var(--paper));
+    background: color-mix(in oklab, var(--accent) 30%, var(--paper));
+  }
+  .lvl2 {
+    fill: color-mix(in oklab, var(--accent) 55%, var(--paper));
+    background: color-mix(in oklab, var(--accent) 55%, var(--paper));
+  }
+  .lvl3 {
+    fill: color-mix(in oklab, var(--accent) 78%, var(--paper));
+    background: color-mix(in oklab, var(--accent) 78%, var(--paper));
+  }
+  .lvl4 {
+    fill: var(--accent);
+    background: var(--accent);
+  }
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 20px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .contrib-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 12px;
+  }
+  .contrib-legend i {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+  .contrib-legend i:first-of-type {
+    margin-left: 4px;
+  }
+  .contrib-legend i:last-of-type {
+    margin-right: 4px;
+  }
+  figcaption .cs-link {
+    margin-left: auto;
+  }
+</style>

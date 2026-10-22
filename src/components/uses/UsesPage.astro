@@ -4,6 +4,7 @@ import SiteHeader from '~/components/portfolio/SiteHeader.astro';
 import SiteFooter from '~/components/portfolio/SiteFooter.astro';
 import type { Lang } from '~/i18n/ui';
 import { localizedPath } from '~/i18n/paths';
+import ContributionGraph from './ContributionGraph.astro';
 
 interface Props {
   lang: Lang;
@@ -18,7 +19,14 @@ interface Item {
 
 const COPY: Record<
   Lang,
-  { title: string; tag: string; intro: string; system: string; groups: { title: string; items: Item[] }[] }
+  {
+    title: string;
+    tag: string;
+    intro: string;
+    system: string;
+    activity: { title: string; intro: string };
+    groups: { title: string; items: Item[] }[];
+  }
 > = {
   en: {
     title: 'How it’s built',
@@ -26,6 +34,11 @@ const COPY: Record<
     intro:
       'How this site is built. It is small on purpose: no client framework, no animation library, and every page prerendered and served from the edge.',
     system: 'See the design system',
+    activity: {
+      title: 'Activity',
+      intro:
+        'The last year on GitHub, generated at build time from the GitHub API and refreshed weekly by a scheduled workflow: no client script, no third-party embed.',
+    },
     groups: [
       {
         title: 'Platform',
@@ -91,6 +104,11 @@ const COPY: Record<
     intro:
       'Cómo está hecho este sitio. Es pequeño a propósito: sin framework en el cliente, sin librerías de animación, y cada página prerenderizada y servida desde el edge.',
     system: 'Ver el sistema de diseño',
+    activity: {
+      title: 'Actividad',
+      intro:
+        'El último año en GitHub, generado en el build a partir de la API de GitHub y actualizado cada semana por un workflow programado: sin script en el cliente ni widgets de terceros.',
+    },
     groups: [
       {
         title: 'Plataforma',
@@ -185,6 +203,12 @@ const c = COPY[lang];
       </section>
     ))}
 
+    <section class="uses-group">
+      <h2>{c.activity.title}</h2>
+      <p class="uses-activity-intro">{c.activity.intro}</p>
+      <ContributionGraph lang={lang} />
+    </section>
+
     <a class="cs-link uses-next" href={localizedPath('/system', lang)}>
       {c.system}
       <span class="arrow" aria-hidden="true">
@@ -256,6 +280,12 @@ const c = COPY[lang];
       grid-template-columns: 1fr;
       gap: 6px;
     }
+  }
+  .uses-activity-intro {
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0 0 20px;
+    text-wrap: pretty;
   }
   .uses-next {
     margin-top: clamp(40px, 7vh, 64px);
