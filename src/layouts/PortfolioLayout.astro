@@ -419,8 +419,12 @@ const jsonLd = JSON.stringify({
       .header-nav a:hover {
         color: var(--ink);
       }
-      .header-nav a:hover::after {
+      .header-nav a:hover::after,
+      .header-nav a[aria-current='page']::after {
         right: 0;
+      }
+      .header-nav a[aria-current='page'] {
+        color: var(--ink);
       }
       .header-tools .menu-btn {
         display: none;
@@ -448,6 +452,9 @@ const jsonLd = JSON.stringify({
       .mobile-nav a:hover,
       .mobile-style:hover {
         background: var(--paper-2);
+      }
+      .mobile-nav a[aria-current='page'] {
+        box-shadow: inset 2px 0 0 var(--accent);
       }
       .mobile-style {
         display: none;

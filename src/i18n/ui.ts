@@ -4,7 +4,6 @@ export const ui = {
     'nav.home': 'Home',
     'nav.experience': 'Experience',
     'nav.skills': 'Skills',
-    'nav.writing': 'Writing',
     'nav.blog': 'Blog',
     'nav.contact': 'Contact',
 
@@ -184,7 +183,6 @@ export const ui = {
     'nav.home': 'Inicio',
     'nav.experience': 'Experiencia',
     'nav.skills': 'Skills',
-    'nav.writing': 'Blog',
     'nav.blog': 'Blog',
     'nav.contact': 'Contacto',
 
